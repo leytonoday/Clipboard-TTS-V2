@@ -51,10 +51,11 @@ Below is a list of images to showcase some of the features of Clipboard TTS
 ![4](https://user-images.githubusercontent.com/36010516/192115332-00479c54-4309-40c8-b950-1bd3a16e8fbe.png)
 ![5](https://user-images.githubusercontent.com/36010516/192115333-5468e7e5-4617-48ef-a117-e44823e4f46a.png)
 ![6](https://user-images.githubusercontent.com/36010516/192115334-16d56707-0173-44fd-8e53-d455d90e4b08.PNG)
-![7](https://user-images.githubusercontent.com/36010516/192115335-39c2253a-439a-4e2e-8496-a5315ff73e15.PNG)
+![7](https://user-images.githubusercontent.com/36010516/192121272-df0775e2-6356-4597-a9ae-c0ec66408ca0.PNG)
+![10](https://user-images.githubusercontent.com/36010516/192121239-f819816a-67e9-4ec3-8b2a-1d99fcf3ecf7.png)
 ![8](https://user-images.githubusercontent.com/36010516/192115336-3e7c6977-7d97-4f84-8cd0-53fea145faf2.PNG)
 ![9](https://user-images.githubusercontent.com/36010516/192121237-17194380-3bd9-4273-ae99-23b63de547c7.png)
-![10](https://user-images.githubusercontent.com/36010516/192121239-f819816a-67e9-4ec3-8b2a-1d99fcf3ecf7.png)
+
 
 ## Project setup
 ```
