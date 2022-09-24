@@ -66,7 +66,7 @@ const Credentials = () => {
               An API key to a Google Cloud Project that has the following APIs enabled: Cloud Text-to-Speech API, Cloud Vision API, and Cloud Translation API
             </p>
             <form onSubmit={(e) => { e.preventDefault(); saveOnClose() }} >
-              <Input placeholder="Enter API Key" value={apiKey} variant="filled" onChange={handleInput} />
+              <Input type="password" placeholder="Enter API Key" value={apiKey} variant="filled" onChange={handleInput} />
             </form>
           </ModalBody>
           <ModalFooter>
