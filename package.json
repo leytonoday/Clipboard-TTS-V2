@@ -283,7 +283,7 @@
     "publish": {
       "provider": "github",
       "owner": "leytonoday",
-      "repo": "test"
+      "repo": "Clipboard-TTS"
     }
   },
   "collective": {
