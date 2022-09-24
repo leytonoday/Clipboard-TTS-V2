@@ -1,0 +1,302 @@
+import {
+  Th,
+  Tr,
+  Td,
+  Table,
+  Thead,
+  TableContainer,
+
+  Box,
+  Input,
+  Tbody,
+  HStack,
+  Button,
+  Divider,
+  useToast,
+} from "@chakra-ui/react"
+import {
+  faTimes,
+  faCheck,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons"
+import Mascot                     from "renderer/components/common/Mascot"
+import SearchBar                  from "renderer/components/common/SearchBar"
+import { useStore }               from "renderer/store"
+import OptionHeader               from "../../../common/OptionHeader"
+import SimpleSelect               from "renderer/components/common/SimpleSelect"
+import SimpleTooltip              from "renderer/components/common/SimpleTooltip"
+import Substitutions              from "../common/Substitutions"
+import NoResultsMascot            from "renderer/components/common/NoResultsMascot"
+import { Substitution }           from "renderer/types"
+import { FontAwesomeIcon }        from "@fortawesome/react-fontawesome"
+import { useState, useCallback }  from "react"
+
+const SubstitutionsOption = () => {
+  const store = useStore()
+  const toast = useToast()
+
+  const sortSubstitutions = useCallback((substitutions: Substitution[], sortBy: string) => {
+    if (sortBy === "Sort Alphabetically")
+      return [...substitutions].sort((a, b) => a.before.localeCompare(b.before))
+    else
+      return substitutions
+  }, [])
+
+  const [searchQuery, setSearchQuery] = useState("")
+  const [displaySubstitutions, setDisplaySubstitutions] = useState(sortSubstitutions(store.substitutions, store.substitutionsSortBy))
+  const [beforeSubstitution, setBeforeSubstitution] = useState("")
+  const [afterSubstitution, setAfterSubstitution] = useState("")
+  const [managementMode, setManagementMode] = useState(false)
+  const [matchCase, setMatchCase] = useState(false)
+
+
+  const filterBySearchQuery = (searchQuery: string) => {
+    const searchQueryLower = searchQuery.toLowerCase();
+    const filteredWords = store.substitutions.filter((substitution) => {
+      return substitution.before.toLowerCase().includes(searchQueryLower) || substitution.after.toLowerCase().includes(searchQueryLower)
+    })
+
+    return filteredWords;
+  }
+
+  const handleSearch = (searchQuery: string) => {
+    if (!searchQuery) {
+      setDisplaySubstitutions(sortSubstitutions(store.substitutions, store.substitutionsSortBy))
+      return
+    }
+
+    const searchQueryLower = searchQuery.toLowerCase()
+    const filteredSubstitutions = filterBySearchQuery(searchQueryLower)
+
+    setDisplaySubstitutions(sortSubstitutions(filteredSubstitutions, store.substitutionsSortBy))
+  }
+
+  const onSortByChange = useCallback((newSortBy: string) => {
+    store.setSubstitutionsSortBy(newSortBy);
+
+    const filteredWords = filterBySearchQuery(searchQuery);
+    const sortedSavedWords = sortSubstitutions(filteredWords, newSortBy);
+    setDisplaySubstitutions(sortedSavedWords)
+  }, [store.substitutions, searchQuery])
+
+  const deleteSubstitution = useCallback((substitution: Substitution) => {
+    const substitutions = [...store.substitutions]
+
+    const index = substitutions.findIndex((i) => i.before === substitution.before)
+    if (index === -1) return
+
+    substitutions.splice(index, 1)
+    store.setSubstitutions(substitutions)
+
+    setDisplaySubstitutions(sortSubstitutions(substitutions, store.substitutionsSortBy))
+  }, [store.substitutions, store.substitutionsSortBy])
+
+  const updateMatchCase = useCallback((substitution: Substitution) => {
+    const substitutions = [...store.substitutions]
+
+    const index = substitutions.findIndex((i) => i.before === substitution.before)
+    if (index === -1) return
+
+    substitutions[index].matchCase = !substitutions[index].matchCase
+    store.setSubstitutions(substitutions)
+
+    setDisplaySubstitutions(sortSubstitutions(substitutions, store.substitutionsSortBy))
+  }, [store.substitutions])
+
+  const addSubstitution = useCallback(() => {
+    if (!beforeSubstitution) return
+
+    if (store.substitutions.some((substitution) => substitution.before === beforeSubstitution)) {
+      toast({
+        title: "Substitution already exists",
+        description: "This substitution already exists",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      })
+      return
+    }
+
+    const newSubstitution: Substitution = {
+      before: beforeSubstitution,
+      after: afterSubstitution,
+      matchCase
+    }
+
+    const substitutions = [...store.substitutions, newSubstitution]
+    store.setSubstitutions(substitutions)
+    setDisplaySubstitutions(sortSubstitutions(substitutions, store.substitutionsSortBy))
+    setBeforeSubstitution("")
+    setAfterSubstitution("")
+    setMatchCase(false)
+
+    toast({
+      title: "Substitution added",
+      description: "The substitution has been added",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    })
+  }, [beforeSubstitution, afterSubstitution, store.substitutions, store.substitutionsSortBy, matchCase])
+
+  return (
+    <>
+      <OptionHeader title="Substitutions" subtitle="Here you can replace instances of words or phrases within copied text" />
+
+      <Substitutions />
+
+      <Divider margin="1em 0" />
+
+      <Box margin="0 1em">
+        <SearchBar searchQuery={searchQuery} handleSearch={(searchQuery) => {
+          setSearchQuery(searchQuery)
+          handleSearch(searchQuery)
+        }} />
+        <HStack justifyContent="end" marginTop="0.75em">
+          <Button size="sm" onClick={() => {
+
+            if (displaySubstitutions.some(i => !i.before.length)) {
+              toast({
+                title: "Invalid substitution",
+                description: "Remove invalid empty 'before' substitution value",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+              })
+              return
+            }
+
+            // check for duplicates before values
+            const beforeValues = displaySubstitutions.map(i => i.before)
+            const duplicates = beforeValues.filter((item, index) => beforeValues.indexOf(item) != index)
+            if (duplicates.length) {
+              toast({
+                title: "Invalid substitution",
+                description: "Remove duplicate 'before' substitution value: " + duplicates[0],
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+              })
+              return
+            }
+
+            setManagementMode(!managementMode)
+            store.setSubstitutions(displaySubstitutions)
+          }}>
+            {
+              managementMode ? "Done" : "Manage"
+            }
+          </Button>
+          <SimpleSelect
+              options={[
+                { value: "Sort Alphabetically", label: "Sort Alphabetically" },
+                { value: "Sort by Addition Date", label: "Sort by Addition Date" },
+              ]}
+              onChange={(value) => {onSortByChange(value.value)}}
+              value={store.substitutionsSortBy}
+              width="13em"
+              size="sm"
+            />
+        </HStack>
+      </Box>
+
+      <HStack margin="1.5em 1em 1em 1em">
+        <Input variant="filled" placeholder="Before" value={beforeSubstitution} onChange={(event) => setBeforeSubstitution(event.target.value)} />
+        <FontAwesomeIcon icon={faArrowRight} />
+        <Input variant="filled" placeholder="After" value={afterSubstitution} onChange={(event) => setAfterSubstitution(event.target.value)} />
+
+        <SimpleTooltip label="Match case">
+          <Button variant={matchCase ? "solid" : "ghost"} onClick={() => setMatchCase(!matchCase)}>
+            Aa
+          </Button>
+        </SimpleTooltip>
+
+        <SimpleTooltip label="Add Substitution">
+            <Button onClick={() => addSubstitution()} disabled={!beforeSubstitution}>
+              <FontAwesomeIcon icon={faCheck} />
+            </Button>
+        </SimpleTooltip>
+      </HStack>
+
+      {
+        displaySubstitutions.length === 0 ? null : (
+          <TableContainer margin="0 1em" overflowX="hidden">
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Before</Th>
+                  <Th>After</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {
+                  displaySubstitutions.map((substitution) => (
+                    <Tr key={substitution.before}>
+                      <Td width="50%">
+                        <Box wordBreak={"break-all"} whiteSpace={"normal"}>
+                          {
+                            managementMode ? (
+                              <Input placeholder="Before" variant="filled" defaultValue={substitution.before} onChange={(event) => {
+                                substitution.before = event.target.value
+                              }} />
+                            ): substitution.before
+                          }
+                        </Box>
+                      </Td>
+                      <Td width="50%">
+                        <HStack spacing="1em" width="100%">
+                          <Box wordBreak={"break-all"} whiteSpace={"normal"} flex={1}>
+                            {
+                              managementMode ? (
+                                <Input placeholder="After" variant="filled" defaultValue={substitution.after} onChange={(event) => {
+                                  substitution.after = event.target.value
+                                }} />
+                              ): substitution.after || "Blank"
+                            }
+                          </Box>
+                          {
+                            managementMode ? (
+                              <HStack>
+                                <SimpleTooltip label="Match case">
+                                  <Button size="sm" variant={substitution.matchCase ? "solid" : "ghost"} onClick={() => updateMatchCase(substitution)}>
+                                    Aa
+                                  </Button>
+                                </SimpleTooltip>
+                                <SimpleTooltip label={"Delete substitution"}>
+                                  <Button onClick={() => deleteSubstitution(substitution)} size="sm">
+                                    <FontAwesomeIcon icon={faTimes} style={{color: "red"}}/>
+                                  </Button>
+                                </SimpleTooltip>
+                              </HStack>
+                            ) : null
+                          }
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  ))
+                }
+              </Tbody>
+            </Table>
+          </TableContainer>
+        )
+      }
+
+      {
+        displaySubstitutions.length === 0 && searchQuery.length ? (
+          <NoResultsMascot />
+        ) : null
+      }
+
+      {
+        displaySubstitutions.length === 0 && !searchQuery.length ? (
+          <Box marginTop="2em">
+            <Mascot label="Add substitutions to modify the output speech" />
+          </Box>
+        ) : null
+      }
+
+    </>
+  )
+}
+
+export default SubstitutionsOption

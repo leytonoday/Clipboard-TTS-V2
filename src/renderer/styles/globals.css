@@ -1,0 +1,56 @@
+html,
+body,
+#root {
+  padding: 0;
+  margin: 0;
+  font-style: Segoe UI;
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+}
+
+.fasIcon {
+  margin-right: 0.5em;
+}
+
+/* Used to make the ugly navbar nice */
+::-webkit-scrollbar {
+  width: 25px;
+  height: 25px;
+  border-radius: 1em;
+  background: rgba(0, 0, 0, 0.2);
+
+  background-clip: padding-box;
+  border: 5px solid rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 1em;
+  background: #808080;
+
+  background-clip: padding-box;
+  border: 9px solid rgba(0, 0, 0, 0);
+
+  transition: 0.3s all ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #646464;
+  background-clip: padding-box;
+  border: 9px solid rgba(0, 0, 0, 0);
+}
+
+.cet-icon > svg {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cet-window-icon {
+  display: none !important;
+}

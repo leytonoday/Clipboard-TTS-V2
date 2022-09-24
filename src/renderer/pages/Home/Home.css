@@ -1,0 +1,12 @@
+.outputBox {
+  border-radius: 0.5em;
+  padding: 2em;
+  text-align: left;
+  /* border: #AAAAAA 1px solid; */
+  overflow-wrap: break-word;
+  overflow-y: auto;
+  box-shadow: 0px 10px 13px -7px #00000044, 0px 0px 18px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  margin: 1em;
+  transition: 0.3s ease all;
+}
