@@ -16,7 +16,7 @@ TypeScript and React, with Chakra-UI for the front end component library.
 
 Clipboard TTS is used to read your text aloud for you. It is a study tool to aid the dyslexic and mentally exhausted that are having trouble reading. 
 As a student, it's often the case that you have a pile of books to read, and eventually it can be quite challenging and exhausting to get through it all. 
-This is where this application comes in handy! It works by continuously scannig the clipboard for changes, and once the change is detected, it is read aloud. 
+This is where this application comes in handy! It works by continuously scanning the clipboard for changes, and once the change is detected, it is read aloud. 
 
 
 Note: As to not compromise quality of this application, I chose to use Google Cloud services. Clipboard TTS instructs you on how to acquire an API key and get the 
@@ -53,7 +53,8 @@ Below is a list of images to showcase some of the features of Clipboard TTS
 ![6](https://user-images.githubusercontent.com/36010516/192115334-16d56707-0173-44fd-8e53-d455d90e4b08.PNG)
 ![7](https://user-images.githubusercontent.com/36010516/192115335-39c2253a-439a-4e2e-8496-a5315ff73e15.PNG)
 ![8](https://user-images.githubusercontent.com/36010516/192115336-3e7c6977-7d97-4f84-8cd0-53fea145faf2.PNG)
-
+![9](https://user-images.githubusercontent.com/36010516/192121237-17194380-3bd9-4273-ae99-23b63de547c7.png)
+![10](https://user-images.githubusercontent.com/36010516/192121239-f819816a-67e9-4ec3-8b2a-1d99fcf3ecf7.png)
 
 ## Project setup
 ```
