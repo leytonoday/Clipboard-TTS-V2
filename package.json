@@ -1,5 +1,6 @@
 {
   "description": "A foundation for scalable desktop apps",
+  "version": "2.0.0",
   "keywords": [
     "electron",
     "boilerplate",
@@ -46,7 +47,8 @@
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only . -r tsconfig-paths/register",
     "start:preload": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.preload.dev.ts",
     "start:renderer": "cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack serve --config ./.erb/configs/webpack.config.renderer.dev.ts",
-    "test": "jest"
+    "test": "jest",
+    "publish": "electron-builder --win -p always"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -221,7 +223,6 @@
   },
   "build": {
     "productName": "Clipboard TTS",
-    "artifactName": "Clipboard TTS (2.0.0) Installer.${ext}",
     "appId": "org.erb.ElectronReact",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
@@ -281,8 +282,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "leytonoday",
+      "repo": "test"
     }
   },
   "collective": {
