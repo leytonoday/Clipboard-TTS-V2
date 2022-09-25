@@ -51,6 +51,7 @@ const ColourPicker = (props: ColourPickerProps) => {
         color={props.colour}
         disableAlpha
         onChange={(color) => props.onChange(color.hex)}
+
         styles={{
           default: {
             picker: {

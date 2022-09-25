@@ -10,6 +10,8 @@ body,
 
 * {
   box-sizing: border-box;
+  user-drag: none !important;
+  user-select: none;
 }
 
 .container {

@@ -50,7 +50,7 @@ export const useFileDragAndDrop = () => {
 
       const files = event.dataTransfer?.files
 
-      if (!files)
+      if (!files || !files.length)
         return
 
       // Load each file
