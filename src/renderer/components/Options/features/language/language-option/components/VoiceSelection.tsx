@@ -46,6 +46,7 @@ import { FontAwesomeIcon }                                          from "@forta
 import { faPlay, faCheck }                                          from "@fortawesome/free-solid-svg-icons"
 import React, { useState, useRef, useEffect, useMemo }              from "react"
 import { TextToSpeechVoices, TextToSpeechVoice, VoiceType }         from "renderer/types"
+import IconPopover                                                  from "renderer/components/common/IconPopover"
 
 
 const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType: VoiceType | null = null) => {
@@ -118,6 +119,11 @@ const getLanguageTabList = (tabNames: string[], tabTextColour: string): React.Re
         tabNames.map((tab) => (
           <Tab key={tab} color={tabTextColour} _selected={{ background: "primary.200", color: "white" }}>
             {tab}
+            {
+              tab === "Neural2" ? (
+                <span style={{marginLeft: "0.5em", fontWeight: "normal", color: tabTextColour}}><IconPopover status='warning' content="As of right now, highlighting is not supported when using a Neural2 voice" /></span>
+              ) : null
+            }
           </Tab>
         ))
       }

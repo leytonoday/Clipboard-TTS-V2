@@ -69,7 +69,8 @@ export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
     name: "Highlight",
     icon: faHighlighter,
     path: "/option/highlight/",
-    active: () => useStore.getState().highlightEnabled
+    active: () => useStore.getState().highlightEnabled,
+    disabled: () => useStore.getState().voice.name.includes("Neural2")
   },
   {
     name: "Overlay",

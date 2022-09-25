@@ -11,6 +11,7 @@ const Highlight = () => {
       setChecked={store.setHighlightEnabled}
       onClick={() => store.toggleCurrentlyActiveEnabledState("Highlight")}
       info="Highlights the currently spoken sentence. This is useful for following along with the audio."
+      warning="As of right now, highlighting is not supported when using a Neural2 voice"
     />
   )
 }

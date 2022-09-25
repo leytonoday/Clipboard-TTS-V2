@@ -291,7 +291,16 @@ export const useTextToSpeech = () => {
     }
 
     // If highlighting is enabled, always get SSML, otherwise only get SSML if liveHighlight is enabled
-    const output = store.highlightEnabled ? textToSsml(outputText) : ( store.liveHighlightEnabled ? textToSsml(outputText): outputText)
+    // const output = store.highlightEnabled ? textToSsml(outputText) : ( store.liveHighlightEnabled ? textToSsml(outputText): outputText)
+
+    let output = ""
+
+    if (!store.voice.name.includes("Neural2") && (store.highlightEnabled || store.liveHighlightEnabled)) {
+      output = textToSsml(outputText)
+    }
+    else
+      output = outputText
+
     let base64AudioData: GetBase64AudioReturn | null = null
 
     // Get audio
