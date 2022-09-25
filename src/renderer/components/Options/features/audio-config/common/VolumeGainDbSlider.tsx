@@ -3,7 +3,11 @@ import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
 import { useCallback, useMemo } from "react"
 
-const VolumeGainDbSlider = () => {
+interface VolumeGainDbSliderProps {
+  orientation: "horizontal" | "vertical"
+}
+
+const VolumeGainDbSlider = (props: VolumeGainDbSliderProps) => {
   const store = useStore()
 
   // VOLUME GAIN DB
@@ -12,7 +16,6 @@ const VolumeGainDbSlider = () => {
   }, [])
   const volumeGainDbMarks = useMemo(() => {
     return [
-      { label: "-16", value: -16 },
       { label: "-12", value: -12 },
       { label: "-8", value: -8 },
       { label: "-4", value: -4 },
@@ -20,15 +23,14 @@ const VolumeGainDbSlider = () => {
       { label: "4", value: 4 },
       { label: "8", value: 8 },
       { label: "12", value: 12 },
-      { label: "16", value: 16 },
     ]
   }, [])
 
   return (
-    <Box margin="0 1em" height="100%">
+    <Box height="100%">
       <SimpleSlider
         label={"Volume Gain DB"}
-        orientation="vertical"
+        orientation={props.orientation}
         size={"md"}
         labelSize={"sm"}
         info="Volume gain (in dB) of the normal native volume supported by the specific voice,
@@ -37,14 +39,16 @@ const VolumeGainDbSlider = () => {
           amplitude of the normal native signal amplitude. A value of +6.0 (dB) will play at
           approximately twice the amplitude of the normal native signal amplitude."
 
-        min={-16}
-        max={16}
+        min={-12}
+        max={12}
         step={2}
 
         showLabel={true}
         onChange={onVolumeGainDbChange}
         value={store.volumeGainDb}
         marks={volumeGainDbMarks}
+
+        justifyLabel="center"
       />
     </Box>
   )

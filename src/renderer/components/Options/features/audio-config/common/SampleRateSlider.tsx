@@ -3,7 +3,11 @@ import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
 import { useCallback, useMemo } from "react"
 
-const SampleRateSlider = () => {
+interface SampleRateSliderProps {
+  orientation: "horizontal" | "vertical"
+}
+
+const SampleRateSlider = (props: SampleRateSliderProps) => {
   const store = useStore()
 
   // SAMPLE RATE
@@ -21,7 +25,7 @@ const SampleRateSlider = () => {
   }, [])
 
   return (
-    <Box margin="0 1em" height="100%">
+    <Box height="100%">
       <SimpleSlider
         label={"Sample Rate"}
         size={"md"}
@@ -36,7 +40,9 @@ const SampleRateSlider = () => {
         onChange={onSampleRateChange}
         value={store.sampleRate}
         marks={sampleRateMarks}
-        orientation="vertical"
+        orientation={props.orientation}
+
+        justifyLabel="center"
       />
   </Box>
   )

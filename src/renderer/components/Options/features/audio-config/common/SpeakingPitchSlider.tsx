@@ -3,7 +3,11 @@ import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
 import { useCallback, useMemo } from "react"
 
-const SpeakingPitchSlider = () => {
+interface SpeakingPitchSliderProps {
+  orientation: "horizontal" | "vertical"
+}
+
+const SpeakingPitchSlider = (props: SpeakingPitchSliderProps) => {
   const store = useStore()
 
   // SPEAKING PITCH
@@ -21,10 +25,10 @@ const SpeakingPitchSlider = () => {
   }, [])
 
   return (
-    <Box margin="0 1em" height="100%">
+    <Box height="100%">
       <SimpleSlider
         label={"Speaking Pitch"}
-        orientation="vertical"
+        orientation={props.orientation}
         size={"md"}
         labelSize="sm"
         info="Speaking pitch, in the range [-20.0, 20.0]. 20 means increase 20 semitones from the original pitch.
@@ -38,6 +42,8 @@ const SpeakingPitchSlider = () => {
         onChange={onSpeakingPitchChange}
         value={store.speakingPitch}
         marks={speakingPitchMarks}
+
+        justifyLabel="center"
       />
   </Box>
   )

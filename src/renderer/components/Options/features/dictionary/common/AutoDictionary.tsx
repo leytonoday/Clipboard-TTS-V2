@@ -9,7 +9,7 @@ const AutoDictionary = () => {
       label="Auto Dictionary"
       isChecked={store.autoDictionary}
       setChecked={store.setAutoDictionary}
-      info="Automatically reads the definition of a word when it is copied to the clipboard"
+      info="Automatically reads the definition of a word when it is copied to the clipboard. Only works in English"
     />
   )
 }

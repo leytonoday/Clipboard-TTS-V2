@@ -36,7 +36,9 @@ interface SimpleSliderProps {
 
   orientation: "vertical" | "horizontal",
 
-  labelSize: "sm" | "md"
+  labelSize: "sm" | "md",
+
+  justifyLabel?: string
 }
 
 const SimpleSlider = (props: SimpleSliderProps) => {
@@ -55,7 +57,7 @@ const SimpleSlider = (props: SimpleSliderProps) => {
     <Box height="100%" width={width} display="flex" flexDirection="column" fontSize={props.labelSize === "md" ? ['xs', 'sm', 'md'] : ['xs', 'sm']}>
       {
         props.showLabel ? (
-          <Box height="2em" width="100%" marginBottom={props.orientation === "vertical" ? "1em": undefined } display="flex" justifyContent={props.orientation === "vertical" ? "center" : "start"}>
+          <Box height="2em" width="100%" marginBottom={props.orientation === "vertical" ? "1em": undefined } display="flex" justifyContent={props.justifyLabel ? props.justifyLabel: "start"}>
             <OptionSubHeader title={props.label} info={props.info} />
           </Box>
         ) : null

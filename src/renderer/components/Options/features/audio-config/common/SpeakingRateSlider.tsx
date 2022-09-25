@@ -21,12 +21,11 @@ const SpeakingRateSlider = (props: SpeakingRateSliderProps) => {
       { label: '1x', value: 1 },
       { label: '2x', value: 2 },
       { label: '3x', value: 3 },
-      { label: '3.75x', value: 3.75 },
     ];
   }, []);
 
   return (
-    <Box margin="0 1em" height="100%">
+    <Box height="100%">
       <SimpleSlider
         label={'Speaking Rate'}
         size={'md'}
@@ -35,13 +34,15 @@ const SpeakingRateSlider = (props: SpeakingRateSliderProps) => {
         info="The speaking rate of the Text-to-Speech. This is the speed at which the text is spoken."
 
         min={0.25}
-        max={3.75}
+        max={3}
         step={0.25}
 
         showLabel={true}
         onChange={onSpeakingRateChange}
         value={store.speakingRate}
         marks={speakingRateMarks}
+
+        justifyLabel="center"
       />
     </Box>
   );

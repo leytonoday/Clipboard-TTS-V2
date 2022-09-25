@@ -67,11 +67,13 @@ export interface IOptionsSlice {
   volumeGainDb: number,
   audioProfile: string,
   speakingPitch: number,
+  previewTabIndex: number,
   setSampleRate: (sampleRate: number) => void,
   setSpeakingRate: (speakingRate: number) => void,
   setVolumeGainDb: (volumeGainDb: number) => void,
   setAudioProfile: (audioProfile: string) => void,
   setSpeakingPitch: (speakingPitch: number) => void,
+  setPreviewTabIndex: (previewTabIndex: number) => void,
 
 
   // Language and Translation
@@ -214,6 +216,7 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   volumeGainDb: (electronStoreGet("volumeGainDb") || 0) as number,
   audioProfile: (electronStoreGet("audioProfile") || defaultAudioProfile) as string,
   speakingPitch: (electronStoreGet("speakingPitch") || 0) as number,
+  previewTabIndex: (electronStoreGet("previewTabIndex") || 0) as number,
   setSampleRate: (sampleRate: number) => {
     electronStoreSet("sampleRate", sampleRate)
     set(state => ({ ...state, sampleRate }))
@@ -233,6 +236,10 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   setSpeakingPitch: (speakingPitch: number) => {
     electronStoreSet("speakingPitch", speakingPitch)
     set(state => ({ ...state, speakingPitch }))
+  },
+  setPreviewTabIndex: (previewTabIndex: number) => {
+    electronStoreSet("previewTabIndex", previewTabIndex)
+    set(state => ({ ...state, previewTabIndex }))
   },
 
 

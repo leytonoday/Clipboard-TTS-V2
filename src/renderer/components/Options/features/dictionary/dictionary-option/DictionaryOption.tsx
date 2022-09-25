@@ -85,7 +85,7 @@ const DictionaryOption = () => {
         <>
           <OptionHeader
             title="Dictionary"
-            subtitle="Here you can find and save the definition of words to improve your vocabulary. Only works in English :("
+            subtitle="Here you can find and save the definition of words to improve your vocabulary"
           />
 
           <AutoDictionary />

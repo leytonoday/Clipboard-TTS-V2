@@ -5,9 +5,9 @@ import {
   Center
 } from "@chakra-ui/react"
 import OptionHeader           from "../../../common/OptionHeader"
-import SampleRateSlider       from "./components/SampleRateSlider"
-import VolumeGainDbSlider     from "./components/VolumeGainDbSlider"
-import SpeakingPitchSlider    from "./components/SpeakingPitchSlider"
+import SampleRateSlider       from "../common/SampleRateSlider"
+import VolumeGainDbSlider     from "../common/VolumeGainDbSlider"
+import SpeakingPitchSlider    from "../common/SpeakingPitchSlider"
 import AudioProfileSelection  from "./components/AudioProfileSelection"
 import SpeakingRateSelection  from "../common/SpeakingRateSlider"
 
@@ -28,11 +28,7 @@ const AudioConfigOption = () => {
 
       <SimpleGrid height={sliderGridHeight} columns={columns} justifyContent="center" spacing="3em 0" paddingBottom="1em" overflowY="hidden">
         <Center>
-          <SpeakingPitchSlider />
-        </Center>
-
-        <Center>
-          <VolumeGainDbSlider />
+          <SpeakingPitchSlider orientation="vertical"/>
         </Center>
 
         <Center>
@@ -40,7 +36,11 @@ const AudioConfigOption = () => {
         </Center>
 
         <Center>
-          <SampleRateSlider />
+          <VolumeGainDbSlider orientation="vertical"/>
+        </Center>
+
+        <Center>
+          <SampleRateSlider orientation="vertical"/>
         </Center>
       </SimpleGrid>
 
