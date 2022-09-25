@@ -264,10 +264,12 @@ export const useTextToSpeech = () => {
         if (result.detectedLanguage && lastDetectedLanguage != result.detectedLanguage) {
           store.setLastDetectedLanguage(result.detectedLanguage)
 
+          const detectedLanguage = getLanguageByCode(result.detectedLanguage)
+
           if (currentVoiceLanguageCode !== result.detectedLanguage) {
             toast({
               title: "Translating Detected Language",
-              description: `Translating from ${getLanguageByCode(result.detectedLanguage) || "Unknown"} to ${store.voice.languageDescriptions[0]}`,
+              description: detectedLanguage ? `Translating from ${detectedLanguage} to ${store.voice.languageDescriptions[0]}` : "Translating from an unknown language",
               status: "info",
               duration: 5000,
               isClosable: true,
@@ -291,8 +293,6 @@ export const useTextToSpeech = () => {
     }
 
     // If highlighting is enabled, always get SSML, otherwise only get SSML if liveHighlight is enabled
-    // const output = store.highlightEnabled ? textToSsml(outputText) : ( store.liveHighlightEnabled ? textToSsml(outputText): outputText)
-
     let output = ""
 
     if (!store.voice.name.includes("Neural2") && (store.highlightEnabled || store.liveHighlightEnabled)) {

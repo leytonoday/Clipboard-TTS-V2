@@ -8,6 +8,13 @@ import { SimpleGrid, Center, Box }  from "@chakra-ui/react"
 const AudioProfileSelection = () => {
   const store = useStore()
 
+  const audioProfileToLabel: {[key: string]: string} = {
+    'headphone-class-device': "Headphone Class Speakers",
+    'small-bluetooth-speaker-class-device': "Small Class Speakers",
+    'medium-bluetooth-speaker-class-device': "Medium Class Speakers",
+    'large-home-entertainment-class-device': "Large Class Speakers"
+  }
+
   return (
     <>
       <Box marginBottom="0.5em">
@@ -20,9 +27,8 @@ const AudioProfileSelection = () => {
       <Center>
         <SimpleGrid columns={2} spacing={"1em"}>
           {
-            audioProfiles.map((i) => {
-              // split by -, capitalize each letter, then join back together
-              const label = i.split("-").map((i) => i.charAt(0).toUpperCase() + i.slice(1)).join(" ")
+            audioProfiles.map((i: string) => {
+              const label = audioProfileToLabel[i]
 
               return (
                 <BlockButton width="15em" height="6em" label={label} tooltipDisabled onClick={() => store.setAudioProfile(i)} selected={store.audioProfile === i} key={i} />
