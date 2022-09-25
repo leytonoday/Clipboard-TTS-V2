@@ -35,6 +35,16 @@ const modifyOutputText = (outputText: string): string => {
   const store = useStore.getState()
   const highlightIndex = store.highlightIndex;
 
+  if (store.currentlyActiveOptions.includes("Bionic Reading")) {
+    const tokens = outputText.trim().split(" ")
+    outputText = tokens.map(i => {
+      if (i.length > 1)
+        return `<b>${i.substring(0, Math.floor(i.length / 2))}</b>${i.substring(Math.floor(i.length / 2))}`
+      else
+        return `<b>${i}</b>`
+    }).join(" ")
+  }
+
   if (store.currentlyActiveOptions.includes("Highlight") && highlightIndex > -1) {
     const tokens = outputText.trim().split(".").filter(i => i.length > 0).map(i => i.trim())
     const highlightMap = tokens.map(token => ({ text: token, highlight: false }))
@@ -47,16 +57,6 @@ const modifyOutputText = (outputText: string): string => {
         return `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${i!.text}</span>`
       return i.text
     }).join(". ")
-  }
-
-  if (store.currentlyActiveOptions.includes("Bionic Reading")) {
-    const tokens = outputText.trim().split(" ")
-    outputText = tokens.map(i => {
-      if (i.length > 1)
-        return `<b>${i.substring(0, Math.floor(i.length / 2))}</b>${i.substring(Math.floor(i.length / 2))}`
-      else
-        return `<b>${i}</b>`
-    }).join(" ")
   }
 
   return outputText
