@@ -232,13 +232,27 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
 }
 
 const VoiceSelection = () => {
+
+  const getVoiceTabIndex = () => {
+    const voice = store.voice
+    const voiceTabIndex = [... new Set(store.availableVoices[voice.languageDescriptions[0]].map(voice => voice.ssmlGender))].sort().findIndex((gender: string) => gender === voice.ssmlGender)
+    return voiceTabIndex
+  }
+
+  const getLanguageTabIndex = () => {
+    const voice = store.voice
+    const languageTabs = getLanguageTabNames("")
+    const languageTabIndex: number = languageTabs.findIndex((tab: string) => voice.name.includes(tab))
+    return languageTabIndex;
+  }
+
   // Store
   const store = useStore()
 
   // State
   const [ selectedLanguageVoices, setSelectedLanguageVoices ] = useState<TextToSpeechVoice[]>([]);
   const [ selectedLanguage, setSelectedLanguage ]             = useState("");
-  const [ languageTabIndex, setLanguageTabIndex ]             = useState(0);
+  const [ languageTabIndex, setLanguageTabIndex ]             = useState(getLanguageTabIndex());
   const [ voiceTabIndex, setVoiceTabIndex ]                   = useState(0);
   const [ searchQuery, setSearchQuery ]                       = useState("");
   const { isOpen, onClose, onOpen }                           = useDisclosure();
@@ -323,9 +337,9 @@ const VoiceSelection = () => {
     setSearchQuery("")
 
     const languageTabs = getLanguageTabNames(searchQuery)
-    const languageTabIndex: number = languageTabs.findIndex((tab: string) => voice.name.includes(tab))
+    const languageTabIndex = getLanguageTabIndex()
     const allVoices = searchVoices(store.availableVoices, "", languageTabs[languageTabIndex] as VoiceType)
-    const voiceTabIndex = [... new Set(store.availableVoices[voice.languageDescriptions[0]].map(voice => voice.ssmlGender))].sort().findIndex((gender: string) => gender === voice.ssmlGender)
+    const voiceTabIndex = getVoiceTabIndex()
 
     setLanguageTabIndex(languageTabIndex)
     openVoiceModal(voice.languageDescriptions[0], allVoices[voice.languageDescriptions[0]])

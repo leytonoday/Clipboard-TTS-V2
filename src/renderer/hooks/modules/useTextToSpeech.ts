@@ -82,7 +82,7 @@ const processText = async (input: ClipboardData): Promise<ProcessTextReturn> => 
 const textToSsml = (input: string) => {
   return `<speak>
     ${ input.split(".").map((i, index) =>
-      i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i)}`: "" ).join(".")
+      i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i)}`: "" ).join(". ")
     }
   </speak>`
 }
@@ -317,10 +317,15 @@ export const useTextToSpeech = () => {
 
     const { audioContent: outputAudio, timepoints } = base64AudioData as GetBase64AudioReturn
 
-    // Set highlight timeouts
+    // Reset highlight data
     store.setHighlightIndex(-1)
+    store.highlightTimeouts.forEach(i => clearTimeout(i))
+    store.setHighlightTimeouts([])
+
+    // Set highlight timeouts
     timepoints.forEach((i: any, index: number) => {
       const timeout = setTimeout(() => {
+        console.log("highlightIndex: " + index)
         store.setHighlightIndex(index);
       }, i.timeSeconds * 1000)
       store.highlightTimeouts.push(timeout)
