@@ -167,13 +167,15 @@ export const useTextToSpeech = () => {
       if (state.replaySpeech !== prevState.replaySpeech) { // Replay the current lingering output
         store.setCurrentlySpeaking(true)
 
+        const highlightTimeouts: NodeJS.Timeout[] = []
         // Set highlight timeouts
         state.currentLingeringOutput!.timepoints.forEach((i: any, index: number) => {
           const timeout = setTimeout(() => {
             store.setHighlightIndex(index);
           }, i.timeSeconds * 1000)
-          store.highlightTimeouts.push(timeout)
+          highlightTimeouts.push(timeout)
         })
+        store.setHighlightTimeouts(highlightTimeouts)
 
         playBase64Audio(state.currentLingeringOutput!.audioContent, audio, () => {
           if (!useStore.getState().outputLingerEnabled) {
@@ -328,13 +330,15 @@ export const useTextToSpeech = () => {
     store.highlightTimeouts.forEach(i => clearTimeout(i))
     store.setHighlightTimeouts([])
 
+    const highlightTimeouts: NodeJS.Timeout[] = []
     // Set highlight timeouts
     timepoints.forEach((i: any, index: number) => {
       const timeout = setTimeout(() => {
         store.setHighlightIndex(index);
       }, i.timeSeconds * 1000)
-      store.highlightTimeouts.push(timeout)
+      highlightTimeouts.push(timeout)
     })
+    store.setHighlightTimeouts(highlightTimeouts)
 
     debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Timepoints -\n${JSON.stringify(timepoints, null, 2)}`)
 

@@ -100,6 +100,7 @@ const Home: React.FC = () => {
           <Box width="100%" height="100%" className={css`.highlighted { color: ${highlightTextColour}; }`} letterSpacing={store.fontSpacing} fontSize={`${store.fontSize}em`} fontFamily={store.font}
             paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1.25em" : "0em"}`}
           >
+
             { outputText && parse(modifyOutputText(outputText)) }
 
             {
