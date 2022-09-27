@@ -21,15 +21,16 @@ import {
 } from 'renderer/hooks';
 import parse                from 'html-react-parser';
 import { css }              from '@emotion/css';
-import React                from 'react';
 import OptionsBar           from '../../components/options/OptionsBar';
 import ScaleLoader          from 'react-spinners/ScaleLoader';
 import { useStore }         from 'renderer/store';
 import SimpleTooltip        from 'renderer/components/common/SimpleTooltip';
+import WhatsNewModal        from 'renderer/components/WhatsNewModal';
 import DragAndDropModal     from 'renderer/components/DragAndDropModal';
 import CredentialsAlert     from 'renderer/components/CredentialsAlert';
 import ComplexOptionModal   from '../../components/options/ComplexOptionModal';
 import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react';
 import './Home.css';
 
 const modifyOutputText = (outputText: string): string => {
@@ -68,6 +69,8 @@ const Home: React.FC = () => {
   const { outputText } = useTextToSpeech();
   useOnboarding();
 
+  useEffect(() => {}, [])
+
   const defaultOutputBoxBackground = useColorModeValue('#FBFBFB', '#404040')
   const outputBoxBackground = store.currentlyActiveOptions.includes("Overlay") ? store.currentOverlay : defaultOutputBoxBackground
 
@@ -80,6 +83,7 @@ const Home: React.FC = () => {
     <>
       <DragAndDropModal />
       <ComplexOptionModal />
+      <WhatsNewModal />
 
       {!store.apiKey && (<CredentialsAlert />)}
 

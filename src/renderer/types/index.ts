@@ -148,3 +148,10 @@ export type AccordationItem = {
   title: string;
   text: string;
 }
+
+export type WhatsNewData = {
+  version: string;
+  newFeatures?: string[];
+  bugFixes?: string[];
+  notes?: string[];
+}

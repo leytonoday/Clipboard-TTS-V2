@@ -4,9 +4,14 @@ import {
   electronStoreSet,
   getAvailableVoices,
 } from "renderer/utils"
+import {
+  WhatsNewData,
+  TextToSpeechVoice,
+  TextToSpeechVoices,
+}  from "renderer/types"
 import * as tags                                  from "language-tags"
 import { StoreSlice }                             from 'renderer/store';
-import { TextToSpeechVoice, TextToSpeechVoices }  from "renderer/types"
+import { CURRENT_VERSION } from "renderer/misc/constants";
 
 // This store slice is used to store miscellaneous data that is not specific to any other slice.
 export interface IMiscSlice {
@@ -24,6 +29,11 @@ export interface IMiscSlice {
   // Onboarding
   isOnboardingComplete: boolean,
   setIsOnboardingComplete: (isOnboardingComplete: boolean) => void,
+
+
+  // Whats New
+  whatsNewData: WhatsNewData,
+  setWhatsNewData: (whatsNewData: WhatsNewData) => void,
 }
 
 export const createMiscSlice: StoreSlice<IMiscSlice> = (set) => ({
@@ -76,5 +86,11 @@ export const createMiscSlice: StoreSlice<IMiscSlice> = (set) => ({
   setIsOnboardingComplete(isOnboardingComplete: boolean) {
     electronStoreSet("isOnboardingComplete", isOnboardingComplete)
     set(state => ({ ...state, isOnboardingComplete }))
+  },
+
+  whatsNewData: electronStoreGet("whatsNewData") === undefined ? {version: CURRENT_VERSION} : electronStoreGet("whatsNewData"),
+  setWhatsNewData(whatsNewData: WhatsNewData) {
+    electronStoreSet("whatsNewData", whatsNewData)
+    set(state => ({ ...state, whatsNewData }))
   }
 })
