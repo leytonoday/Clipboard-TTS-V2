@@ -2,7 +2,7 @@ import {
   faSliders,
   faToolbox,
   faPaintBrush,
-  faQuestionCircle,
+  faCode,
   faInfoCircle,
   faLightbulb
 } from '@fortawesome/free-solid-svg-icons';
@@ -64,6 +64,14 @@ const SettingsOption: React.FC = () => {
             title="Info"
             subtitle="Version, author, and credits"
             onClick={() => navigate("sub-options/info")}
+          />
+
+
+          <SubOptionButton
+            icon={faCode}
+            title="Developer Settings"
+            subtitle="Developer settings for debugging"
+            onClick={() => navigate("sub-options/developer-settings")}
           />
         </Box>
       )}

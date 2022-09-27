@@ -18,6 +18,7 @@ import {
   electronClipboard,
   toggleOptionEnabled,
   capitalizeFirstLetter,
+  debuggingOutput,
 } from 'renderer/utils';
 import {
   WordDefinition,
@@ -61,8 +62,10 @@ const WordDefinitionDisplay = (props: WordDefinitionProps) => {
       const index = words.findIndex((savedWord: WordDefinition) => savedWord.word === wordDefinition.word)
       words.splice(index, 1)
       store.setSavedWords(words)
+      debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Unsaved word - \n${JSON.stringify(wordDefinition, null, 2)}`)
     } else {
       store.setSavedWords([...store.savedWords, wordDefinition])
+      debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Saved word - \n${JSON.stringify(wordDefinition, null, 2)}`)
     }
 
     toast({

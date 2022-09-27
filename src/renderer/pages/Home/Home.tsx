@@ -2,6 +2,7 @@ import {
   downloadOggAudio,
   brightnessToTextColour,
   optionsBarPositionToflexDirection,
+  debuggingOutput,
 } from 'renderer/utils';
 import {
   Box,
@@ -110,6 +111,7 @@ const Home: React.FC = () => {
                     store.currentLingeringOutput ? (
                       <SimpleTooltip label="Download">
                         <Button size="sm" borderRadius="full" onClick={() => {
+                          debuggingOutput(store.outputLingerDebuggingOutput, "outputLingerDebuggingOutput", "Lingered output downloaded")
                           downloadOggAudio(store.currentLingeringOutput!.audioContent, store.currentLingeringOutput!.text)
                         }}>
                           <FontAwesomeIcon icon={faDownload} />
@@ -123,6 +125,7 @@ const Home: React.FC = () => {
                     store.currentLingeringOutput ? (
                       <SimpleTooltip label="Replay">
                         <Button size="sm" borderRadius="full" onClick={() => {
+                          debuggingOutput(store.outputLingerDebuggingOutput, "outputLingerDebuggingOutput", "Lingered output replayed")
                           useStore.setState({ ...store, replaySpeech: store.replaySpeech + 1 }) // Increment this to act as an event emitter
                         }}>
                           <FontAwesomeIcon icon={faArrowRotateLeft} />

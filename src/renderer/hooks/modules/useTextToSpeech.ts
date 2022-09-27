@@ -2,6 +2,7 @@ import {
   escapeHtml,
   isApiKeySet,
   getBase64Audio,
+  debuggingOutput,
   dictioaryMutation,
   electronClipboard,
   getLanguageByCode,
@@ -75,6 +76,9 @@ const processText = async (input: ClipboardData): Promise<ProcessTextReturn> => 
       return result
     }
   }
+
+  if (output.mutationsApplied)
+    debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Mutations applied: ${output.mutationsApplied.length ? output.mutationsApplied.join(", ") : "None"}`)
 
   return output
 }
@@ -210,6 +214,7 @@ export const useTextToSpeech = () => {
 
       const itemToSay = textToSpeechDequeue()
       say(itemToSay)
+
     }, 1000)
   }
 
@@ -297,6 +302,7 @@ export const useTextToSpeech = () => {
 
     if (!store.voice.name.includes("Neural2") && (store.highlightEnabled || store.liveHighlightEnabled)) {
       output = textToSsml(outputText)
+      debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", "SSML Applied")
     }
     else
       output = outputText
@@ -325,22 +331,25 @@ export const useTextToSpeech = () => {
     // Set highlight timeouts
     timepoints.forEach((i: any, index: number) => {
       const timeout = setTimeout(() => {
-        console.log("highlightIndex: " + index)
         store.setHighlightIndex(index);
       }, i.timeSeconds * 1000)
       store.highlightTimeouts.push(timeout)
     })
+
+    debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Timepoints -\n${JSON.stringify(timepoints, null, 2)}`)
 
     store.setTtsLoading(false)
     setOutputText(escapeHtml(outputText))
     store.setCurrentlySpeaking(true)
 
     if (store.outputLingerEnabled) {
-      store.setCurrentLingeringOutput({
+      const lingeredOutput = {
         text: outputText,
         audioContent: outputAudio,
         timepoints
-      })
+      }
+      debuggingOutput(store.outputLingerDebuggingOutput, "outputLingerDebuggingOutput", `Lingered output set -\n${JSON.stringify(lingeredOutput, null, 2)}`)
+      store.setCurrentLingeringOutput(lingeredOutput)
     }
 
     playBase64Audio(outputAudio, audio, () => {
@@ -352,6 +361,7 @@ export const useTextToSpeech = () => {
       store.setHighlightIndex(-1)
       useStore.getState().highlightTimeouts.forEach(i => clearTimeout(i))
       store.setHighlightTimeouts([])
+      debuggingOutput(useStore.getState().textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", "Finished Speaking")
     })
 
   }

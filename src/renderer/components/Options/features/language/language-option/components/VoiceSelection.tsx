@@ -32,6 +32,7 @@ import {
   isApiKeySet,
   getVoiceType,
   getBase64Audio,
+  debuggingOutput,
   getVoiceCountryCode,
   countryCodeToCountry,
   getVoiceLanguageCode,
@@ -70,10 +71,12 @@ const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType
 };
 
 const playVoiceTest = async (voiceName: string, voiceGender: string) => {
+  debuggingOutput(useStore.getState().languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Playing voice test for ${voiceName}, ${voiceGender}`)
+
   const targetLanguageCode = voiceName.substring(0, voiceName.indexOf("-"))
 
   const base64Audio = await getBase64Audio({
-    input: targetLanguageCode === "en" ? "This is a test": (await translate("This is a test", targetLanguageCode, "en")).text,
+    input: targetLanguageCode === "en" ? "This is an example sentence": (await translate("This is an example sentence", targetLanguageCode, "en")).text,
     voice: { name: voiceName, languageCode: getVoiceLanguageCode(voiceName), ssmlGender: voiceGender },
   }) as string
   const audio = new Audio(base64Audio);
@@ -121,7 +124,7 @@ const getLanguageTabList = (tabNames: string[], tabTextColour: string): React.Re
             {tab}
             {
               tab === "Neural2" ? (
-                <span style={{marginLeft: "0.5em", fontWeight: "normal", color: tabTextColour}}><IconPopover status='warning' content="As of right now, highlighting is not supported when using a Neural2 voice" /></span>
+                <span style={{marginLeft: "0.5em", fontWeight: "normal", color: tabTextColour, cursor: "default"}}><IconPopover status='warning' content="As of right now, highlighting is not supported when using a Neural2 voice" /></span>
               ) : null
             }
           </Tab>
@@ -186,7 +189,15 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                 <Tbody>
                   {
                     gender.map((voice, index) => (
-                      <Tr key={index} cursor="pointer" onClick={() => {store.setVoice({...voice})}} ref={isVoiceSelected(voice) ? currentVoiceElement : null}>
+                      <Tr
+                        key={index}
+                        cursor="pointer"
+                        onClick={() => {
+                          debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Voice set to: ${JSON.stringify(voice, null, 2)}`)
+                          store.setVoice({...voice})}
+                        }
+                        ref={isVoiceSelected(voice) ? currentVoiceElement : null}
+                      >
                         <Td>
                           <Center>
                             <SimpleTooltip label={countryCodeToCountry(getVoiceCountryCode(voice.name))}>
@@ -364,7 +375,10 @@ const VoiceSelection = () => {
 
             {/* Buttons */}
             <HStack margin="1em 1em 1.5em 1em" width="100%">
-              <Button onClick={store.resetVoice} size="sm">Reset</Button>
+              <Button onClick={() => {
+                store.resetVoice()
+                debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", "Voice reset")
+              }} size="sm">Reset</Button>
               <Button onClick={goToCurrentVoice} size="sm">Go to current voice</Button>
             </HStack>
           </>

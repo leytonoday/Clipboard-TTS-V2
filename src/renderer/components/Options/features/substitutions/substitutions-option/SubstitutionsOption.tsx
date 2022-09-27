@@ -30,6 +30,7 @@ import NoResultsMascot            from "renderer/components/common/NoResultsMasc
 import { Substitution }           from "renderer/types"
 import { FontAwesomeIcon }        from "@fortawesome/react-fontawesome"
 import { useState, useCallback }  from "react"
+import { debuggingOutput } from "renderer/utils"
 
 const SubstitutionsOption = () => {
   const store = useStore()
@@ -88,6 +89,8 @@ const SubstitutionsOption = () => {
     substitutions.splice(index, 1)
     store.setSubstitutions(substitutions)
 
+    debuggingOutput(store.substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitution removed: ${substitution.before} -> ${substitution.after}`)
+
     setDisplaySubstitutions(sortSubstitutions(substitutions, store.substitutionsSortBy))
   }, [store.substitutions, store.substitutionsSortBy])
 
@@ -129,6 +132,8 @@ const SubstitutionsOption = () => {
     setBeforeSubstitution("")
     setAfterSubstitution("")
     setMatchCase(false)
+
+    debuggingOutput(store.substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitution added: ${beforeSubstitution} -> ${afterSubstitution}`)
 
     toast({
       title: "Substitution added",

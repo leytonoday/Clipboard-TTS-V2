@@ -12,7 +12,7 @@ const OptionsBarSettings = () => {
     <Box>
       <SubOptionHeader
         title="Options Bar"
-        subtitle="Enable or disable previews, re-order options and configure the options bar position"
+        subtitle="Toggle previews, re-order options and configure the options bar position"
       />
 
       <SimpleSwitch label="Option Previews" isChecked={store.optionPreviewsEnabled} setChecked={store.setOptionPreviewsEnabled}

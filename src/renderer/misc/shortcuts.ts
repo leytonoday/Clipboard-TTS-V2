@@ -1,9 +1,10 @@
 import {
   translate,
+  debuggingOutput,
   getAnnouncement,
   playBase64Audio,
-  getVoiceLanguageCode,
   toggleOptionEnabled,
+  getVoiceLanguageCode,
 } from "renderer/utils"
 import { Shortcut }     from "renderer/types"
 import { useStore }     from "renderer/store"
@@ -26,6 +27,7 @@ const shortcuts: Shortcut[] = [
       if (!useStore.getState().shortcutsEnabled) return
 
       toggleOptionEnabled("Enable / Disable")
+      debuggingOutput(useStore.getState().shortcutsDebuggingOutput, "shortcutsDebuggingOutput", "Shortcut used - Enable / Disable")
 
       if (!isApiKeySet()) return
       const announcement = getAnnouncement("Enable / Disable", "Enabled", "Disabled")
@@ -46,6 +48,8 @@ const shortcuts: Shortcut[] = [
       const store = useStore.getState()
       store.setCurrentlySpeaking(false)
       useStore.setState({ ...store, stopSpeech: store.stopSpeech + 1 })
+
+      debuggingOutput(useStore.getState().shortcutsDebuggingOutput, "shortcutsDebuggingOutput", "Shortcut used - Stop Speech")
     },
     commandName: "Stop Speech",
     tooltip: "Stop the current speech"
@@ -57,6 +61,7 @@ const shortcuts: Shortcut[] = [
 
       const translationEnabled = useStore.getState().translationEnabled
       useStore.getState().setTranslationEnabled(!translationEnabled)
+      debuggingOutput(useStore.getState().shortcutsDebuggingOutput, "shortcutsDebuggingOutput", "Shortcut used - Toggle Translation")
 
       if (!isApiKeySet()) return
       const announcement = translationEnabled ? "Translation disabled" : "Translation enabled"
@@ -75,6 +80,7 @@ const shortcuts: Shortcut[] = [
 
       const substitutionsEnabled = useStore.getState().substitutionsEnabled
       useStore.getState().setSubstitutionsEnabled(!substitutionsEnabled)
+      debuggingOutput(useStore.getState().shortcutsDebuggingOutput, "shortcutsDebuggingOutput", "Shortcut used - Toggle Substitutions")
 
       if (!isApiKeySet()) return
       const announcement = substitutionsEnabled ? "Substitutions disabled" : "Substitutions enabled"
@@ -93,6 +99,7 @@ const shortcuts: Shortcut[] = [
 
       const autoDictionary = useStore.getState().autoDictionary
       useStore.getState().setAutoDictionary(!autoDictionary)
+      debuggingOutput(useStore.getState().shortcutsDebuggingOutput, "shortcutsDebuggingOutput", "Shortcut used - Toggle Auto Dictionary")
 
       if (!isApiKeySet()) return
       const announcement = autoDictionary ? "Auto dictionary disabled" : "Auto dictionary enabled"

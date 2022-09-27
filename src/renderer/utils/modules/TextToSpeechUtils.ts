@@ -7,6 +7,7 @@ import {
   translate,
   findNthIndex,
   truncateString,
+  debuggingOutput,
   getWordDefinition,
   capitalizeFirstLetter,
 } from "renderer/utils"
@@ -144,6 +145,8 @@ export function textToSpeechEnqueue(data: ClipboardData): boolean {
   if (store.textToSpeechQueue.length >= store.textToSpeechQueueSize)
     return false
 
+  debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Enqueued - ${data.data}`)
+
   const queue = [...store.textToSpeechQueue]
   store.setTextToSpeechQueue([...queue, data])
   return true
@@ -153,6 +156,9 @@ export function textToSpeechDequeue(): ClipboardData {
   const store = useStore.getState()
   const queue = [...store.textToSpeechQueue]
   const item = queue.shift() as ClipboardData
+
+  debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Dequeued - ${item.data}`)
+
   store.setTextToSpeechQueue(queue)
   return item;
 }
@@ -177,6 +183,7 @@ export async function translationMutation(input: ProcessTextReturn): Promise<Pro
 
     if (!getVoiceLanguageCode(store.voice.name).includes(translatedText.detectedLanguage)) {
       input.mutationsApplied!.push("TRANSLATION")
+      debuggingOutput(useStore.getState().languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Translated from ${translatedText.detectedLanguage}`)
     }
 
     return input
@@ -196,8 +203,10 @@ export async function substitutionMutation(input: ProcessTextReturn): Promise<Pr
       input.text = input.text.replaceAll(regex, substitution.after)
     }
 
-    if (outputTextCopy !== input.text)
-    input.mutationsApplied!.push("SUBSTITUTIONS")
+    if (outputTextCopy !== input.text) {
+      input.mutationsApplied!.push("SUBSTITUTIONS")
+      debuggingOutput(useStore.getState().substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitutions applied`)
+    }
 
     return input
   }
@@ -216,6 +225,8 @@ export async function dictioaryMutation(input: ProcessTextReturn): Promise<Proce
 
     input.text = `${capitalizeFirstLetter(definition.word)}. ${definition.meanings.map((meaning, index) => `${index + 1}. ${capitalizeFirstLetter(meaning.partOfSpeech)}: ${meaning.definitions[0].definition}`).join(" ")}`
     input.mutationsApplied!.push("DICTIONARY")
+
+    debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Auto Dictionary applied`)
 
     return input
   }

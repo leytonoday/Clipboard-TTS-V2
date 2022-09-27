@@ -19,6 +19,7 @@ import CompactWordButton          from './components/CompactWordButton'
 import { WordDefinition }         from 'renderer/types';
 import { FontAwesomeIcon }        from '@fortawesome/react-fontawesome';
 import { useState, useCallback }  from "react"
+import { debuggingOutput } from 'renderer/utils';
 
 const filterBySearchQuery = (searchQuery: string) => {
   const store = useStore.getState();
@@ -51,6 +52,7 @@ const SavedWords = () => {
 
     store.setSavedWords(savedWords);
     setDisplaySavedWords(sortSavedWords(savedWords, store.savedWordsSortBy));
+    debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Unsaved word - \n${JSON.stringify(word, null, 2)}`)
   }, [store.savedWords])
 
   const handleSearch = useCallback((searchQuery: string) => {

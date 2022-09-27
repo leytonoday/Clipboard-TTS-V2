@@ -34,6 +34,7 @@ import AppearanceSettings from 'renderer/components/options/features/settings/se
 import GeneralManagementSettings from 'renderer/components/options/features/settings/settings-option/sub-options/general-management-settings/GeneralManagementSettings'
 import Help from "renderer/components/options/features/settings/settings-option/sub-options/help/Help"
 import Info from "renderer/components/options/features/settings/settings-option/sub-options/info/Info"
+import DeveloperSettings from "renderer/components/options/features/settings/settings-option/sub-options/developer-settings/DeveloperSettings"
 
 import TextToSpeechQueue from "renderer/pages/Home/components/TextToSpeechQueue"
 
@@ -139,6 +140,10 @@ const routes: RouteObject[] = [
           {
             path: "sub-options/info",
             element: <Info />,
+          },
+          {
+            path: "sub-options/developer-settings",
+            element: <DeveloperSettings />,
           }
         ]
       },
