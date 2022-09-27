@@ -19,7 +19,9 @@ import { CURRENT_VERSION }          from 'renderer/misc/constants';
 const whatsNewOutput: WhatsNewData = {
   version: CURRENT_VERSION,
   newFeatures: [
-    "Added a What's New Modal, to notify users of new features, bug fixes, and notes from the developer",
+    "Clipboard TTS icon has been scaled up. It was previously small and blurry",
+    "Dictionary is now local, as opposed to being fetched from the internet",
+    "Icon added to the titlebar. Two icons, one for each theme"
   ],
 }
 

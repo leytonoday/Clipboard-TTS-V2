@@ -14,20 +14,26 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 import Store from "electron-store"
-import axios from "axios"
 import nspell from 'nspell'
 import fs from "fs"
 import mime from "mime-types"
 import isTextPath from "is-text-path"
+
+const RESOURCES_PATH = app.isPackaged
+? path.join(process.resourcesPath, 'assets')
+: path.join(__dirname, '../../assets');
+
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
 
 // 15 Megabytes in bytes
 const fileSizeLimit = 15 * 1024 * 1024
 
 let spelling: nspell | null = null
 async function  loadSpelling() {
-  const aff = (await axios.get('https://unpkg.com/hunspell-dict-en-gb@0.1.0/en-gb.aff')).data
-  const dic = (await axios.get('https://unpkg.com/hunspell-dict-en-gb@0.1.0/en-gb.dic')).data
-
+  const aff = fs.readFileSync(getAssetPath("en-gb-aff.txt"), "utf8")
+  const dic = fs.readFileSync(getAssetPath("en-gb-dic.dic"), "utf8")
   spelling = nspell(aff, dic)
 }
 loadSpelling()
@@ -191,14 +197,6 @@ const createWindow = async () => {
     await installExtensions();
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
-
   mainWindow = new BrowserWindow({
     show: false,
     width: 1200,
@@ -207,7 +205,7 @@ const createWindow = async () => {
     minWidth: 750,
     minHeight: 750,
     frame: process.platform === 'win32' ? false : true,
-    icon: getAssetPath("icon.png"),
+    icon: getAssetPath("iconLight.png"),
     webPreferences: {
       sandbox: false,
       preload: app.isPackaged
