@@ -1,7 +1,6 @@
 import {
   Box,
   Image,
-  Radio,
   chakra,
   VStack,
   useRadio,

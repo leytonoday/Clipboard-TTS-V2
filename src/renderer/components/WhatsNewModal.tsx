@@ -18,11 +18,12 @@ import { CURRENT_VERSION }          from 'renderer/misc/constants';
 
 const whatsNewOutput: WhatsNewData = {
   version: CURRENT_VERSION,
-  newFeatures: [
-    "Clipboard TTS icon has been scaled up. It was previously small and blurry",
-    "Dictionary is now local, as opposed to being fetched from the internet",
-    "Icon added to the titlebar. Two icons, one for each theme"
-  ],
+  bugFixes: [
+    "Theme cards are now fully clickable. Previously, clicking on the actual label would not work.",
+    "All 'Reset' buttons now cause a notification, to make it clear that the action has been completed.",
+    "All images are now drag-proof, to ensure that they don't trigger the Drag & Drop feature.",
+    "Loading circle is now centralized, and there is a 'Loading...' label to make it clear that the app is loading.",
+  ]
 }
 
 const WhatsNewModal = () => {
