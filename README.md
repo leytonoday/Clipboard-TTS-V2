@@ -1,7 +1,8 @@
 # Clipboard-TTS
 
 <div align="center">
-  <img width="150px" height="150px" src="https://user-images.githubusercontent.com/36010516/192114579-a0ce5380-4fe0-4b7a-961d-8f0fb2f8e5cf.png" />  
+  <img width="150px" height="150px" src="https://user-images.githubusercontent.com/36010516/192657030-6f705f76-ca77-4a00-973f-c14d88e9ecd0.png" />  
+  <img width="150px" height="150px" src="https://user-images.githubusercontent.com/36010516/192657083-9cbaf98d-2ec4-4bff-8198-f1befd86b86d.png" />  
   <div>
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" width="50px" height="50px"/>
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="50px" height="50px"/>
