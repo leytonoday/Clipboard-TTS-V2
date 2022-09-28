@@ -1,6 +1,7 @@
 import {
   Box,
   HStack,
+  Image,
   Spacer,
   useColorModeValue
 } from "@chakra-ui/react"
@@ -34,7 +35,7 @@ const Titlebar = () => {
       <Box position="fixed" height="30px" background={backgroundColour} width="100%" className="titlebar" zIndex={100000} fill={fillColour}>
         <HStack flexDirection="row" height="100%">
           <Box>
-            <img src={store.theme === "LIGHT" ? IconLight: IconDark} style={{ marginLeft: "6px", width: "20px", height: "20px" }} />
+            <Image onDragStart={(e) => e.preventDefault() } src={store.theme === "LIGHT" ? IconLight: IconDark} style={{ marginLeft: "6px", width: "20px", height: "20px" }} />
           </Box>
           <Box fontSize="12px" display="flex" alignItems="center" marginLeft="16px" height="100%">
             Clipboard TTS

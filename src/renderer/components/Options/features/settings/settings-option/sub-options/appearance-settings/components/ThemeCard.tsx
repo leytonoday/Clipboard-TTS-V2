@@ -25,7 +25,7 @@ const ThemeCard = (props: ThemeCardProps) => {
         borderRadius="0.3em"
       >
         <VStack alignItems="center">
-          <Image src={image} {...getLabelProps()} width="10em" border={`1px solid grey`} borderTopRadius="0.3em"/>
+          <Image onDragStart={(e) => e.preventDefault() } src={image} {...getLabelProps()} width="10em" border={`1px solid grey`} borderTopRadius="0.3em"/>
           <Box
             width="10em"
             height="2em"

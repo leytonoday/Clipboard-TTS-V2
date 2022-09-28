@@ -8,7 +8,7 @@ import Mascot                     from "renderer/components/common/Mascot"
 import { useStore }               from "renderer/store"
 import SimpleTooltip              from "renderer/components/common/SimpleTooltip"
 import AutoTranslatation          from "../common/AutoTranslatation"
-import { Divider, VStack, Box }   from "@chakra-ui/react"
+import { Divider, VStack, Box, Image }   from "@chakra-ui/react"
 
 const LanguageOptionPreview = () => {
   const store = useStore()
@@ -31,7 +31,8 @@ const LanguageOptionPreview = () => {
                   getVoiceCountryCode(store.voice.name)
                 )}
               >
-                <img
+                <Image
+                  onDragStart={(e) => e.preventDefault()}
                   src={getFlagUrl(getVoiceCountryCode(store.voice.name))}
                   style={{ width: 'auto', height: '4em' }}
                 />

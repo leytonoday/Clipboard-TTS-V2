@@ -8,7 +8,7 @@ const NoResultsMascot = () => {
       <Center marginBottom="-3em">
         No results
       </Center>
-      <Image src={NoResultsMascotGif} height="15em" width="15em" />
+      <Image onDragStart={(e) => e.preventDefault() } src={NoResultsMascotGif} height="15em" width="15em" />
     </VStack>
   )
 }

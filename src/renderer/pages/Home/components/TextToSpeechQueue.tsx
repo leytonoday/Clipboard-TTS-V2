@@ -5,7 +5,8 @@ import {
   HStack,
   VStack,
   Divider,
-  Spacer
+  Spacer,
+  Image
 } from "@chakra-ui/react";
 import Mascot               from "renderer/components/common/Mascot";
 import { faTimes }          from "@fortawesome/free-solid-svg-icons";
@@ -55,7 +56,7 @@ const TextToSpeechQueue = () => {
                     item.mimeType.includes("text/") ? item.data : null
                   }
                   {
-                    item.mimeType.includes("image/") ? <img style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" /> : null
+                    item.mimeType.includes("image/") ? <Image onDragStart={(e) => e.preventDefault() } style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" /> : null
                   }
                 </Box>
                 <SimpleTooltip label="Remove from queue">

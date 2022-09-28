@@ -25,6 +25,7 @@ import {
   Tbody,
   Table,
   TableContainer,
+  Image,
 } from '@chakra-ui/react';
 import {
   translate,
@@ -202,7 +203,7 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                           <Center>
                             <SimpleTooltip label={countryCodeToCountry(getVoiceCountryCode(voice.name))}>
                               <Box minWidth="4em" display="flex" justifyContent="center" alignItems="center">
-                                <img src={getFlagUrl(getVoiceCountryCode(voice.name))} style={{ borderRadius: "0.25em", width: "100%", height: "2.5em"}} />
+                                <Image onDragStart={(e) => e.preventDefault() } src={getFlagUrl(getVoiceCountryCode(voice.name))} style={{ borderRadius: "0.25em", width: "100%", height: "2.5em"}} />
                               </Box>
                             </SimpleTooltip>
                           </Center>
