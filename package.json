@@ -264,7 +264,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "./assets/icon.png"
+      "icon": "./assets/IconLight.png"
     },
     "linux": {
       "target": [

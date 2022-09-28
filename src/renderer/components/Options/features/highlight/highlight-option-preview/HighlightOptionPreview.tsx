@@ -18,7 +18,7 @@ const HighlightOptionPreview = () => {
             selected={(colour) => store.currentHighlight === colour}
             onClick={store.setCurrentHighlight}
             showColourLabel={false}
-            popoverLabel={(colour) => store.currentOverlay === colour ? "Same as overlay colour, thus disabled" : colour}
+            popoverLabel={(colour) => store.currentOverlay === colour ? "Same as overlay colour" : colour}
           />
         </Center>
 

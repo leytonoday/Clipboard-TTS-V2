@@ -58,7 +58,7 @@ const HighlightOption = () => {
           selected={(colour) => store.currentHighlight === colour}
           onClick={store.setCurrentHighlight}
           showColourLabel={true}
-          popoverLabel={(colour) => store.currentOverlay === colour ? "Same as overlay colour, thus disabled" : ""}
+          popoverLabel={(colour) => store.currentOverlay === colour ? "Same as overlay colour" : ""}
         />
       </Center>
 

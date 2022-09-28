@@ -158,12 +158,15 @@ const Home: React.FC = () => {
             {
               store.ttsLoading ? (
               <Box height="100%" display="flex" justifyContent="center" alignItems="center">
-                <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
-                  backdropFilter='blur(10px)' bg={`${loadingBackground}`}>
-                  <ScaleFade in={store.ttsLoading} initialScale={0.6} >
-                      <ScaleLoader color={store.accent} loading={store.ttsLoading} width="10px" height="100px" />
-                  </ScaleFade>
-                </Box>
+                <ScaleFade in={store.ttsLoading} initialScale={0.6} >
+                  <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
+                    backdropFilter='blur(10px)' bg={`${loadingBackground}`}>
+                    <ScaleLoader color={store.accent} loading={store.ttsLoading} width="10px" height="100px" />
+                  </Box>
+                  <Box textAlign="center">
+                    Loading...
+                  </Box>
+                </ScaleFade>
               </Box>
               ) : null
             }

@@ -197,6 +197,14 @@ const createWindow = async () => {
     await installExtensions();
   }
 
+  const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+  const getAssetPath = (...paths: string[]): string => {
+    return path.join(RESOURCES_PATH, ...paths);
+  };
+
   mainWindow = new BrowserWindow({
     show: false,
     width: 1200,
@@ -205,7 +213,7 @@ const createWindow = async () => {
     minWidth: 750,
     minHeight: 750,
     frame: process.platform === 'win32' ? false : true,
-    icon: getAssetPath("iconLight.png"),
+    icon: getAssetPath("IconLight.png"),
     webPreferences: {
       sandbox: false,
       preload: app.isPackaged
