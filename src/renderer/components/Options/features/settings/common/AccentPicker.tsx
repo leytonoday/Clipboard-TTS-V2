@@ -7,6 +7,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
+  useToast
 } from '@chakra-ui/react';
 import ColorBlock       from "renderer/components/common/colour-block/ColourBlock"
 import ColourPicker     from "renderer/components/common/ColourPicker"
@@ -17,6 +18,7 @@ import OptionSubHeader  from "renderer/components/options/common/OptionSubHeader
 const AccentPicker = () => {
   const { accent, setAccent, resetAccent } = useStore();
   const location = useLocation()
+  const toast = useToast()
 
   return (
     <Popover placement="top" trigger="hover" openDelay={300} closeDelay={100} isLazy={true}>
@@ -36,7 +38,15 @@ const AccentPicker = () => {
             </Box>
           </PopoverTrigger>
           { // Don't show this on a preview
-            !location.pathname.includes("preview") && <Button onClick={resetAccent} size="sm">Reset</Button>
+            !location.pathname.includes("preview") && <Button onClick={() => {
+              resetAccent()
+              toast({
+                title: "Accent Colour Reset",
+                description: "The accent colour has been reset to the default",
+                duration: 5000,
+                isClosable: true
+              })
+            }} size="sm">Reset</Button>
           }
         </HStack>
       </HStack>

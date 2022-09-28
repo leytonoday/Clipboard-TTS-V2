@@ -9,7 +9,7 @@ import {
 import OptionIcon               from "renderer/components/options/common/OptionIcon";
 import { useStore }             from "renderer/store";
 import { useState }             from "react"
-import { Box, Button }          from "@chakra-ui/react"
+import { Box, Button, useToast }          from "@chakra-ui/react"
 import OptionSubHeader          from "renderer/components/options/common/OptionSubHeader"
 import { optionsDefaultOrder }  from "renderer/misc/data"
 import { sortByDisplayOrder }   from "renderer/utils"
@@ -32,6 +32,7 @@ const getListStyle = () => ({
 const ReorderOptions = () => {
   const [options, setOptions] = useState(useStore(state => state.options))
   const store = useStore()
+  const toast = useToast()
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -48,6 +49,12 @@ const ReorderOptions = () => {
   const resetOptionsDisplayOrder = () => {
     setOptions(sortByDisplayOrder(options, optionsDefaultOrder))
     store.setOptionsDisplayOrder(optionsDefaultOrder)
+    toast({
+      title: "Options Reset",
+      description: "The options display order has been reset to the default",
+      duration: 5000,
+      isClosable: true
+    })
   }
 
   return (

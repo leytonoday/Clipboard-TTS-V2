@@ -132,7 +132,15 @@ const OrderOfMutations = () => {
 
             <Flex>
               <Spacer />
-              <Button size="sm" onClick={() => resetOrderOfMutations()}>
+              <Button size="sm" onClick={() => {
+                resetOrderOfMutations()
+                toast({
+                  title: "Order of Mutations Reset",
+                  description: "The order of mutations has been reset to the default",
+                  duration: 5000,
+                  isClosable: true
+                })
+              }}>
                 Reset
               </Button>
             </Flex>

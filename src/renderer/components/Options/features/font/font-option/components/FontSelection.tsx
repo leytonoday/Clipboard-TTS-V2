@@ -3,6 +3,7 @@ import {
   Center,
   HStack,
   Button,
+  useToast,
   SimpleGrid,
   useBreakpointValue,
 } from '@chakra-ui/react';
@@ -33,8 +34,9 @@ const getDisplayFonts = (fonts: string[], pageSize: number, currentPage: number,
 };
 
 const FontSelection = () => {
-  // Store
+  // Hooks
   const store = useStore();
+  const toast = useToast();
 
   // State
   const [pageSize, setPageSize]         = useState(store.fontSelectionPageSize);
@@ -95,7 +97,15 @@ const FontSelection = () => {
 
       {/* Buttons and Page Size Select */}
       <HStack margin="1em 1em 1.5em 1em" width="100%">
-        <Button onClick={store.resetFont} size="sm">Reset</Button>
+        <Button onClick={() => {
+          store.resetFont()
+          toast({
+            title: "Font Reset",
+            description: "The font has been reset to the default",
+            duration: 5000,
+            isClosable: true,
+          })
+        }} size="sm">Reset</Button>
         <Button onClick={goToCurrentFont} size="sm">Go to current font</Button>
 
 

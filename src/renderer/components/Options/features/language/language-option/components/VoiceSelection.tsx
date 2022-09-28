@@ -26,6 +26,7 @@ import {
   Table,
   TableContainer,
   Image,
+  useToast
 } from '@chakra-ui/react';
 import {
   translate,
@@ -258,8 +259,9 @@ const VoiceSelection = () => {
     return languageTabIndex;
   }
 
-  // Store
+  // Hooks
   const store = useStore()
+  const toast = useToast()
 
   // State
   const [ selectedLanguageVoices, setSelectedLanguageVoices ] = useState<TextToSpeechVoice[]>([]);
@@ -379,6 +381,12 @@ const VoiceSelection = () => {
               <Button onClick={() => {
                 store.resetVoice()
                 debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", "Voice reset")
+                toast({
+                  title: "Voice Reset",
+                  description: "Voice has been reset to the default",
+                  duration: 5000,
+                  isClosable: true,
+                })
               }} size="sm">Reset</Button>
               <Button onClick={goToCurrentVoice} size="sm">Go to current voice</Button>
             </HStack>
