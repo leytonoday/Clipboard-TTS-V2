@@ -22,7 +22,7 @@ const CharacterLimit = () => {
   const store = useStore()
 
   const [characterLimit, setCharacterLimit] = useState(store.characterLimit.toString());
-  const MAX_CHARACTER_LIMIT = 5000;
+  const MAX_CHARACTER_LIMIT = 3000;
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
