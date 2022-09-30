@@ -48,14 +48,6 @@ const DeveloperSettings: React.FC = () => {
           setChecked={store.setDictionaryOptionDebuggingOutput}
         />
 
-        {/* highlightOptionOutput */}
-        <SimpleSwitch
-          label="Highlight Option Debugging Output"
-          info="Enable highlight console output for debugging"
-          isChecked={store.highlightOptionDebuggingOutput}
-          setChecked={store.setHighlightOptionDebuggingOutput}
-        />
-
         {/* shortcutsOutput */}
         <SimpleSwitch
           label="Shortcuts Debugging Output"

@@ -19,9 +19,6 @@ export interface IDeveloperSlice {
   dictionaryOptionDebuggingOutput: boolean;
   setDictionaryOptionDebuggingOutput: (dictionaryOptionDebuggingOutput: boolean) => void;
 
-  highlightOptionDebuggingOutput: boolean;
-  setHighlightOptionDebuggingOutput: (highlightOptionDebuggingOutput: boolean) => void;
-
   shortcutsDebuggingOutput: boolean;
   setShortcutsDebuggingOutput: (shortcutsDebuggingOutput: boolean) => void;
 
@@ -53,12 +50,6 @@ export const createDeveloperSlice: StoreSlice<IDeveloperSlice> = (set) => ({
   setDictionaryOptionDebuggingOutput: (dictionaryOptionDebuggingOutput: boolean) => {
     electronStoreSet("dictionaryOptionDebuggingOutput", dictionaryOptionDebuggingOutput);
     set(state => ({ ...state, dictionaryOptionDebuggingOutput }))
-  },
-
-  highlightOptionDebuggingOutput: electronStoreGet("highlightOptionDebuggingOutput") === undefined ? false : electronStoreGet("highlightOptionDebuggingOutput"),
-  setHighlightOptionDebuggingOutput: (highlightOptionDebuggingOutput: boolean) => {
-    electronStoreSet("highlightOptionDebuggingOutput", highlightOptionDebuggingOutput);
-    set(state => ({ ...state, highlightOptionDebuggingOutput }))
   },
 
   shortcutsDebuggingOutput: electronStoreGet("shortcutsDebuggingOutput") === undefined ? false : electronStoreGet("shortcutsDebuggingOutput"),
