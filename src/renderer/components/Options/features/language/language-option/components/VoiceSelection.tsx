@@ -154,7 +154,7 @@ const getVoiceTabList = (selectedLanguageVoices: TextToSpeechVoice[], tabTextCol
     </TabList>
   )
 }
-const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentVoiceElement: React.RefObject<HTMLTableRowElement>) => {
+const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentVoiceElement: React.RefObject<HTMLTableRowElement>, rowHoverColour: string) => {
   const store = useStore.getState()
 
   const genders = [... new Set(selectedLanguageVoices.map(voice => voice.ssmlGender))].sort()
@@ -199,6 +199,9 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                           store.setVoice({...voice})}
                         }
                         ref={isVoiceSelected(voice) ? currentVoiceElement : null}
+                        _hover={{
+                          backgroundColor: rowHoverColour,
+                        }}
                       >
                         <Td>
                           <Center>
@@ -271,6 +274,7 @@ const VoiceSelection = () => {
   const [ searchQuery, setSearchQuery ]                       = useState("");
   const { isOpen, onClose, onOpen }                           = useDisclosure();
   const currentVoiceElement                                   = useRef<HTMLTableRowElement>(null)
+  const rowHoverColour                                        = useColorModeValue("#EDF2F7", "rgba(255, 255, 255, 0.06)")
   const tabTextColour                                         = useColorModeValue("#222222",'#FFFFFF')
 
   // Effects
@@ -315,23 +319,26 @@ const VoiceSelection = () => {
                       {
                         Object.keys(allVoices).map((language) => (
                           <Tr
-                            onClick={() => openVoiceModal(language, allVoices[language])}
-                            key={language}
-                            transition="0.2s all ease"
-                            cursor="pointer"
-                          >
-                            <Td>
-                              { language }
-                              {
-                                isLanguageSelected(language, tab as VoiceType) && (
-                                  <FontAwesomeIcon icon={faCheck} style={{ marginLeft: "1em", color: "green", fontSize: "1.25em" }} />
-                                )
-                              }
-                            </Td>
-                            <Td isNumeric>
-                              { allVoices[language].length }
-                            </Td>
-                          </Tr>
+                              onClick={() => openVoiceModal(language, allVoices[language])}
+                              key={language}
+                              transition="0.2s all ease"
+                              cursor="pointer"
+                              _hover={{
+                                backgroundColor: rowHoverColour,
+                              }}
+                            >
+                              <Td>
+                                { language }
+                                {
+                                  isLanguageSelected(language, tab as VoiceType) && (
+                                    <FontAwesomeIcon icon={faCheck} style={{ marginLeft: "1em", color: "green", fontSize: "1.25em" }} />
+                                  )
+                                }
+                              </Td>
+                              <Td isNumeric>
+                                { allVoices[language].length }
+                              </Td>
+                            </Tr>
                         ))
                       }
                     </Tbody>
@@ -426,7 +433,7 @@ const VoiceSelection = () => {
                 <ModalBody overflowY="auto" maxHeight="30em" minHeight="30em">
                   <Tabs isLazy variant={"soft-rounded"} index={voiceTabIndex} onChange={(index) => setVoiceTabIndex(index)}>
                     { getVoiceTabList(selectedLanguageVoices, tabTextColour) }
-                    { getVoiceTabPanels(selectedLanguageVoices, currentVoiceElement) }
+                    { getVoiceTabPanels(selectedLanguageVoices, currentVoiceElement, rowHoverColour) }
                   </Tabs>
                 </ModalBody>
               </ModalContent>
