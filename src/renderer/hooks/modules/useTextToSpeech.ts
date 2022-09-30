@@ -23,7 +23,7 @@ import dateFormat                       from "dateformat"
 import { useStore }                     from "renderer/store"
 import { useToast }                     from "@chakra-ui/react"
 import { useState, useEffect, useRef }  from "react"
-import { invalidCredentialsToast, networkErrorToast } from "renderer/misc/data"
+import { invalidCredentialsToast, networkErrorToast, stoppingPunctuation } from "renderer/misc/data"
 
 const addToHistory = (historyItem: HistoryItem) => {
   const store = useStore.getState()
@@ -84,11 +84,24 @@ const processText = async (input: ClipboardData): Promise<ProcessTextReturn> => 
 }
 
 const textToSsml = (input: string) => {
-  return `<speak>
-    ${ input.split(".").map((i, index) =>
-      i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i)}`: "" ).join(". ")
-    }
-  </speak>`
+  // Get all instances of stoppingPunctuation
+  const stoppingPunctuationInstances = input.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
+
+  const tokens = input.split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).map((i, index) => {
+    i = i.replace(/[,\/#$%\^&\*;:{}=\-_`~()]/g,"")
+    return i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i).trim()}`: ""
+  }).filter(i => i !== "")
+
+  const output = []
+
+  for (let i = 0; i < tokens.length; i++) {
+    let toPush = tokens[i]
+    if (i < stoppingPunctuationInstances.length)
+      toPush += stoppingPunctuationInstances[i]
+    output.push(toPush)
+  }
+
+  return `<speak>${output.join(" ")}</speak>`
 }
 
 const playBase64Audio = (base64Audio: string, audio: React.MutableRefObject<HTMLAudioElement | null>, endedEventHandler: () => void): void => {
@@ -304,6 +317,7 @@ export const useTextToSpeech = () => {
 
     if (!store.voice.name.includes("Neural2") && (store.highlightEnabled || store.liveHighlightEnabled)) {
       output = textToSsml(outputText)
+      console.log(output)
       debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", "SSML Applied")
     }
     else

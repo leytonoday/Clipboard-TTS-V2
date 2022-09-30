@@ -360,3 +360,5 @@ export const networkErrorToast: UseToastOptions = {
   duration: 5000,
   isClosable: true
 }
+
+export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "။", "።"]

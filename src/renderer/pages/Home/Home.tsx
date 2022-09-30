@@ -35,6 +35,9 @@ import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 import './Home.css';
 
+import { escapeHtml } from 'renderer/utils';
+import { stoppingPunctuation } from 'renderer/misc/data';
+
 const modifyOutputText = (outputText: string): string => {
   const store = useStore.getState()
   const highlightIndex = store.highlightIndex;
@@ -50,17 +53,27 @@ const modifyOutputText = (outputText: string): string => {
   }
 
   if (store.currentlyActiveOptions.includes("Highlight") && highlightIndex > -1) {
-    const tokens = outputText.trim().split(".").filter(i => i.length > 0).map(i => i.trim())
+    const stoppingPunctuationInstances = outputText.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
+    const tokens = outputText.trim().split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).filter(i => i.length > 0).map(i => i.trim())
     const highlightMap = tokens.map(token => ({ text: token, highlight: false }))
 
     highlightMap[highlightIndex].highlight = true
     const highlightColour = store.currentHighlight
 
-    outputText = highlightMap.map(i => {
-      if (i.highlight)
-        return `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${i!.text}</span>`
-      return i.text
-    }).join(". ")
+    const output: string[] = []
+
+    for (let i = 0; i < tokens.length; i++) {
+      let toPush = tokens[i].trimEnd()
+      if (stoppingPunctuationInstances[i])
+        toPush += stoppingPunctuationInstances[i]
+
+      if (i === highlightIndex)
+        toPush = `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${toPush}</span>`
+
+      output.push(toPush)
+    }
+
+    outputText = output.join(" ")
   }
 
   return outputText
@@ -80,6 +93,29 @@ const Home: React.FC = () => {
   const overlayTextColour = store.overlayEnabled && store.autoOverlayTextColour ? brightnessToTextColour(store.currentOverlay) : "undefined"
 
   const loadingBackground = useColorModeValue("#EEEEEE", '#171717')
+
+  const textToSsml = (input: string) => {
+    const stoppingPunctuation = [".", "!", "?"]
+
+    // Get all instances of stoppingPunctuation
+    const stoppingPunctuationInstances = input.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
+
+    const tokens = input.split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).map((i, index) => {
+      i = i.replace(/[,\/#$%\^&\*;:{}=\-_`~()]/g,"")
+      return i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i).trim()}`: ""
+    }).filter(i => i !== "")
+
+    const output = []
+
+    for (let i = 0; i < tokens.length; i++) {
+      let toPush = tokens[i]
+      if (i < stoppingPunctuationInstances.length)
+        toPush += stoppingPunctuationInstances[i]
+      output.push(toPush)
+    }
+
+    return output.join(" ")
+  }
 
   return (
     <>
@@ -171,8 +207,9 @@ const Home: React.FC = () => {
 
             { outputText && parse(modifyOutputText(outputText)) }
 
-
-
+            {/* {
+              textToSsml("a. Is this a test? It is a test! Hurray! I'm happy. Test")
+            } */}
 
           </Box>
         </Box>
