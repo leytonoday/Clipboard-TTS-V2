@@ -94,29 +94,6 @@ const Home: React.FC = () => {
 
   const loadingBackground = useColorModeValue("#EEEEEE", '#171717')
 
-  const textToSsml = (input: string) => {
-    const stoppingPunctuation = [".", "!", "?"]
-
-    // Get all instances of stoppingPunctuation
-    const stoppingPunctuationInstances = input.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
-
-    const tokens = input.split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).map((i, index) => {
-      i = i.replace(/[,\/#$%\^&\*;:{}=\-_`~()]/g,"")
-      return i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i).trim()}`: ""
-    }).filter(i => i !== "")
-
-    const output = []
-
-    for (let i = 0; i < tokens.length; i++) {
-      let toPush = tokens[i]
-      if (i < stoppingPunctuationInstances.length)
-        toPush += stoppingPunctuationInstances[i]
-      output.push(toPush)
-    }
-
-    return output.join(" ")
-  }
-
   return (
     <>
       <DragAndDropModal />
@@ -140,7 +117,7 @@ const Home: React.FC = () => {
         >
           {/* The css is here because if not, the textColour doesn't change when "autoHighlightTextColour is changed. Must wait until tts is done. This enabled Live Highlighting" */}
           <Box position="relative" width="100%" height="100%" className={css`.highlighted { color: ${highlightTextColour}; }`} letterSpacing={store.fontSpacing} fontSize={`${store.fontSize}em`} fontFamily={store.font}
-            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1.25em" : "0em"}` }
+            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1.4em" : "0em"}` }
             >
             {
               (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
@@ -206,10 +183,6 @@ const Home: React.FC = () => {
             }
 
             { outputText && parse(modifyOutputText(outputText)) }
-
-            {/* {
-              textToSsml("a. Is this a test? It is a test! Hurray! I'm happy. Test")
-            } */}
 
           </Box>
         </Box>

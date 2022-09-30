@@ -154,6 +154,18 @@ export const useTextToSpeech = () => {
 
   let oldClipboardData: any = null
 
+  const stopSpeech = () => {
+    useStore.getState().highlightTimeouts.forEach(i => clearTimeout(i))
+    store.setHighlightTimeouts([])
+    store.setHighlightIndex(-1)
+
+    store.setCurrentlySpeaking(false)
+    if (audio.current) {
+      audio.current.pause();
+      audio.current.currentTime = 0;
+    }
+  }
+
   useEffect(() => {
     const initClipboardData = readInitClipboardData()
     oldClipboardData = initClipboardData
@@ -177,10 +189,19 @@ export const useTextToSpeech = () => {
           setOutputText("")
       }
 
+      // If "Stop Speech" option is clicked, stop it. StopSpeech is a number that is incremented to act as an event emitter
+      if (prevState.stopSpeech !== state.stopSpeech && state.currentlySpeaking) {
+        stopSpeech()
+        if (!state.outputLingerEnabled)
+          setOutputText("")
+      }
+
       if (state.replaySpeech !== prevState.replaySpeech) { // Replay the current lingering output
+        stopSpeech()
         store.setCurrentlySpeaking(true)
 
         const highlightTimeouts: NodeJS.Timeout[] = []
+
         // Set highlight timeouts
         state.currentLingeringOutput!.timepoints.forEach((i: any, index: number) => {
           const timeout = setTimeout(() => {
@@ -199,24 +220,6 @@ export const useTextToSpeech = () => {
           store.setHighlightIndex(-1)
           store.setHighlightTimeouts([])
         })
-      }
-    })
-
-    useStore.subscribe((state, prevState) => {
-      // If "Stop Speech" option is clicked, stop it. StopSpeech is a number that is incremented to act as an event emitter
-      if (prevState.stopSpeech !== state.stopSpeech && state.currentlySpeaking) {
-        useStore.getState().highlightTimeouts.forEach(i => clearTimeout(i))
-        store.setHighlightTimeouts([])
-        store.setHighlightIndex(-1)
-
-        store.setCurrentlySpeaking(false)
-        if (audio.current) {
-          audio.current.pause();
-          audio.current.currentTime = 0;
-        }
-
-        if (!state.outputLingerEnabled)
-          setOutputText("")
       }
     })
   }, [])
