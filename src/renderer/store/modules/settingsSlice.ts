@@ -169,7 +169,7 @@ export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
 
 
   // Output Linger
-  outputLingerEnabled: (electronStoreGet("outputLingerEnabled") === undefined ? false: electronStoreGet("outputLingerEnabled")) as boolean,
+  outputLingerEnabled: (electronStoreGet("outputLingerEnabled") === undefined ? true: electronStoreGet("outputLingerEnabled")) as boolean,
   setOutputLingerEnabled: (outputLingerEnabled: boolean) => {
     electronStoreSet("outputLingerEnabled", outputLingerEnabled)
     set(state => ({ ...state, outputLingerEnabled }))
