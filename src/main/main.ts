@@ -32,8 +32,8 @@ const fileSizeLimit = 15 * 1024 * 1024
 
 let spelling: nspell | null = null
 async function  loadSpelling() {
-  const aff = fs.readFileSync(getAssetPath("en-gb-aff.txt"), "utf8")
-  const dic = fs.readFileSync(getAssetPath("en-gb-dic.dic"), "utf8")
+  const aff = fs.readFileSync(getAssetPath("en_GB.aff"), "utf8")
+  const dic = fs.readFileSync(getAssetPath("en_GB.dic"), "utf8")
   spelling = nspell(aff, dic)
 }
 loadSpelling()
