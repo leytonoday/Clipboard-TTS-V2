@@ -3,6 +3,8 @@ import {
   brightnessToTextColour,
   optionsBarPositionToflexDirection,
   debuggingOutput,
+  removeLastInstanceOf,
+  removeFirstInstanceOf,
 } from 'renderer/utils';
 import {
   Box,
@@ -53,7 +55,22 @@ const modifyOutputText = (outputText: string): string => {
 
   if (store.currentlyActiveOptions.includes("Highlight") && highlightIndex > -1) {
     const stoppingPunctuationInstances = outputText.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
-    const tokens = outputText.trim().split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).filter(i => i.length > 0).map(i => i.trim())
+    let tokens = outputText.trim().split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).filter(i => i.length > 0).map(i => i.trim())
+
+    // This is to fix the issue of punctuation with spaces either side of it, which cause it to be wrapped in b tags. But here we split by punctuation,
+    // so the b tags are getting split also. So this just removes the open one, and somehow this fixes the issue lol.
+    if (store.currentlyActiveOptions.includes("Bionic Reading")) {
+      for (let i = 0; i < tokens.length; i++) {
+        const openTag = tokens[i].lastIndexOf("<b>")
+        const closeTag = tokens[i].lastIndexOf("</b>")
+
+        // If there is an open tag, but no close tag, then we need to remove the open tag
+        if (openTag > closeTag) {
+          tokens[i] = removeLastInstanceOf(tokens[i], "<b>")
+        }
+      }
+    }
+
     const highlightMap = tokens.map(token => ({ text: token, highlight: false }))
 
     highlightMap[highlightIndex].highlight = true
@@ -70,6 +87,7 @@ const modifyOutputText = (outputText: string): string => {
         toPush = `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${toPush}</span>`
 
       output.push(toPush)
+      console.log(toPush)
     }
 
     outputText = output.join(" ")

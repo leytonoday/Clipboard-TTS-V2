@@ -31,6 +31,14 @@ export function findNthIndex(str: string, char: string, n: number): number {
   return i;
 }
 
+export function removeLastInstanceOf(str: string, item: string): string {
+  return str.substring(0, str.lastIndexOf(item)) + str.substring(str.lastIndexOf(item) + item.length);
+}
+
+export function removeFirstInstanceOf(str: string, item: string): string {
+  return str.substring(0, str.indexOf(item)) + str.substring(str.indexOf(item) + item.length);
+}
+
 export function countryCodeToCountry(countryCode: string) {
   // @ts-ignore
   const countryData = lookup.byIso(countryCode)

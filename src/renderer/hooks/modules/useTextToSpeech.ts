@@ -107,6 +107,8 @@ const textToSsml = (input: string) => {
 const playBase64Audio = (base64Audio: string, audio: React.MutableRefObject<HTMLAudioElement | null>, endedEventHandler: () => void): void => {
   audio.current = new Audio(base64Audio)
   audio.current.addEventListener("ended", endedEventHandler)
+  audio.current.pause();
+  audio.current.currentTime = 0;
   audio.current.play()
 }
 
@@ -320,7 +322,6 @@ export const useTextToSpeech = () => {
 
     if (!store.voice.name.includes("Neural2") && (store.highlightEnabled || store.liveHighlightEnabled)) {
       output = textToSsml(outputText)
-      console.log(output)
       debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", "SSML Applied")
     }
     else
