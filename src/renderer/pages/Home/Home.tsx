@@ -35,7 +35,6 @@ import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 import './Home.css';
 
-import { escapeHtml } from 'renderer/utils';
 import { stoppingPunctuation } from 'renderer/misc/data';
 
 const modifyOutputText = (outputText: string): string => {
@@ -122,7 +121,7 @@ const Home: React.FC = () => {
             {
               (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
 
-                <HStack position="absolute" top="-1em" right="-1em" fontFamily="Segoe UI">
+                <HStack position="absolute" top="-1em" right="-1em" fontFamily="Segoe UI" color={brightnessToTextColour(outputBoxBackground)}>
 
                   {
                     store.currentLingeringOutput ? (
