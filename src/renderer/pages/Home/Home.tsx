@@ -4,7 +4,6 @@ import {
   optionsBarPositionToflexDirection,
   debuggingOutput,
   removeLastInstanceOf,
-  removeFirstInstanceOf,
 } from 'renderer/utils';
 import {
   Box,
@@ -23,7 +22,7 @@ import {
   useOnboarding,
   useTextToSpeech,
 } from 'renderer/hooks';
-import parse                from 'html-react-parser';
+import parseHtml            from 'html-react-parser';
 import { css }              from '@emotion/css';
 import OptionsBar           from '../../components/options/OptionsBar';
 import ScaleLoader          from 'react-spinners/ScaleLoader';
@@ -199,7 +198,7 @@ const Home: React.FC = () => {
               ) : null
             }
 
-            { outputText && parse(modifyOutputText(outputText)) }
+            { outputText && parseHtml(modifyOutputText(outputText)) }
 
           </Box>
         </Box>

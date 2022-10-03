@@ -111,7 +111,7 @@ export type WordDefinition = {
   meanings: WordDefinitionMeaning[];
 }
 
-export type TTSMutation = "TRANSLATION" | "DICTIONARY" | "IMAGE_TO_TEXT" | "SUBSTITUTIONS"
+export type TTSMutation = "TRANSLATION" | "DICTIONARY" | "IMAGE_TO_TEXT" | "SUBSTITUTIONS" | "SPELLCHECK"
 
 export type ProcessTextReturn = {
   text: string;
@@ -154,4 +154,9 @@ export type WhatsNewData = {
   newFeatures?: string[];
   bugFixes?: string[];
   notes?: string[];
+}
+
+export type SpellCheckSuggestion = {
+  word: string;
+  suggestions: string[];
 }

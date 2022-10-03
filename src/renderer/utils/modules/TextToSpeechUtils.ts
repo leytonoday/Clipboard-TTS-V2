@@ -9,7 +9,10 @@ import {
   truncateString,
   debuggingOutput,
   getWordDefinition,
+  removePunctuation,
+  asynchronousSleep,
   capitalizeFirstLetter,
+  getSpellingSuggestions,
 } from "renderer/utils"
 import {
   ClipboardData,
@@ -175,63 +178,106 @@ export async function imageToTextMutation(output: ProcessTextReturn, clipboardDa
 
 export async function translationMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
   const store = useStore.getState()
-  if (store.translationEnabled) {
-    const translatedText = await translate(input.text, getVoiceLanguageCode(store.voice.name))
-
-    input.text = translatedText.text
-    input.detectedLanguage = translatedText.detectedLanguage
-
-    if (!getVoiceLanguageCode(store.voice.name).includes(translatedText.detectedLanguage)) {
-      input.mutationsApplied!.push("TRANSLATION")
-      debuggingOutput(useStore.getState().languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Translated from ${translatedText.detectedLanguage}`)
-    }
-
+  if (!store.translationEnabled)
     return input
+
+  const translatedText = await translate(input.text, getVoiceLanguageCode(store.voice.name))
+
+  input.text = translatedText.text
+  input.detectedLanguage = translatedText.detectedLanguage
+
+  if (!getVoiceLanguageCode(store.voice.name).includes(translatedText.detectedLanguage)) {
+    input.mutationsApplied!.push("TRANSLATION")
+    debuggingOutput(useStore.getState().languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Translated from ${translatedText.detectedLanguage}`)
   }
-  else
-    return input
+
+  return input
+
 }
 
 export async function substitutionMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
   const store = useStore.getState()
-  if (store.substitutionsEnabled) {
-    const substitutions = store.substitutions
-    const outputTextCopy = input.text
-
-    for (const substitution of substitutions) {
-      const regex = new RegExp(substitution.before, `${substitution.matchCase ? "" : "i"}g`)
-      input.text = input.text.replaceAll(regex, substitution.after)
-    }
-
-    if (outputTextCopy !== input.text) {
-      input.mutationsApplied!.push("SUBSTITUTIONS")
-      debuggingOutput(useStore.getState().substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitutions applied`)
-    }
-
+  if (!store.substitutionsEnabled)
     return input
+
+  const substitutions = store.substitutions
+  const outputTextCopy = input.text
+
+  for (const substitution of substitutions) {
+    const regex = new RegExp(substitution.before, `${substitution.matchCase ? "" : "i"}g`)
+    input.text = input.text.replaceAll(regex, substitution.after)
   }
-  else
-    return input
+
+  if (outputTextCopy !== input.text) {
+    input.mutationsApplied!.push("SUBSTITUTIONS")
+    debuggingOutput(useStore.getState().substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitutions applied`)
+  }
+
+  return input
 }
 
 export async function dictioaryMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
   const store = useStore.getState()
-  if (store.autoDictionary) {
-    const punctuationStrippedText = input.text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
-    const definition = await getWordDefinition(punctuationStrippedText)
+  if (!store.autoDictionary)
+    return input;
 
-    if (!definition)
-      return { text: "Error: No definition found", isError: true  }
+  const punctuationStrippedText = input.text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+  const definition = await getWordDefinition(punctuationStrippedText)
 
-    input.text = `${capitalizeFirstLetter(definition.word)}. ${definition.meanings.map((meaning, index) => `${index + 1}. ${capitalizeFirstLetter(meaning.partOfSpeech)}: ${meaning.definitions[0].definition}`).join(" ")}`
-    input.mutationsApplied!.push("DICTIONARY")
+  if (!definition)
+    return { text: "Error: No definition found", isError: true  }
 
-    debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Auto Dictionary applied`)
+  input.text = `${capitalizeFirstLetter(definition.word)}. ${definition.meanings.map((meaning, index) => `${index + 1}. ${capitalizeFirstLetter(meaning.partOfSpeech)}: ${meaning.definitions[0].definition}`).join(" ")}`
+  input.mutationsApplied!.push("DICTIONARY")
 
+  debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Auto Dictionary applied`)
+
+  return input
+}
+
+export async function spellCheckMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
+  if (!useStore.getState().spellCheckEnabled)
+    return input;
+
+  let suggestions = getSpellingSuggestions(input.text)
+
+  const spellCheckExceptions = useStore.getState().spellCheckExceptions
+  suggestions = suggestions.filter(suggestion => {
+    suggestion.word = removePunctuation(suggestion.word)
+    if (suggestion.word.length && !spellCheckExceptions.includes(suggestion.word))
+      return suggestion
+  })
+
+  if (!suggestions.length)
     return input
+
+  useStore.setState({
+    ...useStore.getState(),
+    currentOpenOptionPath: "spelling-prompt",
+    spellCheckSuggestions: suggestions,
+    spellCheckText: input.text
+  })
+
+  // Wait for the spelling prompt to open
+  while (useStore.getState().currentOpenOptionPath !== "spelling-prompt") {
+    await asynchronousSleep(250);
   }
-  else
-    return input
+
+  // Wait for the spelling prompt to close
+  while (useStore.getState().currentOpenOptionPath !== "") {
+    await asynchronousSleep(500);
+  }
+
+  input.text = useStore.getState().spellCheckText
+  input.mutationsApplied!.push("SPELLCHECK")
+
+  useStore.setState({
+    ...useStore.getState(),
+    spellCheckSuggestions: [],
+    spellCheckText: ""
+  })
+
+  return input
 }
 
 export async function downloadOggAudio(audioContent: string, text: string) {

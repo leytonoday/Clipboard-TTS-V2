@@ -27,8 +27,6 @@ const whatsNewOutput: WhatsNewData = {
 }
 
 const WhatsNewModal = () => {
-
-
   const store = useStore();
   const { onClose, isOpen } = useDisclosure({
     defaultIsOpen: store.whatsNewData.version !== CURRENT_VERSION,

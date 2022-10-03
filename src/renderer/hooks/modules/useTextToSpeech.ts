@@ -10,6 +10,7 @@ import {
   textToSpeechDequeue,
   imageToTextMutation,
   translationMutation,
+  spellCheckMutation,
   substitutionMutation,
   getVoiceLanguageCode,
 } from "renderer/utils"
@@ -66,7 +67,8 @@ const processText = async (input: ClipboardData): Promise<ProcessTextReturn> => 
   const mutationToMutator: { [key: string]: (output: ProcessTextReturn) => Promise<ProcessTextReturn> } = {
     "TRANSLATION": translationMutation,
     "SUBSTITUTIONS": substitutionMutation,
-    "DICTIONARY": dictioaryMutation
+    "DICTIONARY": dictioaryMutation,
+    "SPELLCHECK": spellCheckMutation
   }
 
   // Apply mutations

@@ -18,6 +18,7 @@ import nspell from 'nspell'
 import fs from "fs"
 import mime from "mime-types"
 import isTextPath from "is-text-path"
+import { removePunctuation } from 'renderer/utils';
 
 const RESOURCES_PATH = app.isPackaged
 ? path.join(process.resourcesPath, 'assets')
@@ -152,7 +153,7 @@ ipcMain.on('ipc', async (event, arg) => {
     }
     case 'get-spelling-suggestions': {
       // remove all punctuation
-      const text = arg[1].replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"")
+      const text = removePunctuation(arg[1])
       const words = text.split(" ")
       const misspelled = words.filter((word: string) => !spelling!.correct(word))
 

@@ -27,6 +27,9 @@ import DictionaryOption from "renderer/components/options/features/dictionary/di
 import DictionaryOptionPreview from "renderer/components/options/features/dictionary/dictionary-option-preview/DictionaryOptionPreview";
 import SavedWords from "renderer/components/options/Features/dictionary/dictionary-option/sub-options/saved-words/SavedWords";
 
+import SpellCheckOption from "renderer/components/options/features/spelling/spelling-option/SpellingOption";
+import SpellCheckOptionPreview from "renderer/components/options/features/spelling/spelling-option-preview/SpellingOptionPreview";
+
 import SettingsOption from "renderer/components/options/features/settings/settings-option/SettingsOption";
 import SettingsOptionPreview from 'renderer/components/options/features/settings/settings-option-preview/SettingsOptionPreview'
 import OptionsBarSettings from 'renderer/components/options/features/settings/settings-option/sub-options/options-bar-settings/OptionsBarSettings'
@@ -37,6 +40,7 @@ import Info from "renderer/components/options/features/settings/settings-option/
 import DeveloperSettings from "renderer/components/options/features/settings/settings-option/sub-options/developer-settings/DeveloperSettings"
 
 import TextToSpeechQueue from "renderer/pages/Home/components/TextToSpeechQueue"
+import SpellingPrompt from "renderer/pages/Home/components/SpellingPrompt"
 
 const routes: RouteObject[] = [
   {
@@ -44,8 +48,20 @@ const routes: RouteObject[] = [
     element: <Home />,
     children: [
       {
+        path: "spelling-prompt",
+        element: <SpellingPrompt />
+      },
+      {
         path: "text-to-speech-queue",
         element: <TextToSpeechQueue />,
+      },
+      {
+        path: "option/spell-check",
+        element: <SpellCheckOption />,
+      },
+      {
+        path: "option/spell-check/preview",
+        element: <SpellCheckOptionPreview />,
       },
       {
         path: "option/highlight",

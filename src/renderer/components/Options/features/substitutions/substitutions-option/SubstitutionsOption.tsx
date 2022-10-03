@@ -53,11 +53,11 @@ const SubstitutionsOption = () => {
 
   const filterBySearchQuery = (searchQuery: string) => {
     const searchQueryLower = searchQuery.toLowerCase();
-    const filteredWords = store.substitutions.filter((substitution) => {
+    const filtered = store.substitutions.filter((substitution) => {
       return substitution.before.toLowerCase().includes(searchQueryLower) || substitution.after.toLowerCase().includes(searchQueryLower)
     })
 
-    return filteredWords;
+    return filtered;
   }
 
   const handleSearch = (searchQuery: string) => {
@@ -75,9 +75,9 @@ const SubstitutionsOption = () => {
   const onSortByChange = useCallback((newSortBy: string) => {
     store.setSubstitutionsSortBy(newSortBy);
 
-    const filteredWords = filterBySearchQuery(searchQuery);
-    const sortedSavedWords = sortSubstitutions(filteredWords, newSortBy);
-    setDisplaySubstitutions(sortedSavedWords)
+    const filtered = filterBySearchQuery(searchQuery);
+    const sortedSubstitutions = sortSubstitutions(filtered, newSortBy);
+    setDisplaySubstitutions(sortedSubstitutions)
   }, [store.substitutions, searchQuery])
 
   const deleteSubstitution = useCallback((substitution: Substitution) => {
@@ -217,9 +217,9 @@ const SubstitutionsOption = () => {
         </SimpleTooltip>
 
         <SimpleTooltip label="Add Substitution">
-            <Button onClick={() => addSubstitution()} disabled={!beforeSubstitution}>
-              <FontAwesomeIcon icon={faCheck} />
-            </Button>
+          <Button onClick={() => addSubstitution()} disabled={!beforeSubstitution}>
+            <FontAwesomeIcon icon={faCheck} />
+          </Button>
         </SimpleTooltip>
       </HStack>
 

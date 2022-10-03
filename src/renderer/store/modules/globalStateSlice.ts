@@ -1,5 +1,5 @@
 import { StoreSlice }                       from 'renderer/store';
-import { ClipboardData, OutputLingerData }  from 'renderer/types';
+import { ClipboardData, OutputLingerData, SpellCheckSuggestion }  from 'renderer/types';
 
 // This store slice is used solely as a means for cross-component communication.
 export interface IGlobalStateSlice {
@@ -36,6 +36,13 @@ export interface IGlobalStateSlice {
   replaySpeech: number, // Incremented to act as an event emitter
   currentLingeringOutput: OutputLingerData | null,
   setCurrentLingeringOutput: (currentLingeringOutput: OutputLingerData | null) => void,
+
+
+  // Spelling
+  spellCheckText: string,
+  spellCheckSuggestions: SpellCheckSuggestion[],
+  setSpellCheckText: (spellCheckText: string) => void,
+  setSpellCheckSuggestions: (spellCheckSuggestions: SpellCheckSuggestion[]) => void,
 }
 
 export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) => ({
@@ -85,5 +92,16 @@ export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) 
   currentLingeringOutput: null,
   setCurrentLingeringOutput: (currentLingeringOutput: OutputLingerData | null) => {
     set(state => ({...state, currentLingeringOutput: currentLingeringOutput}))
+  },
+
+
+  // Spelling
+  spellCheckText: "",
+  spellCheckSuggestions: [],
+  setSpellCheckText: (spellCheckText: string) => {
+    set(state => ({...state, spellCheckText}))
+  },
+  setSpellCheckSuggestions: (spellCheckSuggestions: SpellCheckSuggestion[]) => {
+    set(state => ({...state, spellCheckSuggestions}))
   }
 })

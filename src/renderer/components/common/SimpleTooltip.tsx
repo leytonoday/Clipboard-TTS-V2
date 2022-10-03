@@ -1,4 +1,4 @@
-import { Tooltip, Box } from '@chakra-ui/react'
+import { Tooltip, Center } from '@chakra-ui/react'
 import { useStore } from 'renderer/store'
 
 interface SimpleTooltipProps {
@@ -12,11 +12,11 @@ const SimpleTooltip = (props: SimpleTooltipProps) => {
 
   return (
     <Tooltip isDisabled={!store.tooltipsEnabled || props.disabled} label={props.label} hasArrow openDelay={400} closeOnClick={false}>
-      <Box>
+      <Center>
         {
           props.children
         }
-      </Box>
+      </Center>
     </Tooltip>
   )
 }

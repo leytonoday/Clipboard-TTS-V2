@@ -108,3 +108,11 @@ export function optionNameToOnbourdingData(name: string) {
     }
   }
 }
+
+export function asynchronousSleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function removePunctuation(str: string) {
+  return str.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g,"")
+}
