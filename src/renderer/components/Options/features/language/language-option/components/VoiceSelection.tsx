@@ -384,7 +384,7 @@ const VoiceSelection = () => {
             </Box>
 
             {/* Buttons */}
-            <HStack margin="1em 1em 1.5em 1em" width="100%">
+            <HStack padding="0.75em 1em 0.5em 1em" width="100%" justifyContent="flex-end">
               <Button onClick={() => {
                 store.resetVoice()
                 debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", "Voice reset")

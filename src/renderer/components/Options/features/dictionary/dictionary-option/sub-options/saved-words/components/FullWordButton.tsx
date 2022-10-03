@@ -21,6 +21,7 @@ import { useCallback }      from "react";
 import { faVolumeHigh }     from "@fortawesome/free-solid-svg-icons"
 import { WordDefinition }   from "renderer/types"
 import { FontAwesomeIcon }  from "@fortawesome/react-fontawesome"
+import SimpleTooltip from "renderer/components/common/SimpleTooltip";
 
 interface FullWordButtonProps {
   wordDefinition: WordDefinition
@@ -67,9 +68,11 @@ const FullWordButton = (props: FullWordButtonProps) => {
           </Box>
           <Box color="grey">{getPhonetics(props.wordDefinition!)}</Box>
           <Spacer />
-          <Button disabled={!isApiKeySet()} width="3em" onClick={(event) => {event.stopPropagation(); playWord(props.wordDefinition.word)}}>
-            <FontAwesomeIcon icon={faVolumeHigh} />
-          </Button>
+          <SimpleTooltip label="Play word">
+            <Button disabled={!isApiKeySet()} width="3em" onClick={(event) => {event.stopPropagation(); playWord(props.wordDefinition.word)}}>
+              <FontAwesomeIcon icon={faVolumeHigh} />
+            </Button>
+          </SimpleTooltip>
         </VStack>
 
         <Box paddingLeft="1em" flex={1} height="7em">

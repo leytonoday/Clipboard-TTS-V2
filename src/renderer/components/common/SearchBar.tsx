@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 interface SearchBarProps {
   searchQuery: string;
   handleSearch: (searchQuery: string) => void;
-  onClick?: () => void
+  onClick?: () => void;
 }
 
 const SearchBar = (props: SearchBarProps) => {

@@ -20,6 +20,7 @@ import { WordDefinition }         from 'renderer/types';
 import { FontAwesomeIcon }        from '@fortawesome/react-fontawesome';
 import { useState, useCallback }  from "react"
 import { debuggingOutput } from 'renderer/utils';
+import SimpleTooltip from 'renderer/components/common/SimpleTooltip';
 
 const filterBySearchQuery = (searchQuery: string) => {
   const store = useStore.getState();
@@ -43,7 +44,7 @@ const SavedWords = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [displaySavedWords, setDisplaySavedWords] = useState<WordDefinition[]>(sortSavedWords(store.savedWords, store.savedWordsSortBy));
-  const [managementMode, setManagementMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const unsaveWord = useCallback((word: WordDefinition) => {
     const savedWords = [...store.savedWords];
@@ -86,10 +87,10 @@ const SavedWords = () => {
           setSearchQuery(searchQuery);
           handleSearch(searchQuery);
         }}/>
-        <HStack justifyContent="end" marginTop="0.75em" spacing="1em">
-          <Button size="sm" onClick={() => setManagementMode(!managementMode)}>
+        <HStack justifyContent="end" marginTop="0.75em">
+          <Button size="sm" onClick={() => setEditMode(!editMode)}>
             {
-              managementMode ? "Done" : "Manage"
+              editMode ? "Done" : "Edit"
             }
           </Button>
           <SimpleSelect
@@ -150,12 +151,14 @@ const SavedWords = () => {
                       }
 
                       {
-                        managementMode ? (
-                          <Box width={managementMode ? "fit-content": "0%"}>
-                              <ScaleFade initialScale={0.9} in={managementMode}>
-                                <Button onClick={() => unsaveWord(wordDefinition)}>
-                                  <FontAwesomeIcon icon={faTimes} style={{color: "red"}}/>
-                                </Button>
+                        editMode ? (
+                          <Box width={editMode ? "fit-content": "0%"}>
+                              <ScaleFade initialScale={0.9} in={editMode}>
+                                <SimpleTooltip label="Delete word">
+                                  <Button onClick={() => unsaveWord(wordDefinition)}>
+                                    <FontAwesomeIcon icon={faTimes} style={{color: "red"}}/>
+                                  </Button>
+                                </SimpleTooltip>
                               </ScaleFade>
                           </Box>
                         ) : null

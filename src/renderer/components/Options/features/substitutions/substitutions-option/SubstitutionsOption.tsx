@@ -13,6 +13,7 @@ import {
   Button,
   Divider,
   useToast,
+  Collapse,
 } from "@chakra-ui/react"
 import {
   faTimes,
@@ -47,7 +48,8 @@ const SubstitutionsOption = () => {
   const [displaySubstitutions, setDisplaySubstitutions] = useState(sortSubstitutions(store.substitutions, store.substitutionsSortBy))
   const [beforeSubstitution, setBeforeSubstitution] = useState("")
   const [afterSubstitution, setAfterSubstitution] = useState("")
-  const [managementMode, setManagementMode] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const [addMode, setAddMode] = useState(false)
   const [matchCase, setMatchCase] = useState(false)
 
 
@@ -158,6 +160,9 @@ const SubstitutionsOption = () => {
           handleSearch(searchQuery)
         }} />
         <HStack justifyContent="end" marginTop="0.75em">
+          <Button size="sm" onClick={() => setAddMode(!addMode)}>
+            Add
+          </Button>
           <Button size="sm" onClick={() => {
 
             if (displaySubstitutions.some(i => !i.before.length)) {
@@ -185,11 +190,11 @@ const SubstitutionsOption = () => {
               return
             }
 
-            setManagementMode(!managementMode)
+            setEditMode(!editMode)
             store.setSubstitutions(displaySubstitutions)
           }}>
             {
-              managementMode ? "Done" : "Manage"
+              editMode ? "Done" : "Edit"
             }
           </Button>
           <SimpleSelect
@@ -205,23 +210,25 @@ const SubstitutionsOption = () => {
         </HStack>
       </Box>
 
-      <HStack margin="1.5em 1em 1em 1em">
-        <Input variant="filled" placeholder="Before" value={beforeSubstitution} onChange={(event) => setBeforeSubstitution(event.target.value)} />
-        <FontAwesomeIcon icon={faArrowRight} />
-        <Input variant="filled" placeholder="After" value={afterSubstitution} onChange={(event) => setAfterSubstitution(event.target.value)} />
+      <Collapse in={addMode} animateOpacity>
+        <HStack margin="1.5em 1em 1em 1em">
+          <Input variant="filled" placeholder="Before" value={beforeSubstitution} onChange={(event) => setBeforeSubstitution(event.target.value)} />
+          <FontAwesomeIcon icon={faArrowRight} />
+          <Input variant="filled" placeholder="After" value={afterSubstitution} onChange={(event) => setAfterSubstitution(event.target.value)} />
 
-        <SimpleTooltip label="Match case">
-          <Button variant={matchCase ? "solid" : "ghost"} onClick={() => setMatchCase(!matchCase)}>
-            Aa
-          </Button>
-        </SimpleTooltip>
+          <SimpleTooltip label="Match case">
+            <Button variant={matchCase ? "solid" : "ghost"} onClick={() => setMatchCase(!matchCase)}>
+              Aa
+            </Button>
+          </SimpleTooltip>
 
-        <SimpleTooltip label="Add Substitution">
-          <Button onClick={() => addSubstitution()} disabled={!beforeSubstitution}>
-            <FontAwesomeIcon icon={faCheck} />
-          </Button>
-        </SimpleTooltip>
-      </HStack>
+          <SimpleTooltip label="Add Substitution">
+            <Button onClick={() => addSubstitution()} disabled={!beforeSubstitution}>
+              <FontAwesomeIcon icon={faCheck} />
+            </Button>
+          </SimpleTooltip>
+        </HStack>
+      </Collapse>
 
       {
         displaySubstitutions.length === 0 ? null : (
@@ -240,7 +247,7 @@ const SubstitutionsOption = () => {
                       <Td width="50%">
                         <Box wordBreak={"break-all"} whiteSpace={"normal"}>
                           {
-                            managementMode ? (
+                            editMode ? (
                               <Input placeholder="Before" variant="filled" defaultValue={substitution.before} onChange={(event) => {
                                 substitution.before = event.target.value
                               }} />
@@ -252,7 +259,7 @@ const SubstitutionsOption = () => {
                         <HStack spacing="1em" width="100%">
                           <Box wordBreak={"break-all"} whiteSpace={"normal"} flex={1}>
                             {
-                              managementMode ? (
+                              editMode ? (
                                 <Input placeholder="After" variant="filled" defaultValue={substitution.after} onChange={(event) => {
                                   substitution.after = event.target.value
                                 }} />
@@ -260,7 +267,7 @@ const SubstitutionsOption = () => {
                             }
                           </Box>
                           {
-                            managementMode ? (
+                            editMode ? (
                               <HStack>
                                 <SimpleTooltip label="Match case">
                                   <Button size="sm" variant={substitution.matchCase ? "solid" : "ghost"} onClick={() => updateMatchCase(substitution)}>
