@@ -14,7 +14,7 @@ import React, { useEffect }     from "react";
 import { Outlet, useNavigate }  from "react-router-dom";
 
 const ComplexOptionModal = () => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const navigate = useNavigate()
   const setCurrentOpenOptionPath = useStore(state => state.setCurrentOpenOptionPath);
   const modalWidth = useBreakpointValue({ base: "5%", md: "10%", lg: "12%", xl: "15%", "2xl": "21%" });
@@ -22,14 +22,17 @@ const ComplexOptionModal = () => {
   const close = () => {
     onClose()
     setCurrentOpenOptionPath("")
-    navigate("/")
   }
 
   useEffect(() => {
     useStore.subscribe((state, prevState) => {
-      if (state.currentOpenOptionPath !== "" && state.currentOpenOptionPath !== prevState.currentOpenOptionPath) {
-        onToggle();
-        navigate(state.currentOpenOptionPath)
+      if (state.currentOpenOptionPath !== prevState.currentOpenOptionPath) {
+        navigate(state.currentOpenOptionPath === "" ? "/" : state.currentOpenOptionPath)
+
+        if (state.currentOpenOptionPath === "")
+          close()
+        else
+          onOpen()
       }
     })
   }, [])

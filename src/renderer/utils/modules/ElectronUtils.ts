@@ -31,3 +31,7 @@ export function titlebarControl(control: string): any {
 export function getPlatform(): string {
   return window.electron.ipcRenderer.sendMessageSync("ipc", ["get-platform"]) as string
 }
+
+export function toastNotification(title: string, message: string) {
+  window.electron.ipcRenderer.sendMessage("ipc", ["toast-notification", title, message])
+}

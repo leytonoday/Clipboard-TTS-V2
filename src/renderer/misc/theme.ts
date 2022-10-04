@@ -50,7 +50,7 @@ export const getTheme = (accent: string) => {
       })
     },
   },
-  withDefaultColorScheme({ colorScheme: 'primary', components: ["Switch", "Radio", "Input"]})
+  withDefaultColorScheme({ colorScheme: 'primary', components: ["Switch", "Radio", "Input", "TableContainer", "Tr", "Table", "Tbody", "Tfoot", "Th", "Thead", "Tr", "Td",]})
   )
 }
 

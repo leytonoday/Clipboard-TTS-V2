@@ -65,7 +65,8 @@ export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
     name: "Spell Check",
     icon: faSpellCheck,
     path: "/option/spell-check/",
-    active: () => useStore.getState().spellCheckEnabled
+    active: () => useStore.getState().spellCheckEnabled,
+    disabled: () => !useStore.getState().voice.name.includes("en")
   },
   {
     name: "Audio Config",

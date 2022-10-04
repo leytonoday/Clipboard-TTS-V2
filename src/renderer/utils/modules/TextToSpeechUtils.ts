@@ -8,8 +8,9 @@ import {
   findNthIndex,
   truncateString,
   debuggingOutput,
+  trimPunctuation,
   getWordDefinition,
-  removePunctuation,
+  toastNotification,
   asynchronousSleep,
   capitalizeFirstLetter,
   getSpellingSuggestions,
@@ -236,20 +237,32 @@ export async function dictioaryMutation(input: ProcessTextReturn): Promise<Proce
 }
 
 export async function spellCheckMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
-  if (!useStore.getState().spellCheckEnabled)
+  if (!useStore.getState().spellCheckEnabled || !useStore.getState().voice.name.includes("en"))
     return input;
+
+  input.text = input.text.replaceAll("\n", " ").replaceAll("\r", " ")
 
   let suggestions = getSpellingSuggestions(input.text)
 
+  console.log(input.text)
+  console.log(suggestions)
+
   const spellCheckExceptions = useStore.getState().spellCheckExceptions
   suggestions = suggestions.filter(suggestion => {
-    suggestion.word = removePunctuation(suggestion.word)
-    if (suggestion.word.length && !spellCheckExceptions.includes(suggestion.word))
+    if (suggestion.word.length && !spellCheckExceptions.find(i => suggestion.word === i.word)) {
+      suggestion.word = trimPunctuation(suggestion.word)
       return suggestion
+    }
   })
 
   if (!suggestions.length)
     return input
+
+  console.log("a")
+
+  toastNotification("Spell Check", `Resolve ${suggestions.length} spelling ${suggestions.length === 1 ? "error" : "errors"}.`)
+
+  console.log("b")
 
   useStore.setState({
     ...useStore.getState(),
@@ -258,18 +271,28 @@ export async function spellCheckMutation(input: ProcessTextReturn): Promise<Proc
     spellCheckText: input.text
   })
 
+  console.log("c")
+
   // Wait for the spelling prompt to open
   while (useStore.getState().currentOpenOptionPath !== "spelling-prompt") {
     await asynchronousSleep(250);
   }
 
+  console.log("d")
+
   // Wait for the spelling prompt to close
   while (useStore.getState().currentOpenOptionPath !== "") {
-    await asynchronousSleep(500);
+    await asynchronousSleep(250);
   }
+
+  console.log("e")
 
   input.text = useStore.getState().spellCheckText
   input.mutationsApplied!.push("SPELLCHECK")
+
+  await asynchronousSleep(500)
+
+  console.log("f")
 
   useStore.setState({
     ...useStore.getState(),

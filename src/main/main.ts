@@ -12,13 +12,13 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, globalShortcut, clipboard } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { resolveHtmlPath } from './util';
+import { resolveHtmlPath, trimPunctuation } from './util';
 import Store from "electron-store"
 import nspell from 'nspell'
 import fs from "fs"
 import mime from "mime-types"
 import isTextPath from "is-text-path"
-import { removePunctuation } from 'renderer/utils';
+import notifier from "node-notifier"
 
 const RESOURCES_PATH = app.isPackaged
 ? path.join(process.resourcesPath, 'assets')
@@ -54,6 +54,16 @@ ipcMain.on('ipc', async (event, arg) => {
   const method = arg[0];
 
   switch (method) {
+    case 'toast-notification': {
+      notifier.notify({
+        title: arg[1],
+        message: arg[2],
+        icon: getAssetPath("IconLight.png"),
+        sound: true,
+        appID: "Clipboard TTS",
+      })
+      break;
+    }
     case 'get-platform': {
       event.returnValue = process.platform as string;
       break;
@@ -153,7 +163,7 @@ ipcMain.on('ipc', async (event, arg) => {
     }
     case 'get-spelling-suggestions': {
       // remove all punctuation
-      const text = removePunctuation(arg[1])
+      const text = arg[1].split(" ").map((i: string) => trimPunctuation(i)).join(" ")
       const words = text.split(" ")
       const misspelled = words.filter((word: string) => !spelling!.correct(word))
 

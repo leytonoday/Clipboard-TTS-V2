@@ -116,3 +116,12 @@ export function asynchronousSleep(ms: number) {
 export function removePunctuation(str: string) {
   return str.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/g,"")
 }
+
+export function hasPunctuation(str: string): boolean {
+  return /[.,\/#!?$%\^&\*;:{}=\-_`~()]/g.test(str)
+}
+
+// remove punctuation from the beginning and end of a string
+export function trimPunctuation(str: string) {
+  return str.replace(/^[.,\/#!?$%\^&\*;:{}=\-_`~()]+|[.,\/#!?$%\^&\*;:{}=\-_`~()]+$/g, "")
+}

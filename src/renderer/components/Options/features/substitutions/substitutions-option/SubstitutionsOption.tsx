@@ -29,9 +29,9 @@ import SimpleTooltip              from "renderer/components/common/SimpleTooltip
 import Substitutions              from "../common/Substitutions"
 import NoResultsMascot            from "renderer/components/common/NoResultsMascot"
 import { Substitution }           from "renderer/types"
+import { debuggingOutput }        from "renderer/utils"
 import { FontAwesomeIcon }        from "@fortawesome/react-fontawesome"
 import { useState, useCallback }  from "react"
-import { debuggingOutput } from "renderer/utils"
 
 const SubstitutionsOption = () => {
   const store = useStore()
@@ -161,7 +161,9 @@ const SubstitutionsOption = () => {
         }} />
         <HStack justifyContent="end" marginTop="0.75em">
           <Button size="sm" onClick={() => setAddMode(!addMode)}>
-            Add
+            {
+              addMode ? "Hide Add" : "Add"
+            }
           </Button>
           <Button size="sm" onClick={() => {
 
@@ -212,9 +214,19 @@ const SubstitutionsOption = () => {
 
       <Collapse in={addMode} animateOpacity>
         <HStack margin="1.5em 1em 1em 1em">
-          <Input variant="filled" placeholder="Before" value={beforeSubstitution} onChange={(event) => setBeforeSubstitution(event.target.value)} />
+          <form style={{width: "100%"}} onSubmit={(e) => {
+            e.preventDefault()
+            addSubstitution()
+          }}>
+            <Input variant="filled" placeholder="Before" value={beforeSubstitution} onChange={(event) => setBeforeSubstitution(event.target.value)} />
+          </form>
           <FontAwesomeIcon icon={faArrowRight} />
-          <Input variant="filled" placeholder="After" value={afterSubstitution} onChange={(event) => setAfterSubstitution(event.target.value)} />
+          <form style={{width: "100%"}} onSubmit={(e) => {
+            e.preventDefault()
+            addSubstitution()
+          }}>
+            <Input variant="filled" placeholder="After" value={afterSubstitution} onChange={(event) => setAfterSubstitution(event.target.value)} />
+          </form>
 
           <SimpleTooltip label="Match case">
             <Button variant={matchCase ? "solid" : "ghost"} onClick={() => setMatchCase(!matchCase)}>
@@ -232,7 +244,7 @@ const SubstitutionsOption = () => {
 
       {
         displaySubstitutions.length === 0 ? null : (
-          <TableContainer margin="0 1em" overflowX="hidden">
+          <TableContainer margin="0.5em 1em" overflowX="hidden">
             <Table>
               <Thead>
                 <Tr>
@@ -295,7 +307,9 @@ const SubstitutionsOption = () => {
 
       {
         displaySubstitutions.length === 0 && searchQuery.length ? (
-          <NoResultsMascot />
+          <Box marginTop="2em">
+            <NoResultsMascot />
+          </Box>
         ) : null
       }
 

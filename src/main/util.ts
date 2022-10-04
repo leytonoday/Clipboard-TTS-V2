@@ -11,3 +11,7 @@ export function resolveHtmlPath(htmlFileName: string) {
   }
   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 }
+
+export function trimPunctuation(str: string) {
+  return str.replace(/^[.,\/#!?$%\^&\*;:{}=\-_`~()]+|[.,\/#!?$%\^&\*;:{}=\-_`~()]+$/g, "")
+}

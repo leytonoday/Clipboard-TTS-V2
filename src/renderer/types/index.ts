@@ -160,3 +160,7 @@ export type SpellCheckSuggestion = {
   word: string;
   suggestions: string[];
 }
+
+export type SpellCheckException = {
+  word: string;
+}

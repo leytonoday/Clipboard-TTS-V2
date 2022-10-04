@@ -3,6 +3,7 @@ import {
   Substitution,
   WordDefinition,
   TextToSpeechVoice,
+  SpellCheckException,
 } from "renderer/types"
 import {
   defaultFont,
@@ -115,10 +116,10 @@ export interface IOptionsSlice {
 
   // Spell Check
   spellCheckEnabled: boolean,
-  spellCheckExceptions: string[],
+  spellCheckExceptions: SpellCheckException[],
   spellCheckExceptionsSortBy: string,
   setSpellCheckEnabled: (spellCheckEnabled: boolean) => void,
-  setSpellCheckExceptions: (spellCheckExceptions: string[]) => void,
+  setSpellCheckExceptions: (spellCheckExceptions: SpellCheckException[]) => void,
   setSpellCheckExceptionsSortBy: (spellCheckExceptionsSortBy: string) => void,
 }
 
@@ -324,14 +325,14 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
 
 
   // Spell Check
-  spellCheckEnabled: (electronStoreGet("spellCheckEnabled") === undefined ? true : electronStoreGet("spellCheckEnabled")) as boolean,
-  spellCheckExceptions: (electronStoreGet("spellCheckExceptions") || []) as string[],
+  spellCheckEnabled: (electronStoreGet("spellCheckEnabled") === undefined ? false : electronStoreGet("spellCheckEnabled")) as boolean,
+  spellCheckExceptions: (electronStoreGet("spellCheckExceptions") || []) as SpellCheckException[],
   spellCheckExceptionsSortBy: (electronStoreGet("spellCheckExceptionsSortBy") || "Sort by Addition Date") as string,
   setSpellCheckEnabled: (spellCheckEnabled: boolean) => {
     electronStoreSet("spellCheckEnabled", spellCheckEnabled)
     set(state => ({ ...state, spellCheckEnabled }))
   },
-  setSpellCheckExceptions: (spellCheckExceptions: string[]) => {
+  setSpellCheckExceptions: (spellCheckExceptions: SpellCheckException[]) => {
     electronStoreSet("spellCheckExceptions", spellCheckExceptions)
     set(state => ({ ...state, spellCheckExceptions }))
   },

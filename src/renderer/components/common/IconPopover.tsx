@@ -44,7 +44,7 @@ const IconPopover = (props: IconPopoverrProps) => {
     <Popover trigger="hover" openDelay={400} closeDelay={100} isLazy={true}>
       <PopoverTrigger>
         <span>
-            <FontAwesomeIcon style={{color: iconColour()}} icon={icon()} />
+          <FontAwesomeIcon style={{color: iconColour()}} icon={icon()} />
         </span>
       </PopoverTrigger>
         <PopoverContent
@@ -55,7 +55,7 @@ const IconPopover = (props: IconPopoverrProps) => {
           border="1px solid grey"
           borderRadius="0.75em"
           >
-          <PopoverArrow  bg={bgColour} />
+          <PopoverArrow bg={bgColour} />
           <PopoverBody>
             {
               props.content

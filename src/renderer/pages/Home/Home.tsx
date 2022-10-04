@@ -34,7 +34,6 @@ import CredentialsAlert     from 'renderer/components/CredentialsAlert';
 import ComplexOptionModal   from '../../components/options/ComplexOptionModal';
 import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
-import './Home.css';
 
 import { stoppingPunctuation } from 'renderer/misc/data';
 
@@ -86,7 +85,6 @@ const modifyOutputText = (outputText: string): string => {
         toPush = `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${toPush}</span>`
 
       output.push(toPush)
-      console.log(toPush)
     }
 
     outputText = output.join(" ")
@@ -130,6 +128,7 @@ const Home: React.FC = () => {
           className="outputBox"
           bg={outputBoxBackground}
           color={overlayTextColour}
+          margin="1em"
         >
           {/* The css is here because if not, the textColour doesn't change when "autoHighlightTextColour is changed. Must wait until tts is done. This enabled Live Highlighting" */}
           <Box position="relative" width="100%" height="100%" className={css`.highlighted { color: ${highlightTextColour}; }`} letterSpacing={store.fontSpacing} fontSize={`${store.fontSize}em`} fontFamily={store.font}

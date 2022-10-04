@@ -1,7 +1,9 @@
+import SpellCheck from "../common/SpellCheck";
+
 const SpellingOptionPreview = () => {
   return (
     <>
-      Preview
+      <SpellCheck />
     </>
   )
 }
