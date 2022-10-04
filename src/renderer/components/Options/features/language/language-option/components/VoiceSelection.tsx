@@ -25,7 +25,6 @@ import {
   Tbody,
   Table,
   TableContainer,
-  Image,
   useToast
 } from '@chakra-ui/react';
 import {
@@ -50,7 +49,7 @@ import { faPlay, faCheck }                                          from "@forta
 import React, { useState, useRef, useEffect, useMemo }              from "react"
 import { TextToSpeechVoices, TextToSpeechVoice, VoiceType }         from "renderer/types"
 import IconPopover                                                  from "renderer/components/common/IconPopover"
-
+import LoadedImage from 'renderer/components/common/LoadedImage';
 
 const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType: VoiceType | null = null) => {
   const searchedVoices: TextToSpeechVoices = {};
@@ -207,7 +206,7 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                           <Center>
                             <SimpleTooltip label={countryCodeToCountry(getVoiceCountryCode(voice.name))}>
                               <Box minWidth="4em" display="flex" justifyContent="center" alignItems="center">
-                                <Image onDragStart={(e) => e.preventDefault() } src={getFlagUrl(getVoiceCountryCode(voice.name))} style={{ borderRadius: "0.25em", width: "100%", height: "2.5em"}} />
+                                <LoadedImage src={getFlagUrl(getVoiceCountryCode(voice.name))} width="100%" height="2.5em" loaderWidth="2px" loaderHeight="30px" />
                               </Box>
                             </SimpleTooltip>
                           </Center>

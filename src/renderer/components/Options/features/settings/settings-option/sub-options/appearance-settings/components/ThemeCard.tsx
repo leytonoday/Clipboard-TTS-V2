@@ -5,6 +5,7 @@ import {
   VStack,
   useRadio,
 } from "@chakra-ui/react";
+import LoadedImage from "renderer/components/common/LoadedImage";
 import { useStore } from "renderer/store"
 
 interface ThemeCardProps {

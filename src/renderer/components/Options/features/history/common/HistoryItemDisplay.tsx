@@ -23,6 +23,7 @@ import {
 import SimpleTooltip                from "renderer/components/common/SimpleTooltip";
 import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
 import { HistoryItem, TTSMutation } from "renderer/types";
+import LoadedImage from "renderer/components/common/LoadedImage";
 
 interface HistoryItemDisplayProps {
   historyItem: HistoryItem,
@@ -51,7 +52,7 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
           <HStack justifyContent="center">
             <Box>
               <SimpleTooltip label={`${props.historyItem.voice.name}, ${capitalizeFirstLetter(props.historyItem.voice.ssmlGender.toLowerCase())}`}>
-                <Image onDragStart={(e) => e.preventDefault() } src={getFlagUrl(getVoiceCountryCode(props.historyItem.voice.name))} style={{ borderRadius: "0.25em", width: "100%", height: "1.8em"}} />
+                <LoadedImage src={getFlagUrl(getVoiceCountryCode(props.historyItem.voice.name))} width="100%" height="1.8em" loaderWidth="2px" loaderHeight="20px" />
               </SimpleTooltip>
             </Box>
             {

@@ -9,6 +9,7 @@ import { useStore }               from "renderer/store"
 import SimpleTooltip              from "renderer/components/common/SimpleTooltip"
 import AutoTranslatation          from "../common/AutoTranslatation"
 import { Divider, VStack, Box, Image }   from "@chakra-ui/react"
+import LoadedImage from "renderer/components/common/LoadedImage"
 
 const LanguageOptionPreview = () => {
   const store = useStore()
@@ -31,11 +32,7 @@ const LanguageOptionPreview = () => {
                   getVoiceCountryCode(store.voice.name)
                 )}
               >
-                <Image
-                  onDragStart={(e) => e.preventDefault()}
-                  src={getFlagUrl(getVoiceCountryCode(store.voice.name))}
-                  style={{ width: 'auto', height: '4em' }}
-                />
+                <LoadedImage src={getFlagUrl(getVoiceCountryCode(store.voice.name))} width="auto" height="4em" loaderWidth="4px" loaderHeight="40px" />
               </SimpleTooltip>
               <Box>
                 {`${store.voice.languageDescriptions[0]}, ${store.voice.name}`}
