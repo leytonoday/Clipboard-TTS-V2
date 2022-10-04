@@ -20,7 +20,6 @@ import {
   faHighlighter,
   faClockRotateLeft,
   faArrowRightArrowLeft,
-  faSpellCheck,
 } from "@fortawesome/free-solid-svg-icons"
 import { useStore }     from "renderer/store"
 import { isApiKeySet }  from "renderer/utils"
@@ -60,13 +59,6 @@ export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
     icon: faBook,
     path: "/option/dictionary/",
     active: () => useStore.getState().autoDictionary
-  },
-  {
-    name: "Spell Check",
-    icon: faSpellCheck,
-    path: "/option/spell-check/",
-    active: () => useStore.getState().spellCheckEnabled,
-    disabled: () => !useStore.getState().voice.name.includes("en")
   },
   {
     name: "Audio Config",
@@ -141,7 +133,7 @@ export const defaultSubstitutions: Substitution[] = [
   }
 ]
 
-export const defaultOrderOfMutations: TTSMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "SPELLCHECK", "DICTIONARY"]
+export const defaultOrderOfMutations: TTSMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "DICTIONARY"]
 
 export const instructions: AccordationItem[] = [
   {

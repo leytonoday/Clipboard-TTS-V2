@@ -9,7 +9,6 @@ import {
   faImage,
   faClone,
   faLanguage,
-  faSpellCheck,
   IconDefinition,
   faArrowRightArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +35,6 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
     "SUBSTITUTIONS": faArrowRightArrowLeft,
     "DICTIONARY": faBook,
     "IMAGE_TO_TEXT": faImage,
-    "SPELLCHECK": faSpellCheck,
   }
 
   const mutationToTooltip: { [key in TTSMutation]: string } = {
@@ -44,7 +42,6 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
     "SUBSTITUTIONS": "Substitutions were made to this text",
     "DICTIONARY": "This text was looked up in the dictionary",
     "IMAGE_TO_TEXT": "This text was converted from an image",
-    "SPELLCHECK": "This text had spelling mistakes",
   }
 
   return (

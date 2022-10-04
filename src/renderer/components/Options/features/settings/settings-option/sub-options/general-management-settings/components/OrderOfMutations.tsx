@@ -30,7 +30,6 @@ import {
   faLanguage,
   IconDefinition,
   faArrowRightArrowLeft,
-  faSpellCheck,
 } from "@fortawesome/free-solid-svg-icons"
 import { useStore }                 from 'renderer/store';
 import { useState }                 from 'react';
@@ -64,7 +63,6 @@ const OrderOfMutations = () => {
     "SUBSTITUTIONS": faArrowRightArrowLeft,
     "DICTIONARY": faBook,
     "IMAGE_TO_TEXT": faImage,
-    "SPELLCHECK": faSpellCheck
   }
 
   const cancelOnClose = () => {

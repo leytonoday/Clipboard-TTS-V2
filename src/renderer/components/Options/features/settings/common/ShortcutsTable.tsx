@@ -74,9 +74,11 @@ const ShortcutsTable = () => {
                   {shortcuts.map(shortcut => (
                     <Tr key={shortcut.commandName}>
                       <Td>
-                        <SimpleTooltip label={shortcut.tooltip}>
-                          {shortcut.commandName}
-                        </SimpleTooltip>
+                        <Box width="fit-content">
+                          <SimpleTooltip label={shortcut.tooltip}>
+                            {shortcut.commandName}
+                          </SimpleTooltip>
+                        </Box>
                       </Td>
                       <Td>
                         <Box>

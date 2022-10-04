@@ -164,7 +164,14 @@ ipcMain.on('ipc', async (event, arg) => {
     case 'get-spelling-suggestions': {
       // remove all punctuation
       const text = arg[1].split(" ").map((i: string) => trimPunctuation(i)).join(" ")
-      const words = text.split(" ")
+      let words = text.split(" ")
+
+      // filter and remove all numbers from the text
+      words = words.filter((i: string) => isNaN(+i))
+
+      // remove all words that don't have any letters
+      words = words.filter((i: string) => i.match(/[a-zA-Z]/))
+
       const misspelled = words.filter((word: string) => !spelling!.correct(word))
 
       const corrections: { word: string, suggestions: string[] }[] = misspelled.map((word: string) => {
