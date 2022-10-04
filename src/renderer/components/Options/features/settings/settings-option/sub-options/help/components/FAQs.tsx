@@ -32,13 +32,13 @@ const FAQs = () => {
         onClick={() => onToggle()}
       />
 
-<Modal
+      <Modal
         isCentered
         onClose={onClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
-        size="3xl"
+        size="2xl"
       >
         <ModalOverlay />
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>

@@ -38,7 +38,7 @@ const TipsAndTricks = () => {
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
-        size="3xl"
+        size="2xl"
       >
         <ModalOverlay />
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
