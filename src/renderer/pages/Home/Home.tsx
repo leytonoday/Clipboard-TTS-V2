@@ -42,7 +42,8 @@ const modifyOutputText = (outputText: string): string => {
   const highlightIndex = store.highlightIndex;
 
   if (store.currentlyActiveOptions.includes("Bionic Reading")) {
-    const tokens = outputText.trim().split(" ")
+    const tokens = outputText.trim().split(" ").filter(i => i !== "")
+    console.log(tokens)
     outputText = tokens.map(i => {
       if (i.length > 1)
         return `<b>${i.substring(0, Math.floor(i.length / 2))}</b>${i.substring(Math.floor(i.length / 2))}`
