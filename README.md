@@ -46,16 +46,16 @@ Features include:
 
 ## Images
 Below is a list of images to showcase some of the features of Clipboard TTS
-![1](https://user-images.githubusercontent.com/36010516/192115337-b75cdbac-a4f0-4a19-b8e0-f44d2c58e0f8.PNG)
-![2](https://user-images.githubusercontent.com/36010516/192115329-8aab1848-ad9b-4857-82c3-152e5c24a3ab.PNG)
-![3](https://user-images.githubusercontent.com/36010516/192115331-1ec84248-4e0e-4134-863c-cc5b436a4cb4.png)
-![4](https://user-images.githubusercontent.com/36010516/192115332-00479c54-4309-40c8-b950-1bd3a16e8fbe.png)
-![5](https://user-images.githubusercontent.com/36010516/192115333-5468e7e5-4617-48ef-a117-e44823e4f46a.png)
-![6](https://user-images.githubusercontent.com/36010516/192115334-16d56707-0173-44fd-8e53-d455d90e4b08.PNG)
-![7](https://user-images.githubusercontent.com/36010516/192121272-df0775e2-6356-4597-a9ae-c0ec66408ca0.PNG)
-![10](https://user-images.githubusercontent.com/36010516/192121239-f819816a-67e9-4ec3-8b2a-1d99fcf3ecf7.png)
-![8](https://user-images.githubusercontent.com/36010516/192115336-3e7c6977-7d97-4f84-8cd0-53fea145faf2.PNG)
-![9](https://user-images.githubusercontent.com/36010516/192121237-17194380-3bd9-4273-ae99-23b63de547c7.png)
+![1](https://user-images.githubusercontent.com/36010516/194392120-a7843c24-9924-4709-9fc2-266b36b9e236.PNG)
+![2](https://user-images.githubusercontent.com/36010516/194392125-8311afa7-6a31-402e-83d6-8df6006692c2.PNG)
+![3](https://user-images.githubusercontent.com/36010516/194392128-97d2db29-4af7-4b50-a941-ea75744b1143.png)
+![4](https://user-images.githubusercontent.com/36010516/194392129-0f0abedc-3066-4cf0-b61d-1be2513c8c7c.png)
+![5](https://user-images.githubusercontent.com/36010516/194392130-64a6995c-c3ea-4248-84ac-1fdf6b94fb2a.png)
+![6](https://user-images.githubusercontent.com/36010516/194392132-d7700498-f80f-4bea-923a-1842832f8971.PNG)
+![7](https://user-images.githubusercontent.com/36010516/194392133-04a9dfdc-a22e-4323-8092-8b64e4db055e.PNG)
+![10](https://user-images.githubusercontent.com/36010516/194392159-c5a498cd-b318-4df4-9173-b980b02bc49a.png)
+![8](https://user-images.githubusercontent.com/36010516/194392136-4b8215e5-5095-4a97-9851-df077e0d498b.PNG)
+![9](https://user-images.githubusercontent.com/36010516/194392144-d8956003-b43e-4509-8994-58e5c87850a0.png)
 
 
 ## Project setup
