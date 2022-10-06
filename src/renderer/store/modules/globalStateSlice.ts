@@ -1,5 +1,6 @@
 import { StoreSlice }                       from 'renderer/store';
 import { ClipboardData, OutputLingerData }  from 'renderer/types';
+import { HighlightTimeout } from 'renderer/utils';
 
 // This store slice is used solely as a means for cross-component communication.
 export interface IGlobalStateSlice {
@@ -16,9 +17,13 @@ export interface IGlobalStateSlice {
   // Highlight
   stopSpeech: number, // Incremented to act as an event emitter
   highlightIndex: number,
-  highlightTimeouts: NodeJS.Timeout[],
+  highlightTimeouts: HighlightTimeout[],
+  pausedHighlightIndex: number,
+  pausedHighlightTimeouts: HighlightTimeout[],
   setHighlightIndex: (highlightIndex: number) => void
-  setHighlightTimeouts: (highlightTimeouts: NodeJS.Timeout[]) => void,
+  setHighlightTimeouts: (highlightTimeouts: HighlightTimeout[]) => void,
+  setPausedHighlightIndex: (pausedHighlightIndex: number) => void
+  setPausedHighlightTimeouts: (pausedHighlightTimeouts: HighlightTimeout[]) => void,
 
 
   // Text-To-Speech
@@ -36,6 +41,12 @@ export interface IGlobalStateSlice {
   replaySpeech: number, // Incremented to act as an event emitter
   currentLingeringOutput: OutputLingerData | null,
   setCurrentLingeringOutput: (currentLingeringOutput: OutputLingerData | null) => void,
+
+
+  // Pause Speech
+  pauseSpeech: number, // Incremented to act as an event emitter
+  currentlyPaused: boolean,
+  setCurrentlyPaused: (currentlyPaused: boolean) => void,
 }
 
 export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) => ({
@@ -57,11 +68,19 @@ export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) 
   // Highlight
   highlightIndex: -1,
   highlightTimeouts: [],
+  pausedHighlightIndex: -1,
+  pausedHighlightTimeouts: [],
   setHighlightIndex: (highlightIndex) => {
     set(state => ({...state, highlightIndex}))
   },
-  setHighlightTimeouts: (highlightTimeouts: NodeJS.Timeout[]) => {
+  setHighlightTimeouts: (highlightTimeouts: HighlightTimeout[]) => {
     set(state => ({...state, highlightTimeouts}))
+  },
+  setPausedHighlightIndex: (pausedHighlightIndex) => {
+    set(state => ({...state, pausedHighlightIndex}))
+  },
+  setPausedHighlightTimeouts: (pausedHighlightTimeouts: HighlightTimeout[]) => {
+    set(state => ({...state, pausedHighlightTimeouts}))
   },
 
 
@@ -86,4 +105,12 @@ export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) 
   setCurrentLingeringOutput: (currentLingeringOutput: OutputLingerData | null) => {
     set(state => ({...state, currentLingeringOutput: currentLingeringOutput}))
   },
+
+
+  // Pause Speech
+  pauseSpeech: 0,
+  currentlyPaused: false,
+  setCurrentlyPaused: (currentlyPaused: boolean) => {
+    set(state => ({...state, currentlyPaused}))
+  }
 })

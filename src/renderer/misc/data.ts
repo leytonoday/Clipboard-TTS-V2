@@ -13,6 +13,8 @@ import {
   faFill,
   faBold,
   faFont,
+  faPlay,
+  faPause,
   faPowerOff,
   faLanguage,
   faWaveSquare,
@@ -28,14 +30,14 @@ import { UseToastOptions } from "@chakra-ui/react"
 export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
   {
     name: "Enable / Disable",
-    icon: faPowerOff,
+    icon: () => faPowerOff,
     disabled: () => {
       return !isApiKeySet();
     }
   },
   {
     name: "Stop Speech",
-    icon: faSquareFull,
+    icon: () => faSquareFull,
     command: () => {
       const store = useStore.getState();
       useStore.setState({ ...store, stopSpeech: store.stopSpeech + 1 }) // Increment this to act as an event emitter
@@ -43,58 +45,67 @@ export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
     disabled: () => !useStore.getState().currentlySpeaking
   },
   {
+    name: "Pause / Resume",
+    icon: () => !useStore.getState().currentlyPaused ? faPause : faPlay,
+    command: () => {
+      const store = useStore.getState();
+      useStore.setState({ ...store, pauseSpeech: store.pauseSpeech + 1 }) // Increment this to act as an event emitter
+    },
+    disabled: () => !useStore.getState().currentlySpeaking
+  },
+  {
     name: "Language & Translation",
-    icon: faLanguage,
+    icon: () => faLanguage,
     path: "/option/language/",
     active: () => useStore.getState().translationEnabled
   },
   {
     name: "Substitutions",
-    icon: faArrowRightArrowLeft,
+    icon: () => faArrowRightArrowLeft,
     path: "/option/substitutions/",
     active: () => useStore.getState().substitutionsEnabled
   },
   {
     name: "Dictionary",
-    icon: faBook,
+    icon: () => faBook,
     path: "/option/dictionary/",
     active: () => useStore.getState().autoDictionary
   },
   {
     name: "Audio Config",
-    icon: faWaveSquare,
+    icon: () => faWaveSquare,
     path: "/option/audio-config/"
   },
   {
     name: "Highlight",
-    icon: faHighlighter,
+    icon: () => faHighlighter,
     path: "/option/highlight/",
     active: () => useStore.getState().highlightEnabled,
     disabled: () => useStore.getState().voice.name.includes("Neural2")
   },
   {
     name: "Overlay",
-    icon: faFill,
+    icon: () => faFill,
     path: "/option/overlay/",
     active: () => useStore.getState().currentlyActiveOptions.includes("Overlay")
   },
   {
     name: "Font",
-    icon: faFont,
+    icon: () => faFont,
     path: "/option/font/"
   },
   {
     name: "Bionic Reading",
-    icon: faBold,
+    icon: () => faBold,
   },
   {
     name: "History",
-    icon: faClockRotateLeft,
+    icon: () => faClockRotateLeft,
     path: "/option/history/",
   },
   {
     name: "Settings",
-    icon: faCog,
+    icon: () => faCog,
     path: "/option/settings/",
   },
 ]

@@ -76,7 +76,7 @@ const ReorderOptions = () => {
                       {...provided.dragHandleProps}
                       style={getItemStyle(provided.draggableProps.style)}
                     >
-                      <OptionIcon icon={option.icon} onClick={() => { }} active={false} grabbing={true} />
+                      <OptionIcon icon={option.icon()} onClick={() => { }} active={false} grabbing={true} />
                     </Box>
                   )}
                 </Draggable>

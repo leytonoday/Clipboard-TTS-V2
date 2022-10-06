@@ -25,7 +25,7 @@ export type Substitution = {
 
 export interface BaseOption {
   name: string;
-  icon: IconDefinition;
+  icon: () => IconDefinition;
   disabled?: (...args: any[]) => boolean;
   active?: (...args: any[]) => boolean;
 }

@@ -30,7 +30,7 @@ const ComplexOption = (props: IComplexOption) => {
     <Box>
       {
         (disabled || !store.optionPreviewsEnabled) && (
-          <OptionIcon icon={props.icon} active={active} disabled={disabled} onClick={() => {
+          <OptionIcon icon={props.icon()} active={active} disabled={disabled} onClick={() => {
             store.setCurrentOpenOptionPath(props.path)
           }} />
         )
@@ -50,7 +50,7 @@ const ComplexOption = (props: IComplexOption) => {
           >
             <PopoverTrigger>
               <Box style={{width: "fit-content", height: "fit-content"}}>
-                <OptionIcon icon={props.icon} active={active} onClick={() => {
+                <OptionIcon icon={props.icon()} active={active} onClick={() => {
                   store.setCurrentOpenOptionPath(props.path)
                 }} />
               </Box>

@@ -1,5 +1,5 @@
-// import ping             from "ping"
 import * as lookup      from 'country-code-lookup';
+import { useStore }     from "renderer/store";
 import { FLAG_API_URL } from 'renderer/misc/constants';
 
 export function escapeHtml(unsafe: string): string {
@@ -124,4 +124,38 @@ export function hasPunctuation(str: string): boolean {
 // remove punctuation from the beginning and end of a string
 export function trimPunctuation(str: string) {
   return str.replace(/^[.,\/#!?$%\^&\*;:{}=\-_`~()]+|[.,\/#!?$%\^&\*;:{}=\-_`~()]+$/g, "")
+}
+
+export class HighlightTimeout {
+  private timeoutDuration: number
+  private startTime: number
+  private timeout: NodeJS.Timeout | null
+  private highlightIndex: number
+
+  constructor(highlightIndex: number, timeoutDuration: number) {
+    this.timeoutDuration = timeoutDuration
+    this.startTime = -1
+    this.timeout = null
+    this.highlightIndex = highlightIndex
+  }
+
+  public start() {
+    this.startTime = Date.now()
+    this.timeout = setTimeout(() => {
+      useStore.getState().setHighlightIndex(this.highlightIndex)
+    }, this.timeoutDuration)
+  }
+
+  public getTimeLeft(): number {
+    return this.timeoutDuration - (Date.now() - this.startTime)
+  }
+
+  public clear() {
+    if (this.timeout)
+      clearTimeout(this.timeout)
+  }
+
+  public getHighlightIndex() {
+    return this.highlightIndex
+  }
 }

@@ -8,7 +8,7 @@ const CommandOption = (props: ICommandOption) => {
   return (
     <SimpleTooltip label={props.name}>
       <span>
-        <OptionIcon icon={props.icon} active={false} onClick={props.command} disabled={disabled}/>
+        <OptionIcon icon={props.icon()} active={false} onClick={props.command} disabled={disabled}/>
       </span>
     </SimpleTooltip>
   );

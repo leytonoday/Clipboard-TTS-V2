@@ -25,7 +25,7 @@ const ToggleOption = (props: IToggleOption) => {
   return (
     <SimpleTooltip label={props.name}>
       <span>
-        <OptionIcon icon={props.icon} active={isActive} onClick={onClick} disabled={disabled}/>
+        <OptionIcon icon={props.icon()} active={isActive} onClick={onClick} disabled={disabled}/>
       </span>
     </SimpleTooltip>
   );

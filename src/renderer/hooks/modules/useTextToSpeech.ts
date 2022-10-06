@@ -3,6 +3,7 @@ import {
   isApiKeySet,
   getBase64Audio,
   debuggingOutput,
+  HighlightTimeout,
   dictioaryMutation,
   electronClipboard,
   getLanguageByCode,
@@ -157,7 +158,7 @@ export const useTextToSpeech = () => {
   let oldClipboardData: any = null
 
   const stopSpeech = () => {
-    useStore.getState().highlightTimeouts.forEach(i => clearTimeout(i))
+    useStore.getState().highlightTimeouts.forEach(i => i.clear())
     store.setHighlightTimeouts([])
     store.setHighlightIndex(-1)
 
@@ -193,6 +194,7 @@ export const useTextToSpeech = () => {
 
       // If "Stop Speech" option is clicked, stop it. StopSpeech is a number that is incremented to act as an event emitter
       if (prevState.stopSpeech !== state.stopSpeech && state.currentlySpeaking) {
+        store.setCurrentlyPaused(false)
         stopSpeech()
         if (!state.outputLingerEnabled)
           setOutputText("")
@@ -200,18 +202,17 @@ export const useTextToSpeech = () => {
 
       if (state.replaySpeech !== prevState.replaySpeech) { // Replay the current lingering output
         stopSpeech()
+        store.setCurrentlyPaused(false)
         store.setCurrentlySpeaking(true)
 
-        const highlightTimeouts: NodeJS.Timeout[] = []
-
+        const highlightTimeouts: HighlightTimeout[] = []
         // Set highlight timeouts
         state.currentLingeringOutput!.timepoints.forEach((i: any, index: number) => {
-          const timeout = setTimeout(() => {
-            store.setHighlightIndex(index);
-          }, i.timeSeconds * 1000)
+          const timeout = new HighlightTimeout(index, i.timeSeconds * 1000)
           highlightTimeouts.push(timeout)
         })
         store.setHighlightTimeouts(highlightTimeouts)
+        useStore.getState().highlightTimeouts.forEach(i => i.start())
 
         playBase64Audio(state.currentLingeringOutput!.audioContent, audio, () => {
           if (!useStore.getState().outputLingerEnabled) {
@@ -222,6 +223,30 @@ export const useTextToSpeech = () => {
           store.setHighlightIndex(-1)
           store.setHighlightTimeouts([])
         })
+      }
+
+      if (state.pauseSpeech != prevState.pauseSpeech) {
+        if (!state.currentlyPaused) {
+          audio.current!.pause()
+
+          const newHighlightTimeouts = [...useStore.getState().highlightTimeouts].map(i => {
+            if (i.getTimeLeft() > 0)
+              return new HighlightTimeout(i.getHighlightIndex(), i.getTimeLeft())
+            return null
+          }).filter(i => i !== null) as HighlightTimeout[]
+
+          useStore.getState().highlightTimeouts.forEach(i => i.clear())
+          store.setHighlightTimeouts(newHighlightTimeouts)
+
+        }
+        else {
+          audio.current!.play()
+          useStore.getState().highlightTimeouts.forEach(i => {
+            i.start()
+          })
+        }
+
+        store.setCurrentlyPaused(!state.currentlyPaused)
       }
     })
   }, [])
@@ -345,18 +370,17 @@ export const useTextToSpeech = () => {
 
     // Reset highlight data
     store.setHighlightIndex(-1)
-    store.highlightTimeouts.forEach(i => clearTimeout(i))
+    store.highlightTimeouts.forEach(i => i.clear())
     store.setHighlightTimeouts([])
 
-    const highlightTimeouts: NodeJS.Timeout[] = []
+    const highlightTimeouts: HighlightTimeout[] = []
     // Set highlight timeouts
     timepoints.forEach((i: any, index: number) => {
-      const timeout = setTimeout(() => {
-        store.setHighlightIndex(index);
-      }, i.timeSeconds * 1000)
+      const timeout = new HighlightTimeout(index, i.timeSeconds * 1000)
       highlightTimeouts.push(timeout)
     })
     store.setHighlightTimeouts(highlightTimeouts)
+    useStore.getState().highlightTimeouts.forEach(i => i.start())
 
     debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Timepoints -\n${JSON.stringify(timepoints, null, 2)}`)
 
@@ -381,7 +405,7 @@ export const useTextToSpeech = () => {
 
       store.setCurrentlySpeaking(false)
       store.setHighlightIndex(-1)
-      useStore.getState().highlightTimeouts.forEach(i => clearTimeout(i))
+      useStore.getState().highlightTimeouts.forEach(i => i.clear())
       store.setHighlightTimeouts([])
       debuggingOutput(useStore.getState().textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", "Finished Speaking")
     })
