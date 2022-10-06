@@ -263,7 +263,7 @@ const createWindow = async () => {
     return { action: 'deny' };
   });
 
-  const shortcuts = ["Control+[", "Control+]", "Control+,", "Control+.", "Control+/"]
+  const shortcuts = ["Control+[", "Control+]", "Control+Alt+]", "Control+,", "Control+.", "Control+/"]
   shortcuts.forEach(shortcut => globalShortcut.register(shortcut, () => mainWindow!.webContents.send('shortcuts', shortcut)))
 
   // Remove this if your app does not use auto updates

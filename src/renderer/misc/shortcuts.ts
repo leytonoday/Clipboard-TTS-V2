@@ -55,6 +55,23 @@ const shortcuts: Shortcut[] = [
     tooltip: "Stop the current speech"
   },
   {
+    keybinding: "Control+Alt+]",
+    command: async () => {
+      if (!useStore.getState().shortcutsEnabled) return
+
+      toggleOptionEnabled("Pause / Resume")
+
+      // pause speaking
+      const store = useStore.getState()
+      if (store.currentlySpeaking) {
+        store.setCurrentlyPaused(false)
+        useStore.setState({ ...store, pauseSpeech: store.pauseSpeech + 1 })
+      }
+    },
+    commandName: "Pause / Resume",
+    tooltip: "Pause or resume the current speech"
+  },
+  {
     keybinding: "Control+,",
     command: async () => {
       if (!useStore.getState().shortcutsEnabled) return

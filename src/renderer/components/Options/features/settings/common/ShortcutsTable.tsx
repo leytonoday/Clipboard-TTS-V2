@@ -55,6 +55,7 @@ const ShortcutsTable = () => {
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
+        size="lg"
       >
         <ModalOverlay />
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
