@@ -1,4 +1,5 @@
 import React                    from "react"
+import WhatsNew                 from "renderer/components/common/WhatsNew"
 import SubOptionHeader          from "renderer/components/options/common/SubOptionHeader"
 import OptionSubHeader          from "renderer/components/options/common/OptionSubHeader"
 import { CURRENT_VERSION }      from "renderer/misc/constants"
@@ -14,6 +15,9 @@ const Info: React.FC = () => {
 
       <Box margin="0 1em">
         <OptionSubHeader title={`Version ${CURRENT_VERSION} Beta`} />
+        <Box color="grey" fontSize="0.9em">
+          <WhatsNew />
+        </Box>
       </Box>
 
       <Divider margin="1em 0" />

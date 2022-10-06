@@ -6,6 +6,7 @@ import {
   ICommandOption,
   AccordationItem,
   TextToSpeechVoiceGender,
+  WhatsNewData,
 } from "renderer/types"
 import {
   faCog,
@@ -26,6 +27,7 @@ import {
 import { useStore }     from "renderer/store"
 import { isApiKeySet }  from "renderer/utils"
 import { UseToastOptions } from "@chakra-ui/react"
+import { CURRENT_VERSION } from "./constants"
 
 export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
   {
@@ -373,3 +375,13 @@ export const networkErrorToast: UseToastOptions = {
 }
 
 export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "။", "።"]
+
+export const whatsNewData: WhatsNewData = {
+  version: CURRENT_VERSION,
+  bugFixes: [
+    "Theme cards are now fully clickable. Previously, clicking on the actual label would not work.",
+    "All 'Reset' buttons now cause a notification, to make it clear that the action has been completed.",
+    "All images are now drag-proof, to ensure that they don't trigger the Drag & Drop feature.",
+    "Loading circle is now centralized, and there is a 'Loading...' label to make it clear that the app is loading.",
+  ]
+}
