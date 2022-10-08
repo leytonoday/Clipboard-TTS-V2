@@ -67,41 +67,44 @@ export function truncateString(str: string, num: number) {
 export function optionNameToOnbourdingData(name: string) {
   switch (name) {
     case "Enable / Disable": {
-      return { dataStep: 3, dataIntro: `Use this option to Enable / Disable Clipboard TTS. When this option is enabled, Clipboard TTS will
+      return { dataStep: 4, dataIntro: `Use this option to Enable / Disable Clipboard TTS. When this option is enabled, Clipboard TTS will
         scan the clipboard for changes and read them aloud instantly.` }
     }
     case "Stop Speech": {
-      return { dataStep: 4, dataIntro: `Use this option to stop the current speech.` }
+      return { dataStep: 5, dataIntro: `Use this option to stop the current speech.` }
+    }
+    case "Pause / Resume": {
+      return { dataStep: 6, dataIntro: `Use this option to Pause / Resume the current speech.` }
     }
     case "Language & Translation": {
-      return { dataStep: 5, dataIntro: `Use this option to change the language and voice of the Text-to-Speech, or to enable tralsation` }
+      return { dataStep: 7, dataIntro: `Use this option to change the language and voice of the Text-to-Speech, or to enable tralsation` }
     }
     case "Substitutions": {
-      return { dataStep: 6, dataIntro: `Use this option to add or remove substitutions. Substitutions are used to replace words or phrases with your custom replacements`}
+      return { dataStep: 8, dataIntro: `Use this option to add or remove substitutions. Substitutions are used to replace words or phrases with your custom replacements`}
     }
     case "Dictionary": {
-      return { dataStep: 7, dataIntro: `Use this option to look up and save words to your own dictionary, or to enable auto dictionary lookup`}
+      return { dataStep: 9, dataIntro: `Use this option to look up and save words to your own dictionary, or to enable auto dictionary lookup`}
     }
     case "Audio Config": {
-      return { dataStep: 8, dataIntro: `Use this option to maniuplate the speaking rate, speaking pitch, etc.`}
+      return { dataStep: 10, dataIntro: `Use this option to maniuplate the speaking rate, speaking pitch, etc.`}
     }
     case "Highlight": {
-      return { dataStep: 9, dataIntro: `Use this option to enable highlighting, to follow along with the speech, or to change the highlight colour`}
+      return { dataStep: 11, dataIntro: `Use this option to enable highlighting, to follow along with the speech, or to change the highlight colour`}
     }
     case "Overlay": {
-      return { dataStep: 10, dataIntro: `Use this option to enable the overlay for improved text readability, or to change the overlay colour`}
+      return { dataStep: 12, dataIntro: `Use this option to enable the overlay for improved text readability, or to change the overlay colour`}
     }
     case "Font": {
-      return { dataStep: 11, dataIntro: `Use this option to customize the font styles of the output box`}
+      return { dataStep: 13, dataIntro: `Use this option to customize the font styles of the output box`}
     }
     case "Bionic Reading": {
-      return { dataStep: 12, dataIntro: `Use this option to enable Bionic Reading, which could help you read faster using artificial fixation points in the output box text`}
+      return { dataStep: 14, dataIntro: `Use this option to enable Bionic Reading, which could help you read faster using artificial fixation points in the output box text`}
     }
     case "History": {
-      return { dataStep: 13, dataIntro: `Use this option to view your recent Clipboard TTS history`}
+      return { dataStep: 15, dataIntro: `Use this option to view your recent Clipboard TTS history`}
     }
     case "Settings": {
-      return { dataStep: 14, dataIntro: `Use this option to customize the appearance and behaviour of Clipboard TTS, or to read the help material`}
+      return { dataStep: 16, dataIntro: `Use this option to customize the appearance and behaviour of Clipboard TTS, or to read the help material`}
     }
     default: {
       return {}

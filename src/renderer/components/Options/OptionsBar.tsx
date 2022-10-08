@@ -104,7 +104,10 @@ const OptionsBar = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="row" margin={margin()} data-step={2} data-intro={`This is the options bar. It contains a suit of tools to assist you in your reading.`}>
+    <Box display="flex" flexDirection="row" margin={margin()}
+        data-step={2}
+        data-intro={`This is the options bar. It contains a suit of tools to assist you in your reading.
+        Hover over each option to see the name, or a preview containing the most important settings within that option`}>
       <Box flex="1">
 
         <Collapse startingHeight={75} in={optionsBarIsOpen}>
@@ -127,7 +130,9 @@ const OptionsBar = () => {
       {
         optionColumns >= store.options.length ? null : (
           <Box w="4em" display="flex" alignContent="center" alignItems="center" justifyContent="center" padding="0.5em">
-            <Box padding="0.5em" onClick={optionsBarOnToggle} cursor="pointer">
+            <Box padding="0.5em" onClick={optionsBarOnToggle} cursor="pointer"
+            data-step={3}
+            data-intro={`Click this button to hide or reveal options when the window is too small to display them all`}>
               <FontAwesomeIcon icon={optionsBarIsOpen ? openIcon() : closedIcon()} size="lg" />
             </Box>
           </Box>
