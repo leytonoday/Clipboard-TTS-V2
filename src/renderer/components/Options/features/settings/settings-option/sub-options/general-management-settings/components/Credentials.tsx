@@ -37,6 +37,14 @@ const Credentials = () => {
   const saveOnClose = async () => {
     store.setApiKey(apiKey);
     store.loadAvailableVoices();
+
+    const interval = setInterval(() => {
+      if (Object.keys(useStore.getState().availableVoices).length === 0)
+        store.loadAvailableVoices()
+      else
+        clearInterval(interval)
+    }, 5000)
+
     onClose();
   }
 

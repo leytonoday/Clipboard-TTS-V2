@@ -20,6 +20,8 @@ const LanguageOptionPreview = () => {
         !Object.keys(store.availableVoices).length && (
           <Box marginBottom="1em">
             <Mascot label="No voices available" />
+
+            <Divider margin="1em 0" />
           </Box>
         )
       }
