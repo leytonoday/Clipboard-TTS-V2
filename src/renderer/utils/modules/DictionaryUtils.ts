@@ -9,7 +9,9 @@ export async function getWordDefinition(word: string): Promise<WordDefinition | 
   try {
     const response = await axios.get(`${DICTIONARY_URL}${word}`)
     return response.data[0] as WordDefinition
-  } catch (e) {
+  } catch (e: any) {
+    if (e.code === "ERR_NETWORK")
+      throw e
     return null;
   }
 }

@@ -7,11 +7,6 @@ export interface Shortcut {
   tooltip: string;
 }
 
-export type Speed = {
-  name: string;
-  value: number;
-}
-
 export type Language = {
   value: string; // language code
   name: string;

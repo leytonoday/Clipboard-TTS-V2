@@ -9,6 +9,7 @@ import {
   Button,
   HStack,
   Divider,
+  useToast,
 } from "@chakra-ui/react"
 import {
   Outlet,
@@ -28,10 +29,12 @@ import { WordDefinition }       from "renderer/types"
 import { FontAwesomeIcon }      from "@fortawesome/react-fontawesome"
 import WordDefinitionDisplay    from "./components/WordDefinitionDisplay"
 import { useState, useEffect }  from "react"
+import { networkErrorToast } from "renderer/misc/data"
 
 
 const DictionaryOption = () => {
   const store = useStore()
+  const toast = useToast()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -61,10 +64,21 @@ const DictionaryOption = () => {
       return
     }
     setLoading(true)
-    const definition = await getWordDefinition(searchQuery)
+    let definition = null
+
+    try {
+      definition = await getWordDefinition(searchQuery)
+    } catch(e: any) {
+      if (e.code === "ERR_NETWORK") {
+        setLoading(false)
+        toast(networkErrorToast)
+      }
+      return
+    }
+
     setCurrentDefinition(definition)
 
-    if (!definition) {
+    if (definition === null) {
       const suggestions = getSpellingSuggestions(searchQuery)
       if (!suggestions.length) {
         setSpellingSuggestions([])

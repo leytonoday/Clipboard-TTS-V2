@@ -24,7 +24,7 @@ const HighlightOption = () => {
         subtitle="Here you can configure the highlight text to improve text visability"
       />
 
-      <VStack spacing="1.5em">
+      <VStack spacing="1.25em">
         <Highlight />
 
         <AutoTextColour />

@@ -235,6 +235,6 @@ export async function dictioaryMutation(input: ProcessTextReturn): Promise<Proce
 export async function downloadOggAudio(audioContent: string, text: string) {
   const link = document.createElement("a")
   link.href = audioContent
-  link.download = `${dateFormat(new Date(), "[dd-mm-yy]").trim()} - ${useStore.getState().voice.name} - ${truncateString(text, 50)}.ogg`
+  link.download = `${dateFormat(new Date(), "[dd-mm-yy][H-MM]").trim()} - ${useStore.getState().voice.name} - ${truncateString(text, 50)}.ogg`
   link.click()
 }

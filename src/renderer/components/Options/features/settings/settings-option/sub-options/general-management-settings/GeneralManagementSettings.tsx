@@ -18,7 +18,7 @@ const GeneralManagementSettings = () => {
         subtitle="General settings and management"
       />
 
-      <VStack spacing="1.5em">
+      <VStack spacing="1.25em">
         <SimpleSwitch label="Tooltips" isChecked={store.tooltipsEnabled} setChecked={store.setTooltipsEnabled}
           info="Enables tooltips for all buttons and options. This is useful for users who are new to the application." />
         <SimpleSwitch label="Output Linger" isChecked={store.outputLingerEnabled} setChecked={store.setOutputLingerEnabled}
