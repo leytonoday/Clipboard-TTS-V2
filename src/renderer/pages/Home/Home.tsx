@@ -133,12 +133,12 @@ const Home: React.FC = () => {
         >
           {/* The css is here because if not, the textColour doesn't change when "autoHighlightTextColour is changed. Must wait until tts is done. This enabled Live Highlighting" */}
           <Box position="relative" width="100%" height="100%" className={css`.highlighted { color: ${highlightTextColour}; }`} letterSpacing={store.fontSpacing} fontSize={`${store.fontSize}em`} fontFamily={store.font}
-            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1.4em" : "0em"}` }
+            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "20px" : "0em"}` }
             >
             {
               (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
 
-                <HStack position="absolute" top="-1em" right="-1em" fontFamily="Segoe UI" color={brightnessToTextColour(outputBoxBackground)}>
+                <HStack position="absolute" top="-16px" right="-16px" fontFamily="Segoe UI" color={brightnessToTextColour(outputBoxBackground)}>
 
                   {
                     store.currentLingeringOutput ? (
