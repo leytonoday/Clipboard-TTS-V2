@@ -379,13 +379,9 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   bugFixes: [
-    "Added the what's new data to the Info page.",
-    "Fixed bug with Bionic Reading missing words",
-    "Added loader for images",
-    "Fixed some aesthetic inconsistencies",
-  ],
-  newFeatures: [
-    "Added a Pause / Resume button, to pause and resume the audio. This also pauses the highlighting.",
-    "Upgraded English dictionary to be slightly larger, to encompass a slightly larger vocabulary",
+    "Fixed bug where the app would crash when the user tried to serach for a word in the dictionary when there was no internet connection. There is now simply an error notification",
+    `When the application is started with no internet, there are no voices loaded. However, when the user connects to the internet after the application is open, the
+    voices were not loaded. They are now loaded when the user connects to the internet`,
+    "Fixed bug whre the replay, download, and queue buttons would shift when the font size shifts. They now stay in the same place"
   ],
 }
