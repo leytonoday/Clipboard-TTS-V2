@@ -385,7 +385,7 @@ export const useTextToSpeech = () => {
     debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Timepoints -\n${JSON.stringify(timepoints, null, 2)}`)
 
     store.setTtsLoading(false)
-    const cleanedOutputText = escapeHtml(outputText).replaceAll("\r", "").replaceAll("\n", " ")
+    const cleanedOutputText = escapeHtml(outputText).replaceAll("\n\n", "<br/>").replaceAll("\r\n", "<br/>")
     setOutputText(cleanedOutputText)
     store.setCurrentlySpeaking(true)
 
