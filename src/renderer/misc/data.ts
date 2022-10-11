@@ -383,10 +383,11 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
+  newFeatures: [
+    "Added resets to audio configuration sliders, and also made them smoother",
+    "New lines are now reflected in the Output Box. So if you copy multiple paragraphs, it'll be displayed as multiple paragraphs, rather than one big paragraph",
+  ],
   bugFixes: [
-    "Fixed bug where the app would crash when the user tried to serach for a word in the dictionary when there was no internet connection. There is now simply an error notification",
-    `When the application is started with no internet, there are no voices loaded. However, when the user connects to the internet after the application is open, the
-    voices were not loaded. They are now loaded when the user connects to the internet`,
-    "Fixed bug whre the replay, download, and queue buttons would shift when the font size shifts. They now stay in the same place"
+    "Added warning that Neural2 is experimental, and thus may sometimes unexpectedly fail",
   ],
 }
