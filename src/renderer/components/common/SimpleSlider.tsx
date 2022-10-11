@@ -1,8 +1,11 @@
-import { Box, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, Center } from "@chakra-ui/react"
+import { Box, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark, HStack, Button, useToast } from "@chakra-ui/react"
 import { useStore } from "renderer/store"
 import OptionSubHeader from "renderer/components/options/common/OptionSubHeader"
 import debounce from "lodash.debounce"
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRotateLeft } from "@fortawesome/free-solid-svg-icons"
+import SimpleTooltip from "./SimpleTooltip"
 
 const verticalLabelStyles = {
   margin: "0 0 -1.5em -4em",
@@ -38,28 +41,55 @@ interface SimpleSliderProps {
 
   labelSize: "sm" | "md",
 
-  justifyLabel?: string
+  justifyLabel?: string,
+
+  resetHandler?: () => void,
+  resetValue?: any,
 }
 
 const SimpleSlider = (props: SimpleSliderProps) => {
   const store = useStore()
+  const toast = useToast()
+
+  const [value, setValue] = useState(props.value);
 
   const labelStyles = props.orientation === "vertical" ? verticalLabelStyles : horizontalLabelStyles
 
-  const width = props.orientation === "vertical" ? "10em" : "100%"
+  const width = props.orientation === "vertical" ? "13em" : "100%"
   const height = props.orientation === "vertical" ? "100%" : "5.5em"
 
   const onChange = useCallback(debounce((event: any) => {
     props.onChange(event)
+    setValue(event)
   }, 500), [])
 
   return (
     <Box height="100%" width={width} display="flex" flexDirection="column" fontSize={props.labelSize === "md" ? ['xs', 'sm', 'md'] : ['xs', 'sm']}>
       {
         props.showLabel ? (
-          <Box height="2em" width="100%" marginBottom={props.orientation === "vertical" ? "1em": undefined } display="flex" justifyContent={props.justifyLabel ? props.justifyLabel: "start"}>
+          <HStack height="2em" width="100%" marginBottom={props.orientation === "vertical" ? "1em": undefined } display="flex" justifyContent={props.justifyLabel ? props.justifyLabel: "start"}>
             <OptionSubHeader title={props.label} info={props.info} />
-          </Box>
+            {
+              props.resetHandler ? (
+                <SimpleTooltip label={`Reset ${props.label}`}>
+                  <Button size="xs" onClick={() => {
+                    if (props.resetHandler)
+                      props.resetHandler()
+                    if (props.resetValue !== undefined)
+                      setValue(props.resetValue)
+                    toast({
+                      title: `${props.label} reset to default`,
+                      status: "info",
+                      duration: 5000,
+                      isClosable: true,
+                    })
+                  }}>
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                  </Button>
+                </SimpleTooltip>
+              ): null
+            }
+          </HStack>
         ) : null
       }
       <Box
@@ -79,7 +109,10 @@ const SimpleSlider = (props: SimpleSliderProps) => {
 
         <Box display="flex" alignItems="center" justifyContent="center" width="100%" height="100%">
           <Slider orientation={props.orientation} minHeight={props.orientation === "vertical" ? "100%" : undefined} minWidth={props.orientation === "horizontal" ? "100%" : undefined}
-            defaultValue={props.value} onChange={onChange} min={props.min} max={props.max} step={props.step} size={props.size}>
+            value={value} onChange={(event: any) => {
+              setValue(event)
+              onChange(event)
+            }} min={props.min} max={props.max} step={props.step} size={props.size}>
             {
               props.marks.map(mark => (
                 <SliderMark key={mark.value} value={mark.value} {...labelStyles} fontSize={props.size === "md" ? "sm" : "xs" } minWidth="fit-content" width="100%">

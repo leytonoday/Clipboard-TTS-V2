@@ -2,6 +2,7 @@ import { Box }                  from "@chakra-ui/react"
 import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
 import { useCallback, useMemo } from "react"
+import { defaultSpeakingPitch } from "renderer/misc/data"
 
 interface SpeakingPitchSliderProps {
   orientation: "horizontal" | "vertical"
@@ -36,7 +37,7 @@ const SpeakingPitchSlider = (props: SpeakingPitchSliderProps) => {
 
         min={-20}
         max={20}
-        step={2.5}
+        step={0.01}
 
         showLabel={true}
         onChange={onSpeakingPitchChange}
@@ -44,6 +45,9 @@ const SpeakingPitchSlider = (props: SpeakingPitchSliderProps) => {
         marks={speakingPitchMarks}
 
         justifyLabel="center"
+
+        resetHandler={() => store.setSpeakingPitch(defaultSpeakingPitch)}
+        resetValue={defaultSpeakingPitch}
       />
   </Box>
   )

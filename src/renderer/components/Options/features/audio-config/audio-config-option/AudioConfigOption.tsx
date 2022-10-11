@@ -12,8 +12,8 @@ import AudioProfileSelection  from "./components/AudioProfileSelection"
 import SpeakingRateSelection  from "../common/SpeakingRateSlider"
 
 const AudioConfigOption = () => {
-  const columns = useBreakpointValue({base: 2, "2xl": 4})
-  const sliderGridHeight = useBreakpointValue({base: "60em", "2xl": "30em"})
+  const columns = useBreakpointValue({base: 2, "3xl": 4})
+  const sliderGridHeight = useBreakpointValue({base: "60em", "3xl": "30em"})
 
   return (
     <>
@@ -26,7 +26,7 @@ const AudioConfigOption = () => {
 
       <Divider margin="1.5em 0" />
 
-      <SimpleGrid height={sliderGridHeight} columns={columns} justifyContent="center" spacing="3em 0" paddingBottom="1em" overflowY="hidden">
+      <SimpleGrid height={sliderGridHeight} columns={columns} justifyContent="center" spacing="3em 0" paddingBottom="1em" overflow="hidden">
         <Center>
           <SpeakingPitchSlider orientation="vertical"/>
         </Center>

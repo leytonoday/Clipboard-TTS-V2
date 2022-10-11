@@ -2,6 +2,7 @@ import { Box }                  from "@chakra-ui/react"
 import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
 import { useCallback, useMemo } from "react"
+import { defaultVolumeGainDb } from "renderer/misc/data"
 
 interface VolumeGainDbSliderProps {
   orientation: "horizontal" | "vertical"
@@ -41,7 +42,7 @@ const VolumeGainDbSlider = (props: VolumeGainDbSliderProps) => {
 
         min={-12}
         max={12}
-        step={2}
+        step={0.01}
 
         showLabel={true}
         onChange={onVolumeGainDbChange}
@@ -49,6 +50,9 @@ const VolumeGainDbSlider = (props: VolumeGainDbSliderProps) => {
         marks={volumeGainDbMarks}
 
         justifyLabel="center"
+
+        resetHandler={() => store.setVolumeGainDb(defaultVolumeGainDb)}
+        resetValue={defaultVolumeGainDb}
       />
     </Box>
   )

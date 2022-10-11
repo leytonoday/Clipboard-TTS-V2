@@ -2,6 +2,7 @@ import { Box }                  from '@chakra-ui/react';
 import { useStore }             from 'renderer/store';
 import SimpleSlider             from 'renderer/components/common/SimpleSlider';
 import { useCallback, useMemo } from 'react';
+import { defaultSpeakingRate } from 'renderer/misc/data';
 
 interface SpeakingRateSliderProps {
   orientation: 'horizontal' | 'vertical';
@@ -35,7 +36,7 @@ const SpeakingRateSlider = (props: SpeakingRateSliderProps) => {
 
         min={0.25}
         max={3}
-        step={0.25}
+        step={0.01}
 
         showLabel={true}
         onChange={onSpeakingRateChange}
@@ -43,6 +44,9 @@ const SpeakingRateSlider = (props: SpeakingRateSliderProps) => {
         marks={speakingRateMarks}
 
         justifyLabel="center"
+
+        resetHandler={() => store.setSpeakingRate(defaultSpeakingRate)}
+        resetValue={defaultSpeakingRate}
       />
     </Box>
   );

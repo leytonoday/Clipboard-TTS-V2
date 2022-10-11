@@ -1,6 +1,7 @@
 import { Box }                  from "@chakra-ui/react"
 import { useStore }             from "renderer/store"
 import SimpleSlider             from "renderer/components/common/SimpleSlider"
+import { defaultSampleRate } from "renderer/misc/data"
 import { useCallback, useMemo } from "react"
 
 interface SampleRateSliderProps {
@@ -34,7 +35,7 @@ const SampleRateSlider = (props: SampleRateSliderProps) => {
 
         min={8000}
         max={24000}
-        step={2000}
+        step={20}
 
         showLabel={true}
         onChange={onSampleRateChange}
@@ -43,6 +44,9 @@ const SampleRateSlider = (props: SampleRateSliderProps) => {
         orientation={props.orientation}
 
         justifyLabel="center"
+
+        resetHandler={() => store.setSampleRate(defaultSampleRate)}
+        resetValue={defaultSampleRate}
       />
   </Box>
   )

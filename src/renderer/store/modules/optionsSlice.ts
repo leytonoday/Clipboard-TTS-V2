@@ -8,7 +8,11 @@ import {
   defaultFont,
   defaultVoice,
   defaultAudioProfile,
-  defaultSubstitutions
+  defaultSubstitutions,
+  defaultSampleRate,
+  defaultSpeakingRate,
+  defaultSpeakingPitch,
+  defaultVolumeGainDb
 } from "renderer/misc/data"
 import { StoreSlice }                         from 'renderer/store';
 import { electronStoreGet, electronStoreSet } from "renderer/utils"
@@ -206,11 +210,11 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
 
 
   // Audio Configuration
-  sampleRate: (electronStoreGet("sampleRate") || 20000) as number,
-  speakingRate: (electronStoreGet("speakingRate") || 1) as number,
-  volumeGainDb: (electronStoreGet("volumeGainDb") || 0) as number,
+  sampleRate: (electronStoreGet("sampleRate") || defaultSampleRate) as number,
+  speakingRate: (electronStoreGet("speakingRate") || defaultSpeakingRate) as number,
+  volumeGainDb: (electronStoreGet("volumeGainDb") || defaultSpeakingPitch) as number,
   audioProfile: (electronStoreGet("audioProfile") || defaultAudioProfile) as string,
-  speakingPitch: (electronStoreGet("speakingPitch") || 0) as number,
+  speakingPitch: (electronStoreGet("speakingPitch") || defaultVolumeGainDb) as number,
   previewTabIndex: (electronStoreGet("previewTabIndex") || 0) as number,
   setSampleRate: (sampleRate: number) => {
     electronStoreSet("sampleRate", sampleRate)

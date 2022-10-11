@@ -148,6 +148,11 @@ export const defaultSubstitutions: Substitution[] = [
 
 export const defaultOrderOfMutations: TTSMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "DICTIONARY"]
 
+export const defaultSampleRate = 24000
+export const defaultSpeakingRate = 1
+export const defaultSpeakingPitch = 0
+export const defaultVolumeGainDb = 0
+
 export const instructions: AccordationItem[] = [
   {
     title: "How to acquire credentials",
