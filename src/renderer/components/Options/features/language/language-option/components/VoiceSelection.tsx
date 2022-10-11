@@ -125,7 +125,9 @@ const getLanguageTabList = (tabNames: string[], tabTextColour: string): React.Re
             {tab}
             {
               tab === "Neural2" ? (
-                <span style={{marginLeft: "0.5em", fontWeight: "normal", color: tabTextColour, cursor: "default"}}><IconPopover status='warning' content="As of right now, highlighting is not supported when using a Neural2 voice" /></span>
+                <span style={{marginLeft: "0.5em", fontWeight: "normal", color: tabTextColour, cursor: "default"}}><IconPopover status='warning' content={`
+                  Neural2 is an experimental feature from Google Cloud Text-to-Speech, therefore sometimes there may be unexpected bugs.
+                  Also, as of right now, highlighting is not supported when using a Neural2 voice`} /></span>
               ) : null
             }
           </Tab>
