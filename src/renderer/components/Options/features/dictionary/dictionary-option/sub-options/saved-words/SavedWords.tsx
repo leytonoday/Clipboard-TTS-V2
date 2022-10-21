@@ -54,6 +54,10 @@ const SavedWords = () => {
     store.setSavedWords(savedWords);
     setDisplaySavedWords(sortSavedWords(savedWords, store.savedWordsSortBy));
     debuggingOutput(useStore.getState().dictionaryOptionDebuggingOutput, "dictionaryOptionDebuggingOutput", `Unsaved word - \n${JSON.stringify(word, null, 2)}`)
+
+    if (!savedWords.length) {
+      setEditMode(false);
+    }
   }, [store.savedWords])
 
   const handleSearch = useCallback((searchQuery: string) => {
@@ -88,7 +92,7 @@ const SavedWords = () => {
           handleSearch(searchQuery);
         }}/>
         <HStack justifyContent="end" marginTop="0.75em">
-          <Button size="sm" onClick={() => setEditMode(!editMode)}>
+          <Button size="sm" onClick={() => setEditMode(!editMode)} disabled={!displaySavedWords.length}>
             {
               editMode ? "Done" : "Edit"
             }

@@ -1,3 +1,21 @@
+import {
+  Box,
+  VStack,
+  HStack,
+  Button,
+  Divider,
+  useToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useColorModeValue,
+  ModalBody,
+  ModalFooter
+}
+from "@chakra-ui/react"
 import Mascot                               from "renderer/components/common/Mascot";
 import SearchBar                            from "renderer/components/common/SearchBar"
 import OptionHeader                         from "../../../common/OptionHeader"
@@ -7,15 +25,22 @@ import { HistoryItem }                      from "renderer/types";
 import OptionSubHeader                      from "../../../common/OptionSubHeader";
 import NoResultsMascot                      from "renderer/components/common/NoResultsMascot";
 import HistoryItemDisplay                   from "../common/HistoryItemDisplay";
-import { Box, VStack, HStack, Divider }     from "@chakra-ui/react"
 import { useState, useCallback, useEffect } from "react";
+import SimpleTooltip from "renderer/components/common/SimpleTooltip";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const HistoryOption = () => {
   const store = useStore();
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [editMode, setEditMode] = useState(false)
   const [searchQuery, setSearchQuery] = useState("");
   const [displayHistory, setDisplayHistory] = useState(store.history);
 
-  useEffect(() => {}, [store.history])
+  useEffect(() => {
+    setDisplayHistory(store.history);
+  }, [store.history])
 
   const filterBySearchQuery = (searchQuery: string) => {
     const searchQueryLower = searchQuery.toLowerCase();
@@ -53,7 +78,7 @@ const HistoryOption = () => {
         subtitle="Here you can see the recent text you have copied to the clipboard"
       />
 
-      <HStack justifyContent={"space-between"} marginTop="0.75em">
+      <HStack justifyContent={"space-between"} marginTop="0.75em" paddingRight="1em">
         <OptionSubHeader includePadding title="History Size" info={"The length of your History"} warning="Chaning this to a smaller value will delete out of range history"/>
 
         <SimpleSelect size="sm" options={[
@@ -79,6 +104,25 @@ const HistoryOption = () => {
           setSearchQuery(searchQuery);
           handleSearch(searchQuery);
         }} />
+        <HStack paddingTop="0.75em" width="100%" justifyContent="flex-end">
+          <Button size="sm"
+            onClick={() => {
+              if (editMode) {
+                store.setHistory(displayHistory)
+              }
+              setEditMode(!editMode);
+            }}
+            disabled={!store.history.length}
+          >
+            {editMode ? "Done" : "Edit"}
+          </Button>
+          <Button onClick={() => {
+            onOpen()
+          }}
+          size="sm"
+          disabled={!store.history.length}
+          >Clear History</Button>
+        </HStack>
       </Box>
 
       {
@@ -97,7 +141,28 @@ const HistoryOption = () => {
         {
           displayHistory.map((historyItem: HistoryItem, index) => (
             <Box key={index} width="100%">
-              < HistoryItemDisplay historyItem={historyItem} />
+              <HStack spacing="1em">
+                <HistoryItemDisplay historyItem={historyItem} />
+                {
+                  editMode ? (
+                    <SimpleTooltip label={"Delete item"}>
+                      <Button onClick={() => {
+                        const newHistory = [...displayHistory];
+                        newHistory.splice(index, 1);
+                        setDisplayHistory(newHistory);
+
+                        if (!newHistory.length) {
+                          setEditMode(false);
+                          store.setHistory(newHistory)
+                        }
+
+                      }} size="sm">
+                        <FontAwesomeIcon icon={faTimes} style={{color: "red"}}/>
+                      </Button>
+                    </SimpleTooltip>
+                  ) : null
+                }
+              </HStack>
               {
                 index !== displayHistory.length - 1 ? ( <Divider margin="1em 0"/> ) : null
               }
@@ -105,6 +170,38 @@ const HistoryOption = () => {
           ))
         }
       </VStack>
+
+      <Modal
+        isCentered
+        onClose={onClose}
+        isOpen={isOpen}
+        motionPreset="slideInBottom"
+        blockScrollOnMount={false}
+      >
+        <ModalOverlay />
+        <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
+          <ModalHeader>Are you sure?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            You're about to delete your recent Clipboard TTS history. This action cannot be undone.
+          </ModalBody>
+          <ModalFooter>
+            <Button mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant='ghost' onClick={() => {
+              store.setHistory([])
+              setDisplayHistory([])
+              toast({
+                title: "History Cleared",
+                duration: 5000,
+                isClosable: true,
+              })
+              onClose()
+            }}>I'm sure</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
     </>
   )

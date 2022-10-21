@@ -94,6 +94,10 @@ const SubstitutionsOption = () => {
     debuggingOutput(store.substitutionOptionDebuggingOutput, "substitutionOptionDebuggingOutput", `Substitution removed: ${substitution.before} -> ${substitution.after}`)
 
     setDisplaySubstitutions(sortSubstitutions(substitutions, store.substitutionsSortBy))
+
+    if (!substitutions.length) {
+      setEditMode(false)
+    }
   }, [store.substitutions, store.substitutionsSortBy])
 
   const updateMatchCase = useCallback((substitution: Substitution) => {
@@ -165,7 +169,7 @@ const SubstitutionsOption = () => {
               addMode ? "Hide Add" : "Add"
             }
           </Button>
-          <Button size="sm" onClick={() => {
+          <Button size="sm" disabled={!displaySubstitutions.length} onClick={() => {
 
             if (displaySubstitutions.some(i => !i.before.length)) {
               toast({
