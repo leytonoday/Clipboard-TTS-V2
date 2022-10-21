@@ -138,7 +138,7 @@ const Home: React.FC = () => {
             {
               (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
 
-                <HStack position="absolute" top="-16px" right="-16px" fontFamily="Segoe UI" color={brightnessToTextColour(outputBoxBackground)}>
+                <HStack position="absolute" top="-16px" right="-16px" fontFamily="Segoe UI" color={useColorModeValue("#313131", brightnessToTextColour(outputBoxBackground))}>
 
                   {
                     store.currentLingeringOutput ? (
