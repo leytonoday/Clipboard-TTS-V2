@@ -14,7 +14,7 @@ const Info: React.FC = () => {
       />
 
       <Box margin="0 1em">
-        <OptionSubHeader title={`Version ${CURRENT_VERSION} Beta`} />
+        <OptionSubHeader title={`Version ${CURRENT_VERSION}`} />
         <Box color="grey" fontSize="0.9em" marginTop="0.5em">
           <WhatsNew />
         </Box>

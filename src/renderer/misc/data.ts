@@ -384,10 +384,10 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   newFeatures: [
-    "Added resets to audio configuration sliders, and also made them smoother",
-    "New lines are now reflected in the Output Box. So if you copy multiple paragraphs, it'll be displayed as multiple paragraphs, rather than one big paragraph",
+    "Added 'Clear History' and 'Edit' buttons to the History page, so you can manage your History"
   ],
   bugFixes: [
-    "Added warning that Neural2 is experimental, and thus may sometimes unexpectedly fail",
+    "Fixed bug with the colour picker",
+    "Fixed bug with with download and replay buttons not consistently being a visible colour"
   ],
 }
