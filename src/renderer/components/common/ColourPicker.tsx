@@ -1,5 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { SketchPicker } from 'react-color';
+import { useEffect } from 'react';
 import { css } from '@emotion/css';
 
 interface ColourPickerProps {
@@ -10,6 +11,24 @@ interface ColourPickerProps {
 
 const ColourPicker = (props: ColourPickerProps) => {
   const disabledColour = useColorModeValue("#DDDDDD", "#404040")
+
+  useEffect(() => {
+    // Prevent the text from the inputs being dragged, which triggers the "drag and drop" modal to appear.
+    const ids = ["rc-editable-input-1", "rc-editable-input-2", "rc-editable-input-3", "rc-editable-input-4"]
+    ids.forEach(id => {
+      const element = document.getElementById(id)
+      if (element)
+        element.ondragstart = (e) => e.preventDefault()
+    })
+
+    return () => {
+      ids.forEach(id => {
+        const element = document.getElementById(id)
+        if (element)
+          element.ondragstart = null
+      })
+    }
+  }, [])
 
   return (
     <Box
