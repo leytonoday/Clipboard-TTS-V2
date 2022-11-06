@@ -7,6 +7,7 @@ import {
   dictioaryMutation,
   electronClipboard,
   getLanguageByCode,
+  removePunctuation,
   textToSpeechEnqueue,
   textToSpeechDequeue,
   imageToTextMutation,
@@ -85,6 +86,10 @@ const processText = async (input: ClipboardData): Promise<ProcessTextReturn> => 
 }
 
 const textToSsml = (input: string) => {
+  // If the input is comprised solely of punctuation, return an empty string
+  if (removePunctuation(input).length === 0)
+    return "";
+
   // Get all instances of stoppingPunctuation
   const stoppingPunctuationInstances = input.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
 
@@ -337,7 +342,7 @@ export const useTextToSpeech = () => {
       return
     }
 
-    if (!outputText) { // Incase an imaege is copied, but it has no text
+    if (!outputText) { // Incase an imaege is copied, but it has no text. Or if a text is copied, but it is empty
       store.setTtsLoading(false)
       return
     }
@@ -351,6 +356,12 @@ export const useTextToSpeech = () => {
     }
     else
       output = outputText
+
+    // This happens when the text comprises of only punctuation that is stripped
+    if (removePunctuation(outputText).replaceAll("\n", "").replaceAll("\r", "").length === 0) {
+      store.setTtsLoading(false)
+      return
+    }
 
     let base64AudioData: GetBase64AudioReturn | null = null
 
