@@ -77,7 +77,7 @@ export function optionNameToOnbourdingData(name: string) {
       return { dataStep: 6, dataIntro: `Use this option to Pause / Resume the current speech.` }
     }
     case "Language & Translation": {
-      return { dataStep: 7, dataIntro: `Use this option to change the language and voice of the Text-to-Speech, or to enable tralsation` }
+      return { dataStep: 7, dataIntro: `Use this option to change the language and voice of the Text-to-Speech, or to enable translation` }
     }
     case "Substitutions": {
       return { dataStep: 8, dataIntro: `Use this option to add or remove substitutions. Substitutions are used to replace words or phrases with your custom replacements`}
@@ -86,7 +86,7 @@ export function optionNameToOnbourdingData(name: string) {
       return { dataStep: 9, dataIntro: `Use this option to look up and save words to your own dictionary, or to enable auto dictionary lookup`}
     }
     case "Audio Config": {
-      return { dataStep: 10, dataIntro: `Use this option to maniuplate the speaking rate, speaking pitch, etc.`}
+      return { dataStep: 10, dataIntro: `Use this option to configure the speaking rate, speaking pitch, etc.`}
     }
     case "Highlight": {
       return { dataStep: 11, dataIntro: `Use this option to enable highlighting, to follow along with the speech, or to change the highlight colour`}
