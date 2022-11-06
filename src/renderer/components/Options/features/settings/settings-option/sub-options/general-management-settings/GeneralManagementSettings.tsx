@@ -1,5 +1,4 @@
 import { Box, Divider, VStack }          from '@chakra-ui/react';
-import Pricing          from '../general-management-settings/components/Pricing'
 import Credentials      from './components/Credentials';
 import CharacterLimit   from '../../../common/CharacterLimit';
 import SubOptionHeader  from 'renderer/components/options/common/SubOptionHeader';
@@ -42,8 +41,6 @@ const GeneralManagementSettings = () => {
       <CharacterLimit />
 
       <OrderOfMutations />
-
-      <Pricing />
 
       <Credentials />
 

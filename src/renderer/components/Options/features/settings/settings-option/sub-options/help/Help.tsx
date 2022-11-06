@@ -1,9 +1,10 @@
 import React            from "react"
-import ShortcutsTable   from "../../../common/ShortcutsTable"
-import SubOptionHeader  from "renderer/components/options/common/SubOptionHeader"
+import FAQs from "./components/FAQs"
+import Pricing from "./components/Pricing"
 import Instructions from "./components/Instructions"
 import TipsAndTricks from "./components/TipsAndTricks"
-import FAQs from "./components/FAQs"
+import ShortcutsTable   from "../../../common/ShortcutsTable"
+import SubOptionHeader  from "renderer/components/options/common/SubOptionHeader"
 
 const Help: React.FC = () => {
   return (
@@ -12,7 +13,6 @@ const Help: React.FC = () => {
         title="Help"
         subtitle="Instructions, tips and tricks, FAQs, and keyboard shortcuts"
       />
-
       <Instructions />
 
       <TipsAndTricks />
@@ -21,6 +21,7 @@ const Help: React.FC = () => {
 
       <ShortcutsTable />
 
+      <Pricing />
     </>
   )
 }

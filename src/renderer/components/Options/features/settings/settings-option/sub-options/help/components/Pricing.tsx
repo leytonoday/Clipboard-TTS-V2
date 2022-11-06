@@ -53,7 +53,7 @@ const Pricing = () => {
                 <Thead>
                   <Tr>
                     <Th>Feature</Th>
-                    <Th>Fee per month</Th>
+                    <Th>Free per month</Th>
                     <Th>Price after free usage limit is reached</Th>
                   </Tr>
                 </Thead>
