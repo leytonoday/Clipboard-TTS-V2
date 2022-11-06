@@ -5,6 +5,7 @@ import {
 } from "renderer/misc/constants";
 import {
   translate,
+  escapeRegExp,
   findNthIndex,
   truncateString,
   debuggingOutput,
@@ -200,8 +201,10 @@ export async function substitutionMutation(input: ProcessTextReturn): Promise<Pr
   const substitutions = store.substitutions
   const outputTextCopy = input.text
 
+  console.log("text: " + input.text + ", subs: " + substitutions.map(i => `${i.before} -> ${i.after}`).join(", "));
+
   for (const substitution of substitutions) {
-    const regex = new RegExp(substitution.before, `${substitution.matchCase ? "" : "i"}g`)
+    const regex = new RegExp(escapeRegExp(substitution.before), `${substitution.matchCase ? "" : "i"}g`)
     input.text = input.text.replaceAll(regex, substitution.after)
   }
 

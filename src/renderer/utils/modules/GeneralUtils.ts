@@ -129,6 +129,11 @@ export function trimPunctuation(str: string) {
   return str.replace(/^[.,\/#!?$%\^&\*;:{}=\-_`~()]+|[.,\/#!?$%\^&\*;:{}=\-_`~()]+$/g, "")
 }
 
+// Escape regex special characters, so that substitutions can include regex special characters. Punctuation basically
+export function escapeRegExp(str: string): string {
+  return str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 export class HighlightTimeout {
   private timeoutDuration: number
   private startTime: number
