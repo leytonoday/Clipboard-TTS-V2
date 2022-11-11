@@ -93,10 +93,10 @@ const textToSsml = (input: string) => {
   // Get all instances of stoppingPunctuation
   const stoppingPunctuationInstances = input.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
 
-  const tokens = input.split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).map((i, index) => {
-    i = i.replace(/[\/#$%\^&\*{}=\-_`~]/g,"") // removed , ( ) : ; because they affect
-    return i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i).trim()}`: ""
-  }).filter(i => i !== "")
+  // At the start of each sentence (which was seperated by stopping punctuation) add a "mark" SSML tag. This is used to determinte timepoints for highlighting
+  const tokens = input.split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).map((i, index) =>
+    i.length > 0 ? `<mark name="${index}"/>${escapeHtml(i).trim()}`: ""
+  ).filter(i => i !== "")
 
   const output = []
 
