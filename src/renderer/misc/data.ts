@@ -371,6 +371,22 @@ export const invalidCredentialsToast: UseToastOptions = {
   isClosable: true
 }
 
+export const invalidInputToast: UseToastOptions = {
+  title: "Invalid Input",
+  description: "Input is invalid. Ensure that you have copied UTF-8 text",
+  status: "error",
+  duration: 5000,
+  isClosable: true
+}
+
+export const unknownErrorToast: UseToastOptions = {
+  title: "Unknown Error",
+  description: "An unknown error has occurred. Report this to the developer, with the steps to reproduce this error",
+  status: "error",
+  duration: 5000,
+  isClosable: true
+}
+
 export const networkErrorToast: UseToastOptions = {
   title: "Network Error",
   description: "Ensure you have an internet connection",
