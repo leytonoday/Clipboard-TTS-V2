@@ -81,6 +81,10 @@ export interface ISettingsSlice {
   voiceExampleSentence: string,
   resetSetVoiceExampleSentence: () => void,
   setVoiceExampleSentence: (voiceExampleSentence: string) => void,
+
+  // Preserve Newlines
+  preserveNewlines: boolean,
+  setPreserveNewlines: (preserveNewlines: boolean) => void,
 }
 
 export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
@@ -192,5 +196,12 @@ export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
   setVoiceExampleSentence: (voiceExampleSentence: string) => {
     electronStoreSet("voiceExampleSentence", voiceExampleSentence)
     set(state => ({ ...state, voiceExampleSentence }))
+  },
+
+  // Preserve Newlines
+  preserveNewlines: (electronStoreGet("preserveNewlines") === undefined ? true: electronStoreGet("preserveNewlines")) as boolean,
+  setPreserveNewlines: (preserveNewlines: boolean) => {
+    electronStoreSet("preserveNewlines", preserveNewlines)
+    set(state => ({ ...state, preserveNewlines }))
   }
 })
