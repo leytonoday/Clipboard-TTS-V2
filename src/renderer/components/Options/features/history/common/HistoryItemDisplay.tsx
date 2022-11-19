@@ -1,7 +1,9 @@
 import {
   getFlagUrl,
+  truncateString,
   electronClipboard,
   getVoiceCountryCode,
+  toggleOptionEnabled,
   capitalizeFirstLetter,
 } from "renderer/utils";
 import {
@@ -18,12 +20,13 @@ import {
   HStack,
   Button,
   Spacer,
-  Image
+  useToast
 } from "@chakra-ui/react";
 import SimpleTooltip                from "renderer/components/common/SimpleTooltip";
 import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
 import { HistoryItem, TTSMutation } from "renderer/types";
-import LoadedImage from "renderer/components/common/LoadedImage";
+import LoadedImage                  from "renderer/components/common/LoadedImage";
+import { useStore }                 from "renderer/store";
 
 interface HistoryItemDisplayProps {
   historyItem: HistoryItem,
@@ -31,6 +34,9 @@ interface HistoryItemDisplayProps {
 }
 
 const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
+  const store = useStore();
+  const toast = useToast();
+
   const mutationToIcon: { [key in TTSMutation]: IconDefinition } = {
     "TRANSLATION": faLanguage,
     "SUBSTITUTIONS": faArrowRightArrowLeft,
@@ -43,6 +49,24 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
     "SUBSTITUTIONS": "Substitutions were made to this text",
     "DICTIONARY": "This text was looked up in the dictionary",
     "IMAGE_TO_TEXT": "This text was converted from an image",
+  }
+
+  const copyToClipboard = (text: string) => {
+    if (store.currentlyActiveOptions.includes("Enable / Disable")) {
+      toggleOptionEnabled("Enable / Disable")
+      electronClipboard('electron-clipboard-write-text', text)
+      toggleOptionEnabled("Enable / Disable")
+    } else {
+      electronClipboard('electron-clipboard-write-text', text)
+    }
+
+    toast({
+      title: `Copied to Clipboard`,
+      description: `'${truncateString(capitalizeFirstLetter(text), 50)}' copied to clipboard`,
+      status: "info",
+      duration: 5000,
+      isClosable: true,
+    })
   }
 
   return (
@@ -81,7 +105,7 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
                   }
                 </Box>
                 <SimpleTooltip label="Copy to clipboard">
-                  <Button size="sm" onClick={() => {electronClipboard('electron-clipboard-write-text', props.historyItem.text)}}>
+                  <Button size="sm" onClick={() => copyToClipboard(props.historyItem.text)}>
                     <FontAwesomeIcon icon={faClone} />
                   </Button>
                 </SimpleTooltip>
