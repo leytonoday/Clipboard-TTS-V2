@@ -189,7 +189,7 @@ const Home: React.FC = () => {
                     </Box>
                     <Center>
 
-                    <Box textAlign="center" bg={`${loadingBackground}`} borderRadius="0.25em" width="fit-content" padding="0.25em" marginTop="0.5em">
+                    <Box textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
                       Loading...
                     </Box>
                     </Center>
