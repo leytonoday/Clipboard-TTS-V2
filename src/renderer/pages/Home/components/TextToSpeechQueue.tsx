@@ -51,14 +51,20 @@ const TextToSpeechQueue = () => {
                 <Box marginRight="0.5em">
                   {`${index + 1}.`}
                 </Box>
-                <Box flex={1}>
-                  {
-                    item.mimeType.includes("text/") ? item.data : null
-                  }
-                  {
-                    item.mimeType.includes("image/") ? <Image onDragStart={(e) => e.preventDefault() } style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" /> : null
-                  }
-                </Box>
+                {
+                  item.mimeType.includes("text/") ?
+                    <Box flex={1} width="100%" wordBreak={"break-word"} maxHeight="15em" overflowY="auto">
+                      { item.data }
+                    </Box>
+                  : null
+                }
+                {
+                  item.mimeType.includes("image/") ?
+                    <Box flex={1}>
+                      <Image onDragStart={(e) => e.preventDefault() } style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" />
+                    </Box>
+                  : null
+                }
                 <SimpleTooltip label="Remove from queue">
                   <Button size="sm" onClick={() => removeItemFromQueue(index)}>
                     <FontAwesomeIcon style={{color: "red"}} icon={faTimes} />
