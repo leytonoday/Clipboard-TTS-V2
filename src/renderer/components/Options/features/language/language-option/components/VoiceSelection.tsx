@@ -71,13 +71,14 @@ const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType
   return searchedVoices;
 };
 
-const playVoiceTest = async (voiceName: string, voiceGender: string) => {
-  debuggingOutput(useStore.getState().languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Playing voice test for ${voiceName}, ${voiceGender}`)
+const playExampleSentence = async (voiceName: string, voiceGender: string) => {
+  const store = useStore.getState()
+  debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Playing voice test for ${voiceName}, ${voiceGender}`)
 
   const targetLanguageCode = voiceName.substring(0, voiceName.indexOf("-"))
 
   const base64Audio = await getBase64Audio({
-    input: targetLanguageCode === "en" ? "This is an example sentence": (await translate("This is an example sentence", targetLanguageCode, "en")).text,
+    input: (await translate(store.voiceExampleSentence, targetLanguageCode)).text,
     voice: { name: voiceName, languageCode: getVoiceLanguageCode(voiceName), ssmlGender: voiceGender },
   }) as string
   const audio = new Audio(base64Audio);
@@ -227,8 +228,8 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                           }
                         </Td>
                         <Td>
-                          <SimpleTooltip label={"Play test"}>
-                            <Button borderRadius="100%" fontSize="0.75em" onClick={(e) => { playVoiceTest(voice.name, voice.ssmlGender); e.stopPropagation() }}>
+                          <SimpleTooltip label={"Play example sentence"}>
+                            <Button borderRadius="100%" fontSize="0.75em" onClick={(e) => { playExampleSentence(voice.name, voice.ssmlGender); e.stopPropagation() }}>
                               <FontAwesomeIcon icon={faPlay} />
                             </Button>
                           </SimpleTooltip>
@@ -429,7 +430,7 @@ const VoiceSelection = () => {
             <Modal size="2xl" isOpen={isOpen} onClose={closeVoiceModal} motionPreset="slideInBottom" blockScrollOnMount={false} isCentered>
               <ModalOverlay />
               <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')} overflowY="hidden">
-                <ModalHeader>{selectedLanguage}</ModalHeader>
+                <ModalHeader>{`${tabNames[languageTabIndex]} - ${selectedLanguage}`}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody overflowY="auto" maxHeight="30em" minHeight="30em">
                   <Tabs isLazy variant={"soft-rounded"} index={voiceTabIndex} onChange={(index) => setVoiceTabIndex(index)}>

@@ -74,6 +74,11 @@ export interface ISettingsSlice {
   // Output Linger
   outputLingerEnabled: boolean,
   setOutputLingerEnabled: (outputLingerEnabled: boolean) => void,
+
+
+  // Voice Example Sentence
+  voiceExampleSentence: string,
+  setVoiceExampleSentence: (voiceExampleSentence: string) => void,
 }
 
 export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
@@ -173,5 +178,13 @@ export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
   setOutputLingerEnabled: (outputLingerEnabled: boolean) => {
     electronStoreSet("outputLingerEnabled", outputLingerEnabled)
     set(state => ({ ...state, outputLingerEnabled }))
+  },
+
+
+  // Voice Example Sentence
+  voiceExampleSentence: (electronStoreGet("voiceExampleSentence") || "This is an example sentence") as string,
+  setVoiceExampleSentence: (voiceExampleSentence: string) => {
+    electronStoreSet("voiceExampleSentence", voiceExampleSentence)
+    set(state => ({ ...state, voiceExampleSentence }))
   }
 })

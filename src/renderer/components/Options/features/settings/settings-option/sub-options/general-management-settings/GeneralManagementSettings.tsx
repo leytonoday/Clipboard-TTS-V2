@@ -4,6 +4,7 @@ import CharacterLimit   from '../../../common/CharacterLimit';
 import SubOptionHeader  from 'renderer/components/options/common/SubOptionHeader';
 import OrderOfMutations from './components/OrderOfMutations';
 import FactoryDataReset from './components/FactoryDataReset';
+import VoiceExampleSentence from "./components/VoiceExampleSentence";
 import SimpleSwitch from 'renderer/components/common/SimpleSwitch';
 import { useStore } from 'renderer/store';
 
@@ -43,6 +44,8 @@ const GeneralManagementSettings = () => {
       <OrderOfMutations />
 
       <Credentials />
+
+      <VoiceExampleSentence />
 
       <FactoryDataReset />
 
