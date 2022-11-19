@@ -12,6 +12,8 @@ import {
   useDisclosure,
   ModalCloseButton,
   useColorModeValue,
+  Flex,
+  Spacer,
 } from '@chakra-ui/react';
 import { useStore }     from 'renderer/store';
 import { useState }     from 'react';
@@ -39,6 +41,18 @@ const VoiceExampleSentence = () => {
     onClose();
   }
 
+  const reset = () => {
+    store.resetSetVoiceExampleSentence();
+
+    toast({
+      title: "Voice example sentence reset",
+      description: "Voice example sentence has been reset to default",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
   return (
     <Box>
       <Box>
@@ -64,6 +78,10 @@ const VoiceExampleSentence = () => {
             <p style={{marginBottom: "1em"}}>
               Sentence that is used when you click on the "Play" button in the voice selection, to test the voice.
             </p>
+            <Flex width="100%" marginBottom="1em">
+              <Spacer />
+              <Button size="sm" onClick={() => reset()}>Reset</Button>
+            </Flex>
             <form onSubmit={(e) => { e.preventDefault(); saveOnClose() }} >
               <Input placeholder="Enter Voice Example Sentence" value={voiceExampleSentence} variant="filled" onChange={handleInput} />
             </form>

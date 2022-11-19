@@ -2,7 +2,8 @@ import {
   options,
   defaultAccent,
   optionsDefaultOrder,
-  defaultOrderOfMutations
+  defaultOrderOfMutations,
+  defaultVoiceExampleSentence
 } from "renderer/misc/data"
 import {
   Theme,
@@ -78,6 +79,7 @@ export interface ISettingsSlice {
 
   // Voice Example Sentence
   voiceExampleSentence: string,
+  resetSetVoiceExampleSentence: () => void,
   setVoiceExampleSentence: (voiceExampleSentence: string) => void,
 }
 
@@ -182,7 +184,11 @@ export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
 
 
   // Voice Example Sentence
-  voiceExampleSentence: (electronStoreGet("voiceExampleSentence") || "This is an example sentence") as string,
+  voiceExampleSentence: (electronStoreGet("voiceExampleSentence") || defaultVoiceExampleSentence) as string,
+  resetSetVoiceExampleSentence: () => {
+    electronStoreSet("voiceExampleSentence", defaultVoiceExampleSentence)
+    set(state => ({ ...state, voiceExampleSentence: defaultVoiceExampleSentence }))
+  },
   setVoiceExampleSentence: (voiceExampleSentence: string) => {
     electronStoreSet("voiceExampleSentence", voiceExampleSentence)
     set(state => ({ ...state, voiceExampleSentence }))

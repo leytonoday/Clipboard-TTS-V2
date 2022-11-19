@@ -407,3 +407,5 @@ export const whatsNewData: WhatsNewData = {
     "Fixed bug with with download and replay buttons not consistently being a visible colour"
   ],
 }
+
+export const defaultVoiceExampleSentence = "This is an example sentence, demonstrating this voice.";
