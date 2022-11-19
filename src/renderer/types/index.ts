@@ -55,7 +55,8 @@ export type GetBase64AudioArgs = {
   apiKey?: string;
   includeTimepoints?: boolean;
   voice?: { name: string; languageCode: string; ssmlGender: string; };
-  isSsml?: boolean
+  isSsml?: boolean;
+  isAnnouncement?: boolean;
 }
 export type GetBase64AudioReturn = { audioContent: string; timepoints: any };
 

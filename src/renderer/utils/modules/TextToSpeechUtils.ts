@@ -58,19 +58,33 @@ export const getBase64Audio = async (args: GetBase64AudioArgs): Promise<string |
   const apiKey = !args.apiKey ? store.apiKey : args.apiKey
   let reply = null
   try {
-    reply = (await axios.post(`${TEXT_TO_SPEECH_URL}${apiKey}`, {
-      input: args.isSsml ? { ssml: args.input } : { text: args.input },
-      voice: args.voice || { name: store.voice.name, languageCode: store.voice.languageCodes[0], ssmlGender: store.voice.ssmlGender },
-      audioConfig: {
-        audioEncoding: "OGG_OPUS",
-        speakingRate: store.speakingRate,
-        pitch: store.speakingPitch,
-        volumeGainDb: store.volumeGainDb,
-        effectsProfileId: [store.audioProfile],
-        sampleRateHertz: store.sampleRate
-      },
-      enableTimePointing: ["SSML_MARK"]
-    })).data
+    if (args.isAnnouncement) {
+      reply = (await axios.post(`${TEXT_TO_SPEECH_URL}${apiKey}`, {
+        input: { text: args.input },
+        voice: args.voice || { name: store.voice.name, languageCode: store.voice.languageCodes[0], ssmlGender: store.voice.ssmlGender },
+        audioConfig: {
+          audioEncoding: "OGG_OPUS",
+          speakingRate: 1.0,
+          pitch: 0,
+          volumeGainDb: 0,
+        },
+      })).data
+    }
+    else {
+      reply = (await axios.post(`${TEXT_TO_SPEECH_URL}${apiKey}`, {
+        input: args.isSsml ? { ssml: args.input } : { text: args.input },
+        voice: args.voice || { name: store.voice.name, languageCode: store.voice.languageCodes[0], ssmlGender: store.voice.ssmlGender },
+        audioConfig: {
+          audioEncoding: "OGG_OPUS",
+          speakingRate: store.speakingRate,
+          pitch: store.speakingPitch,
+          volumeGainDb: store.volumeGainDb,
+          effectsProfileId: [store.audioProfile],
+          sampleRateHertz: store.sampleRate
+        },
+        enableTimePointing: ["SSML_MARK"]
+      })).data
+    }
   } catch(e) {
     throw e
   }
@@ -100,10 +114,10 @@ export function getAnnouncement(key: string, includedValue: string, notIncludedV
   return store.currentlyActiveOptions.includes(key) ? includedValue : notIncludedValue
 }
 
-export async function playBase64Audio(input: string): Promise<void> {
+export async function playBase64Audio(input: string, isAnnouncement = false): Promise<void> {
   let audioContent = null;
   try {
-    audioContent = await getBase64Audio({input, isSsml: false});
+    audioContent = await getBase64Audio({input, isSsml: false, isAnnouncement});
   } catch (e) {
     throw e
   }

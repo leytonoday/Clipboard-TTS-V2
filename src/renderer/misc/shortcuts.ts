@@ -33,7 +33,7 @@ const shortcuts: Shortcut[] = [
       const announcement = getAnnouncement("Enable / Disable", "Enabled", "Disabled")
       try {
         const translatedAnnouncement = await translateAnnouncement(announcement)
-        await playBase64Audio(translatedAnnouncement);
+        await playBase64Audio(translatedAnnouncement, true);
       } catch {}
     },
     commandName: "Enable / Disable",
@@ -84,7 +84,7 @@ const shortcuts: Shortcut[] = [
       const announcement = translationEnabled ? "Translation disabled" : "Translation enabled"
       try {
         const translatedAnnouncement = await translateAnnouncement(announcement)
-        await playBase64Audio(translatedAnnouncement);
+        await playBase64Audio(translatedAnnouncement, true);
       } catch {}
     },
     commandName: "Toggle Auto Dictionary",
@@ -103,7 +103,7 @@ const shortcuts: Shortcut[] = [
       const announcement = substitutionsEnabled ? "Substitutions disabled" : "Substitutions enabled"
       try {
         const translatedAnnouncement = await translateAnnouncement(announcement)
-        await playBase64Audio(translatedAnnouncement);
+        await playBase64Audio(translatedAnnouncement, true);
       } catch {}
     },
     commandName: "Toggle Translation",
@@ -122,7 +122,7 @@ const shortcuts: Shortcut[] = [
       const announcement = autoDictionary ? "Auto dictionary disabled" : "Auto dictionary enabled"
       try {
         const translatedAnnouncement = await translateAnnouncement(announcement)
-        await playBase64Audio(translatedAnnouncement);
+        await playBase64Audio(translatedAnnouncement, true);
       } catch {}
     },
     commandName: "Toggle Substitutions",
