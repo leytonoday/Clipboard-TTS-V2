@@ -400,11 +400,16 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   newFeatures: [
-    "Added 'Clear History' and 'Edit' buttons to the History page, so you can manage your History"
+    "'Copy to Clipboard' button on History now no longer adds the copied text to the text-to-speech queue",
+    "Seperate button added for replaying history items (instead of using the 'Copy to Clipboard' button",
+    "Preserve New Lines option added, to toggle the preservation of new lines and formatting when displaying copied text to the output box",
+    "Added voice Voice Example Sentence, so you can customize the sentence you hear to test a voice",
   ],
   bugFixes: [
-    "Fixed bug with the colour picker",
-    "Fixed bug with with download and replay buttons not consistently being a visible colour"
+    "Anouncements are no longer affected by the audio configuration",
+    "Fixed bug where the colour of the 'Loading...' text was not visible when using dark theme with a dark overlay",
+    "Fixed bug where punctuation was being stripped from the copied text when highlighting was enabled",
+    "Fixed a few small spelling mistakes"
   ],
 }
 
