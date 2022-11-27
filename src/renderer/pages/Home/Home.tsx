@@ -124,7 +124,7 @@ const Home: React.FC = () => {
           data-step={1}
           data-intro={`
             This is the <b>Output Box</b>. All text output will be displayed here. For example, if you copy some text and have highlighting enabled, the text will be
-            highlighted here. You can drag and drop files onto this box to conver them to text.
+            highlighted here. You can drag and drop files onto this box to convert them to text.
           `}
           className="outputBox"
           bg={outputBoxBackground}

@@ -5,6 +5,7 @@ import {
   getVoiceCountryCode,
   toggleOptionEnabled,
   capitalizeFirstLetter,
+  textToSpeechEnqueue
 } from "renderer/utils";
 import {
   faBook,
@@ -12,6 +13,7 @@ import {
   faClone,
   faLanguage,
   IconDefinition,
+  faArrowRotateLeft,
   faArrowRightArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -104,6 +106,11 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
                     `${props.historyItem.timestamp}`
                   }
                 </Box>
+                <SimpleTooltip label="Replay">
+                  <Button size="sm" onClick={() => textToSpeechEnqueue({ data: props.historyItem.text, mimeType: "text/plain" })}>
+                    <FontAwesomeIcon icon={faArrowRotateLeft} />
+                  </Button>
+                </SimpleTooltip>
                 <SimpleTooltip label="Copy to clipboard">
                   <Button size="sm" onClick={() => copyToClipboard(props.historyItem.text)}>
                     <FontAwesomeIcon icon={faClone} />
