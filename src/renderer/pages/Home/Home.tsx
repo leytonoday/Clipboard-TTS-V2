@@ -184,12 +184,14 @@ const Home: React.FC = () => {
                 <VStack width="100%" height="100%" position="absolute" justifyContent="center" alignItems="center">
                   <ScaleFade in={store.ttsLoading} initialScale={0.6}>
                     <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
-                      backdropFilter='blur(10px)' bg={`${loadingBackground}`}>
+                      backdropFilter='blur(10px)' bg={`${loadingBackground}`}
+                      boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)"
+                      >
                       <ScaleLoader color={store.accent} loading={store.ttsLoading} width="10px" height="100px" />
                     </Box>
                     <Center>
 
-                    <Box textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
+                    <Box boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)" textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
                       Loading...
                     </Box>
                     </Center>
