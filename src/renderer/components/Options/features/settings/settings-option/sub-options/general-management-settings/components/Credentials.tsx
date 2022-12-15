@@ -12,6 +12,8 @@ import {
   useDisclosure,
   ModalCloseButton,
   useColorModeValue,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 import { faKey }        from "@fortawesome/free-solid-svg-icons"
 import { useStore }     from 'renderer/store';
@@ -22,6 +24,7 @@ const Credentials = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const store = useStore();
 
+  const [isTextVisible, setIsTextVisible] = useState(false);
   const [apiKey, setApiKey] = useState(store.apiKey)
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +71,15 @@ const Credentials = () => {
               An API key to a Google Cloud Project that has the following APIs enabled: Cloud Text-to-Speech API, Cloud Vision API, and Cloud Translation API
             </p>
             <form onSubmit={(e) => { e.preventDefault(); saveOnClose() }} >
-              <Input type="password" placeholder="Enter API Key" value={apiKey} variant="filled" onChange={handleInput} />
+
+              <InputGroup size='md'>
+                <Input type={isTextVisible ? 'text' : 'password'} placeholder="Enter API Key" value={apiKey} variant="filled" onChange={handleInput} paddingRight="4.25em" />
+                <InputRightElement width='4.5rem' marginLeft="0.25em">
+                  <Button h='1.75rem' size='sm' onClick={() => setIsTextVisible(!isTextVisible)}>
+                    {isTextVisible ? 'Hide' : 'Show'}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </form>
           </ModalBody>
         </ModalContent>
