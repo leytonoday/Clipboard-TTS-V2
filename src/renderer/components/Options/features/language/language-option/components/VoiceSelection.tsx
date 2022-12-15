@@ -54,7 +54,8 @@ import LoadedImage from 'renderer/components/common/LoadedImage';
 const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType: VoiceType | null = null) => {
   const searchedVoices: TextToSpeechVoices = {};
 
-  Object.keys(voices).forEach((language) => {
+  const sortedVoices = Object.keys(voices).sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+  sortedVoices.forEach((language) => {
     voices[language].forEach(voice => {
       const languageDescription = voice.languageDescriptions[0].toLowerCase()
       const languageName = voice.name
@@ -65,7 +66,6 @@ const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType
         searchedVoices[language].push(voice)
       }
     })
-
   });
 
   return searchedVoices;
