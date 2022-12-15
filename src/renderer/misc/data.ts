@@ -399,18 +399,13 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
-  newFeatures: [
-    "'Copy to Clipboard' button on History now no longer adds the copied text to the text-to-speech queue",
-    "Seperate button added for replaying history items (instead of using the 'Copy to Clipboard' button",
-    "Preserve New Lines option added, to toggle the preservation of new lines and formatting when displaying copied text to the output box",
-    "Added voice Voice Example Sentence, so you can customize the sentence you hear to test a voice",
-  ],
   bugFixes: [
-    "Anouncements are no longer affected by the audio configuration",
-    "Fixed bug where the colour of the 'Loading...' text was not visible when using dark theme with a dark overlay",
-    "Fixed bug where punctuation was being stripped from the copied text when highlighting was enabled",
-    "Fixed a few small spelling mistakes"
+    "Fixed bug where output box buttons would go offscreen when text in output box too large. Also adjusted padding in output box"
   ],
+  notes: [
+    "Added shadow to loading circle",
+    "Removed the save and cancel buttons from some modals."
+  ]
 }
 
 export const defaultVoiceExampleSentence = "This is an example sentence, demonstrating this voice.";
