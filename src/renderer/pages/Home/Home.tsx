@@ -8,11 +8,8 @@ import {
 import {
   Box,
   Button,
-  VStack,
   HStack,
-  ScaleFade,
   useColorModeValue,
-  Center,
 } from '@chakra-ui/react';
 import {
   faArrowRotateLeft,
@@ -25,7 +22,6 @@ import {
 import parseHtml            from 'html-react-parser';
 import { css }              from '@emotion/css';
 import OptionsBar           from '../../components/options/OptionsBar';
-import ScaleLoader          from 'react-spinners/ScaleLoader';
 import { useStore }         from 'renderer/store';
 import SimpleTooltip        from 'renderer/components/common/SimpleTooltip';
 import WhatsNewModal        from 'renderer/components/WhatsNewModal';
@@ -36,6 +32,8 @@ import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 
 import { stoppingPunctuation } from 'renderer/misc/data';
+import LoadingCircle from 'renderer/components/LoadingCircle';
+import OutputBoxButtons from 'renderer/components/OutputBoxButtons';
 
 const modifyOutputText = (outputText: string): string => {
   const store = useStore.getState()
@@ -107,8 +105,6 @@ const Home: React.FC = () => {
   const highlightTextColour = store.highlightEnabled && store.autoHighlightTextColour ? brightnessToTextColour(store.currentHighlight) : "undefined"
   const overlayTextColour = store.overlayEnabled && store.autoOverlayTextColour ? brightnessToTextColour(store.currentOverlay) : "undefined"
 
-  const loadingBackground = useColorModeValue("#EEEEEE", '#171717')
-
   return (
     <>
       <DragAndDropModal />
@@ -132,75 +128,31 @@ const Home: React.FC = () => {
           margin="1em"
         >
           {/* The css is here because if not, the textColour doesn't change when "autoHighlightTextColour is changed. Must wait until tts is done. This enabled Live Highlighting" */}
-          <Box position="relative" width="100%" height="100%" className={css`.highlighted { color: ${highlightTextColour}; }`} letterSpacing={store.fontSpacing} fontSize={`${store.fontSize}em`} fontFamily={store.font}
-            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "20px" : "0em"}` }
+          <Box
+            className={css`.highlighted { color: ${highlightTextColour}; }`}
+            letterSpacing={store.fontSpacing}
+            fontSize={`${store.fontSize}em`}
+            fontFamily={store.font}
+            position="relative"
+            width="100%"
+            height="100%"
+            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1em" : "0em"}` }
             >
             {
               (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
-
-                <HStack position="absolute" top="-16px" right="-16px" fontFamily="Segoe UI" color={useColorModeValue("#313131", brightnessToTextColour(outputBoxBackground))}>
-
-                  {
-                    store.currentLingeringOutput ? (
-                      <SimpleTooltip label="Download">
-                        <Button size="sm" borderRadius="full" onClick={() => {
-                          debuggingOutput(store.outputLingerDebuggingOutput, "outputLingerDebuggingOutput", "Lingered output downloaded")
-                          downloadOggAudio(store.currentLingeringOutput!.audioContent, store.currentLingeringOutput!.text)
-                        }}>
-                          <FontAwesomeIcon icon={faDownload} />
-                        </Button>
-                      </SimpleTooltip>
-                    ) : null
-                  }
-
-                  {
-                    store.currentLingeringOutput ? (
-                      <SimpleTooltip label="Replay">
-                        <Button size="sm" borderRadius="full" onClick={() => {
-                          debuggingOutput(store.outputLingerDebuggingOutput, "outputLingerDebuggingOutput", "Lingered output replayed")
-                          useStore.setState({ ...store, replaySpeech: store.replaySpeech + 1 }) // Increment this to act as an event emitter
-                        }}>
-                          <FontAwesomeIcon icon={faArrowRotateLeft} />
-                        </Button>
-                      </SimpleTooltip>
-                    ) : null
-                  }
-
-                  {
-                    store.textToSpeechQueue.length > 0 ? (
-                      <Button size="sm" borderRadius="full" onClick={() => {
-                        store.setCurrentOpenOptionPath("text-to-speech-queue")
-                      }}>
-                        Queued: {store.textToSpeechQueue.length}
-                      </Button>
-                    ) : null
-                  }
-                </HStack>
+                <OutputBoxButtons backgroundColour={outputBoxBackground}/>
               ) : null
             }
 
             {
               store.ttsLoading ? (
-                <VStack width="100%" height="100%" position="absolute" justifyContent="center" alignItems="center">
-                  <ScaleFade in={store.ttsLoading} initialScale={0.6}>
-                    <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
-                      backdropFilter='blur(10px)' bg={`${loadingBackground}`}
-                      boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)"
-                      >
-                      <ScaleLoader color={store.accent} loading={store.ttsLoading} width="10px" height="100px" />
-                    </Box>
-                    <Center>
-
-                    <Box boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)" textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
-                      Loading...
-                    </Box>
-                    </Center>
-                  </ScaleFade>
-                </VStack>
+                <LoadingCircle />
               ) : null
             }
 
-            { outputText && parseHtml(modifyOutputText(outputText)) }
+            <Box overflowY="auto" maxHeight="100%">
+              { outputText && parseHtml(modifyOutputText(outputText)) }
+            </Box>
 
           </Box>
         </Box>

@@ -25,7 +25,7 @@ body,
 
 .outputBox {
   border-radius: 0.5em;
-  padding: 2em;
+  padding: 1.75em 1em 1.75em 1.75em;
   text-align: left;
   /* border: #AAAAAA 1px solid; */
   overflow-wrap: break-word;
