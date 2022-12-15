@@ -38,12 +38,6 @@ const CharacterLimit = () => {
       setCharacterLimit(e.target.value);
   }
 
-  const cancelOnClose = () => {
-    setCharacterLimit(store.characterLimit.toString());
-    store.setIsModalOpen(false);
-    onClose();
-  }
-
   const saveOnClose = () => {
     store.setCharacterLimit(parseInt(characterLimit));
     store.setIsModalOpen(false);
@@ -63,7 +57,7 @@ const CharacterLimit = () => {
       />
       <Modal
         isCentered
-        onClose={cancelOnClose}
+        onClose={saveOnClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
@@ -72,7 +66,7 @@ const CharacterLimit = () => {
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
           <ModalHeader>Character Limit</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody padding="1em">
             <p style={{marginBottom: "1em"}}>
               The maximum number of characters that can be spoken at once. It is wise to keep this number on the low side,
               to prevent yourself from getting lost in the middle of a sentence, and to prevent unnecessary costs.
@@ -81,12 +75,6 @@ const CharacterLimit = () => {
               <Input placeholder="Enter character limit" value={characterLimit} type="number" variant="filled" onChange={handleInput} />
             </form>
           </ModalBody>
-          <ModalFooter>
-            <Button mr={3} onClick={cancelOnClose}>
-              Cancel
-            </Button>
-            <Button variant='ghost' onClick={saveOnClose} disabled={characterLimit === ""}>Save</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>

@@ -65,11 +65,6 @@ const OrderOfMutations = () => {
     "IMAGE_TO_TEXT": faImage,
   }
 
-  const cancelOnClose = () => {
-    setOrderOfMutations(store.orderOfMutations);
-    onClose();
-  }
-
   const saveOnClose = async () => {
     store.setOrderOfMutations(orderOfMutations);
     onClose();
@@ -113,7 +108,7 @@ const OrderOfMutations = () => {
       />
       <Modal
         isCentered
-        onClose={cancelOnClose}
+        onClose={saveOnClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
@@ -123,7 +118,7 @@ const OrderOfMutations = () => {
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
           <ModalHeader>Order of Mutations</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody padding="1em">
             <p style={{marginBottom: "0.5em"}}>
               The order of mutations is the order in which mutations are applied to copied data. For example, what comes first, the substitution
               or the translation? Customize this by dragging and dropping the mutations in the order you want them to be applied. Image to text
@@ -179,12 +174,6 @@ const OrderOfMutations = () => {
             </DragDropContext>
 
           </ModalBody>
-          <ModalFooter>
-            <Button mr={3} onClick={cancelOnClose}>
-              Cancel
-            </Button>
-            <Button variant='ghost' onClick={saveOnClose}>Save</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

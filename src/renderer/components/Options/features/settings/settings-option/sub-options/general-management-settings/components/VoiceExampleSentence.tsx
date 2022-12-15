@@ -31,11 +31,6 @@ const VoiceExampleSentence = () => {
     setVoiceExampleSentence(e.target.value)
   }
 
-  const cancelOnClose = () => {
-    setVoiceExampleSentence(store.voiceExampleSentence);
-    onClose();
-  }
-
   const saveOnClose = async () => {
     store.setVoiceExampleSentence(voiceExampleSentence);
     onClose();
@@ -65,7 +60,7 @@ const VoiceExampleSentence = () => {
       </Box>
       <Modal
         isCentered
-        onClose={cancelOnClose}
+        onClose={saveOnClose}
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
@@ -74,7 +69,7 @@ const VoiceExampleSentence = () => {
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
           <ModalHeader>Voice Example Sentence</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody padding="1em">
             <p style={{marginBottom: "1em"}}>
               Sentence that is used when you click on the "Play" button in the voice selection, to test the voice.
             </p>
@@ -86,12 +81,6 @@ const VoiceExampleSentence = () => {
               <Input placeholder="Enter Voice Example Sentence" value={voiceExampleSentence} variant="filled" onChange={handleInput} />
             </form>
           </ModalBody>
-          <ModalFooter>
-            <Button mr={3} onClick={cancelOnClose}>
-              Cancel
-            </Button>
-            <Button variant='ghost' onClick={saveOnClose}>Save</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>
