@@ -23,6 +23,8 @@ import {
 import axios        from "axios"
 import { useStore } from "renderer/store"
 import dateFormat   from "dateformat"
+import { UseToastOptions, ToastId } from "@chakra-ui/react";
+import { invalidCredentialsToast, invalidInputToast, networkErrorToast, unknownErrorToast, unsupportedTranslationToast } from "renderer/misc/data";
 
 export function isApiKeySet(): boolean {
   const apiKey = useStore.getState().apiKey
@@ -261,4 +263,20 @@ export async function downloadOggAudio(audioContent: string, text: string) {
   link.href = audioContent
   link.download = `${dateFormat(new Date(), "[dd-mm-yy][H-MM]").trim()} - ${useStore.getState().voice.name} - ${truncateString(text, 50)}.ogg`
   link.click()
+}
+
+// Messy logic here. Whatever, just handle the error and display a decent error message. Not really much I could do to make it cleaner
+export function errorRequestToNotification(e: any, toast: (options?: UseToastOptions | undefined) => ToastId): void {
+  if (e.status === "ERR_NETWORK" || e.code === "ERR_NETWORK")
+      toast(networkErrorToast)
+  else if (e.status && e.status === "INVALID_ARGUMENT") {
+    if (e.message.includes("API key not valid"))
+      toast(invalidCredentialsToast)
+    else if (e.message.includes("Can't process the input"))
+      toast(invalidInputToast)
+  }
+  else if (e.message && e.message.includes("Bad language pair"))
+    toast(unsupportedTranslationToast)
+  else
+    toast(unknownErrorToast)
 }

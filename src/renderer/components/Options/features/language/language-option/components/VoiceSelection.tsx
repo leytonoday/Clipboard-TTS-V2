@@ -37,6 +37,7 @@ import {
   getVoiceCountryCode,
   countryCodeToCountry,
   getVoiceLanguageCode,
+  errorRequestToNotification
 } from "renderer/utils";
 import Mascot                                                       from 'renderer/components/common/Mascot';
 import SearchBar                                                    from "renderer/components/common/SearchBar"
@@ -62,7 +63,7 @@ const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType
 
       if ((searchQuery === "" || languageDescription.includes(searchQuery.toLowerCase())) && (voiceType === null || languageName.includes(voiceType))) {
         if (searchedVoices[language] === undefined)
-          searchedVoices[language] = []
+        searchedVoices[language] = []
         searchedVoices[language].push(voice)
       }
     })
@@ -71,18 +72,23 @@ const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType
   return searchedVoices;
 };
 
-const playExampleSentence = async (voiceName: string, voiceGender: string) => {
+const playExampleSentence = async function (voiceName: string, voiceGender: string, toast: any) {
   const store = useStore.getState()
   debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", `Playing voice test for ${voiceName}, ${voiceGender}`)
 
   const targetLanguageCode = voiceName.substring(0, voiceName.indexOf("-"))
 
-  const base64Audio = await getBase64Audio({
-    input: (await translate(store.voiceExampleSentence, targetLanguageCode)).text,
-    voice: { name: voiceName, languageCode: getVoiceLanguageCode(voiceName), ssmlGender: voiceGender },
-  }) as string
-  const audio = new Audio(base64Audio);
-  audio.play()
+  try {
+    const base64Audio = await getBase64Audio({
+      input: (await translate(store.voiceExampleSentence, targetLanguageCode)).text,
+      voice: { name: voiceName, languageCode: getVoiceLanguageCode(voiceName), ssmlGender: voiceGender },
+    }) as string
+    const audio = new Audio(base64Audio);
+    audio.play()
+  }
+  catch (e: any) {
+    errorRequestToNotification((e.response.data && e.response.data.error) || e, toast)
+  }
 }
 
 
@@ -156,7 +162,7 @@ const getVoiceTabList = (selectedLanguageVoices: TextToSpeechVoice[], tabTextCol
     </TabList>
   )
 }
-const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentVoiceElement: React.RefObject<HTMLTableRowElement>, rowHoverColour: string) => {
+const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentVoiceElement: React.RefObject<HTMLTableRowElement>, rowHoverColour: string, toast: any) => {
   const store = useStore.getState()
 
   const genders = [... new Set(selectedLanguageVoices.map(voice => voice.ssmlGender))].sort()
@@ -229,7 +235,7 @@ const getVoiceTabPanels = (selectedLanguageVoices: TextToSpeechVoice[], currentV
                         </Td>
                         <Td>
                           <SimpleTooltip label={"Play example sentence"}>
-                            <Button borderRadius="100%" fontSize="0.75em" onClick={(e) => { playExampleSentence(voice.name, voice.ssmlGender); e.stopPropagation() }}>
+                            <Button borderRadius="100%" fontSize="0.75em" onClick={(e) => { playExampleSentence(voice.name, voice.ssmlGender, toast); e.stopPropagation() }}>
                               <FontAwesomeIcon icon={faPlay} />
                             </Button>
                           </SimpleTooltip>
@@ -435,7 +441,7 @@ const VoiceSelection = () => {
                 <ModalBody overflowY="auto" maxHeight="28em" minHeight="28em">
                   <Tabs isLazy variant={"soft-rounded"} index={voiceTabIndex} onChange={(index) => setVoiceTabIndex(index)}>
                     { getVoiceTabList(selectedLanguageVoices, tabTextColour) }
-                    { getVoiceTabPanels(selectedLanguageVoices, currentVoiceElement, rowHoverColour) }
+                    { getVoiceTabPanels(selectedLanguageVoices, currentVoiceElement, rowHoverColour, toast) }
                   </Tabs>
                 </ModalBody>
               </ModalContent>

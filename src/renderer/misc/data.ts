@@ -394,6 +394,14 @@ export const unknownErrorToast: UseToastOptions = {
   isClosable: true
 }
 
+export const unsupportedTranslationToast: UseToastOptions = {
+  title: "Unsupported Translation",
+  description: "The language you're trying to translate to is not supported by Google Cloud Translation API. Disable Translation when using this language. Example sentence will also fail to translate",
+  status: "error",
+  duration: 5000,
+  isClosable: true
+}
+
 export const networkErrorToast: UseToastOptions = {
   title: "Network Error",
   description: "Ensure you have an internet connection",

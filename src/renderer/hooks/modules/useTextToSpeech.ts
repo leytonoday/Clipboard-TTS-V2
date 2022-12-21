@@ -15,6 +15,7 @@ import {
   translationMutation,
   substitutionMutation,
   getVoiceLanguageCode,
+  errorRequestToNotification
 } from "renderer/utils"
 import {
   ClipboardData,
@@ -26,7 +27,7 @@ import dateFormat                       from "dateformat"
 import { useStore }                     from "renderer/store"
 import { useToast }                     from "@chakra-ui/react"
 import { useState, useEffect, useRef }  from "react"
-import { invalidCredentialsToast, invalidInputToast, networkErrorToast, stoppingPunctuation, unknownErrorToast } from "renderer/misc/data"
+import { stoppingPunctuation } from "renderer/misc/data"
 
 const addToHistory = (historyItem: HistoryItem) => {
   const store = useStore.getState()
@@ -257,20 +258,6 @@ export const useTextToSpeech = () => {
     })
   }, [])
 
-  // Messy logic here. Whatever, just handle the error and display a decent error message. Not really much I could do to make it cleaner
-  const errorHandleRequest = (e: any) => {
-    if (e.status === "ERR_NETWORK" || e.code === "ERR_NETWORK")
-        toast(networkErrorToast)
-    else if (e.status === "INVALID_ARGUMENT") {
-      if (e.message.includes("API key not valid"))
-        toast(invalidCredentialsToast)
-      else if (e.message.includes("Can't process the input"))
-        toast(invalidInputToast)
-    }
-    else
-      toast(unknownErrorToast)
-  }
-
   const pollForClipboardQueue = () => {
     setInterval(async () => {
       const store = useStore.getState()
@@ -349,7 +336,7 @@ export const useTextToSpeech = () => {
       }
 
     } catch (e: any) {
-      errorHandleRequest((e.response.data && e.response.data.error) || e)
+      errorRequestToNotification((e.response.data && e.response.data.error) || e, toast)
       store.setTtsLoading(false)
       return
     }
@@ -381,7 +368,7 @@ export const useTextToSpeech = () => {
     try {
       base64AudioData = await getBase64Audio({input: output, includeTimepoints: true, isSsml: store.highlightEnabled || store.liveHighlightEnabled}) as GetBase64AudioReturn
     } catch (e: any) {
-      errorHandleRequest((e.response.data && e.response.data.error) || e)
+      errorRequestToNotification((e.response.data && e.response.data.error) || e, toast)
       store.setTtsLoading(false)
       return
     }
