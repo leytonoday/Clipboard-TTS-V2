@@ -1,11 +1,14 @@
 import {
   getFlagUrl,
+  escapeHtml,
   truncateString,
   electronClipboard,
   getVoiceCountryCode,
   toggleOptionEnabled,
   capitalizeFirstLetter,
-  textToSpeechEnqueue
+  textToSpeechEnqueue,
+  breaksToNewLines,
+  newLinesToBreaks,
 } from "renderer/utils";
 import {
   faBook,
@@ -24,11 +27,12 @@ import {
   Spacer,
   useToast
 } from "@chakra-ui/react";
+import parseHtml                    from 'html-react-parser';
+import LoadedImage                  from "renderer/components/common/LoadedImage";
+import { useStore }                 from "renderer/store";
 import SimpleTooltip                from "renderer/components/common/SimpleTooltip";
 import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
 import { HistoryItem, TTSMutation } from "renderer/types";
-import LoadedImage                  from "renderer/components/common/LoadedImage";
-import { useStore }                 from "renderer/store";
 
 interface HistoryItemDisplayProps {
   historyItem: HistoryItem,
@@ -70,6 +74,8 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
       isClosable: true,
     })
   }
+
+  console.log(props.historyItem.text)
 
   return (
     <Box width="100%">
@@ -131,7 +137,7 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
         }
         <Box width="100%" wordBreak={"break-word"} maxHeight="15em" overflowY="auto">
           {
-            props.historyItem.text
+            parseHtml(newLinesToBreaks(escapeHtml(breaksToNewLines(props.historyItem.text))))
           }
         </Box>
       </VStack>

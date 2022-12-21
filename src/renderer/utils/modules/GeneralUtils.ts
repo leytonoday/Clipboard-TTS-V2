@@ -167,3 +167,12 @@ export class HighlightTimeout {
     return this.highlightIndex
   }
 }
+
+export function newLinesToBreaks(input: string) {
+  const store = useStore.getState();
+  return input.replaceAll("\n\n", `${store.preserveNewlines ? "<br/>": ""}`).replaceAll("\r\n",  `${store.preserveNewlines ? "<br/>": ""}`)
+}
+
+export function breaksToNewLines(input: string) {
+  return input.replaceAll("<br/>", "\n\n")
+}

@@ -3,6 +3,7 @@ import {
   isApiKeySet,
   getBase64Audio,
   debuggingOutput,
+  newLinesToBreaks,
   HighlightTimeout,
   dictioaryMutation,
   electronClipboard,
@@ -320,7 +321,7 @@ export const useTextToSpeech = () => {
 
       if (!result.isError && result.mutationsApplied)
         addToHistory({
-          text: result.text,
+          text: newLinesToBreaks(result.text),
           timestamp: dateFormat(new Date(), "H:MM , dd/mm/yy").trim(),
           mutationsApplied: result.mutationsApplied,
           voice: store.voice
@@ -404,7 +405,7 @@ export const useTextToSpeech = () => {
     debuggingOutput(store.textToSpeechDebuggingOutput, "textToSpeechDebuggingOutput", `Timepoints -\n${JSON.stringify(timepoints, null, 2)}`)
 
     store.setTtsLoading(false)
-    const cleanedOutputText = escapeHtml(outputText).replaceAll("\n\n", `${store.preserveNewlines ? "<br/>": ""}`).replaceAll("\r\n",  `${store.preserveNewlines ? "<br/>": ""}`)
+    const cleanedOutputText = newLinesToBreaks(escapeHtml(outputText))
     setOutputText(cleanedOutputText)
     store.setCurrentlySpeaking(true)
 

@@ -9,12 +9,14 @@ import {
   Image
 } from "@chakra-ui/react";
 import Mascot               from "renderer/components/common/Mascot";
+import parseHtml            from 'html-react-parser';
 import { faTimes }          from "@fortawesome/free-solid-svg-icons";
 import { useStore }         from "renderer/store"
 import OptionHeader         from "renderer/components/options/common/OptionHeader";
 import SimpleTooltip        from "renderer/components/common/SimpleTooltip";
 import { useCallback }      from "react"
 import { FontAwesomeIcon }  from "@fortawesome/react-fontawesome";
+import { escapeHtml, newLinesToBreaks } from "renderer/utils";
 
 const TextToSpeechQueue = () => {
   const store = useStore()
@@ -54,7 +56,7 @@ const TextToSpeechQueue = () => {
                 {
                   item.mimeType.includes("text/") ?
                     <Box flex={1} width="100%" wordBreak={"break-word"} maxHeight="15em" overflowY="auto">
-                      { item.data }
+                      { parseHtml(newLinesToBreaks(escapeHtml(item.data))) }
                     </Box>
                   : null
                 }
