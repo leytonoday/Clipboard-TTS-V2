@@ -1,20 +1,12 @@
 import {
-  downloadOggAudio,
   brightnessToTextColour,
   optionsBarPositionToflexDirection,
-  debuggingOutput,
   removeLastInstanceOf,
 } from 'renderer/utils';
 import {
   Box,
-  Button,
-  HStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import {
-  faArrowRotateLeft,
-  faDownload
-} from '@fortawesome/free-solid-svg-icons';
 import {
   useOnboarding,
   useTextToSpeech,
@@ -23,12 +15,10 @@ import parseHtml            from 'html-react-parser';
 import { css }              from '@emotion/css';
 import OptionsBar           from '../../components/options/OptionsBar';
 import { useStore }         from 'renderer/store';
-import SimpleTooltip        from 'renderer/components/common/SimpleTooltip';
 import WhatsNewModal        from 'renderer/components/WhatsNewModal';
 import DragAndDropModal     from 'renderer/components/DragAndDropModal';
 import CredentialsAlert     from 'renderer/components/CredentialsAlert';
 import ComplexOptionModal   from '../../components/options/ComplexOptionModal';
-import { FontAwesomeIcon }  from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
 
 import { stoppingPunctuation } from 'renderer/misc/data';
@@ -81,7 +71,7 @@ const modifyOutputText = (outputText: string): string => {
         toPush += stoppingPunctuationInstances[i]
 
       if (i === highlightIndex)
-        toPush = `<span class="highlighted" style="background-color: ${highlightColour}; padding: 0.1em;">${toPush}</span>`
+        toPush = `<span class="highlighted" style="background-color: ${highlightColour};">${toPush}</span>`
 
       output.push(toPush)
     }
