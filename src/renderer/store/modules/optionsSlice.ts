@@ -249,8 +249,10 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   setVoice: (voice: TextToSpeechVoice) => {
     // TODO - Come back in a few months and check if this issue has been fixed
     // Bug with Google Cloud TTS Beta, where Neural2 voices do not support timepoints
-    if (voice.name.includes("Neural2"))
+    if (voice.name.includes("Neural2")) {
+      electronStoreSet("highlightEnabled", false)
       set(state => ({ ...state, highlightEnabled: false }))
+    }
 
     electronStoreSet("voice", voice)
     set(state => ({ ...state, voice }))
