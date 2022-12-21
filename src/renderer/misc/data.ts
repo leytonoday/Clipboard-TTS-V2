@@ -76,7 +76,14 @@ export const options: Array<IToggleOption | IComplexOption | ICommandOption> = [
   {
     name: "Audio Config",
     icon: () => faWaveSquare,
-    path: "/option/audio-config/"
+    path: "/option/audio-config/",
+    active: () => {
+      const store = useStore.getState();
+      return  store.speakingPitch !== defaultSpeakingPitch ||
+              store.speakingRate !== defaultSpeakingRate ||
+              store.volumeGainDb !== defaultVolumeGainDb ||
+              store.sampleRate !== defaultSampleRate;
+    }
   },
   {
     name: "Highlight",

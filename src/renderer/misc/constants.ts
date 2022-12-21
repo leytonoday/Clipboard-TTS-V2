@@ -4,4 +4,4 @@ export const TRANSLATE_URL = "https://translation.googleapis.com/language/transl
 export const DICTIONARY_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/"
 export const CURRENT_VERSION = "2.1.2"
 export const TEXT_TO_SPEECH_URL = "https://texttospeech.googleapis.com/v1beta1/text:synthesize?key="
-export const TEXT_TO_SPEECH_VOICE_LIST_URL = "https://texttospeech.googleapis.com/v1beta1/voices?key="
+export const TEXT_TO_SPEECH_VOICE_LIST_URL = "https://texttospeech.googleapis.com/v1/voices?key="

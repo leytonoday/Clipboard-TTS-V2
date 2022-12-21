@@ -44,7 +44,7 @@ const Instructions = () => {
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
           <ModalHeader>Instructions</ModalHeader>
           <ModalCloseButton />
-          <ModalBody maxHeight="30em" overflowY="auto">
+          <ModalBody maxHeight="28em" overflowY="auto">
 
             <Accordion allowMultiple defaultIndex={[-1]}>
               {

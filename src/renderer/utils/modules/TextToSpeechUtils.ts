@@ -103,6 +103,15 @@ export async function getAvailableVoices(): Promise<TextToSpeechVoice[]> {
   let reply = null
   try {
     reply = (await axios.get(`${TEXT_TO_SPEECH_VOICE_LIST_URL}${apiKey}`)).data.voices
+
+    // Bug with Google Cloud API, it's returning duplicate voices. Filter for distcint voices. Use the name property
+    const distinctVoices = reply.filter((voice: TextToSpeechVoice, index: number, self: TextToSpeechVoice[]) =>
+      index === self.findIndex((v: TextToSpeechVoice) => (
+        v.name === voice.name
+      ))
+    )
+
+    reply = distinctVoices
   } catch(e) {
     throw e
   }

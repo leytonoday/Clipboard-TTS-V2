@@ -229,7 +229,7 @@ const createWindow = async () => {
     height: 850,
     autoHideMenuBar: true,
     minWidth: 750,
-    minHeight: 750,
+    minHeight: 650,
     frame: process.platform === 'win32' ? false : true,
     icon: getAssetPath("IconLight.png"),
     webPreferences: {

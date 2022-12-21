@@ -432,7 +432,7 @@ const VoiceSelection = () => {
               <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')} overflowY="hidden">
                 <ModalHeader>{`${tabNames[languageTabIndex]} - ${selectedLanguage}`}</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody overflowY="auto" maxHeight="30em" minHeight="30em">
+                <ModalBody overflowY="auto" maxHeight="28em" minHeight="28em">
                   <Tabs isLazy variant={"soft-rounded"} index={voiceTabIndex} onChange={(index) => setVoiceTabIndex(index)}>
                     { getVoiceTabList(selectedLanguageVoices, tabTextColour) }
                     { getVoiceTabPanels(selectedLanguageVoices, currentVoiceElement, rowHoverColour) }
