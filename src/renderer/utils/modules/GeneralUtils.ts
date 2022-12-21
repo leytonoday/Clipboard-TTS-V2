@@ -50,7 +50,7 @@ export function getFlagUrl(countryCode: string){
   if (countryCode === "XA")
     return "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Flag_of_the_Arab_Federation.svg/1200px-Flag_of_the_Arab_Federation.svg.png"
 
-  return `${FLAG_API_URL}${countryCode}`
+  return `${FLAG_API_URL}${countryCode.toLowerCase()}.png`
 }
 
 export function capitalizeFirstLetter(string: string) {
