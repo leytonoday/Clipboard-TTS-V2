@@ -247,6 +247,11 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   translationEnabled: (electronStoreGet("translationEnabled") === undefined ? false : electronStoreGet("translationEnabled")) as boolean,
   lastDetectedLanguage: (electronStoreGet("lastDetectedLanguage") || (electronStoreGet("voice") ? electronStoreGet("voice").languageCodes[0].split("-")[0] : "en" )) as string,
   setVoice: (voice: TextToSpeechVoice) => {
+    // TODO - Come back in a few months and check if this issue has been fixed
+    // Bug with Google Cloud TTS Beta, where Neural2 voices do not support timepoints
+    if (voice.name.includes("Neural2"))
+      set(state => ({ ...state, highlightEnabled: false }))
+
     electronStoreSet("voice", voice)
     set(state => ({ ...state, voice }))
   },
