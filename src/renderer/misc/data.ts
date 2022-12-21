@@ -415,11 +415,13 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   bugFixes: [
-    "Fixed bug where output box buttons would go offscreen when text in output box too large. Also adjusted padding in output box"
+    "Implemented error handling for unsupported translation voice",
+    "Fixed small bug caused by Neural2 voices not supporting SSML",
+    "Minimized jumping when highlighting enabled in Output Box",
+    "Fixed bug where Flags would not load (Flag API was down)"
   ],
-  notes: [
-    "Added shadow to loading circle",
-    "Removed the save and cancel buttons from some modals."
+  newFeatures: [
+    "Changing the Audio Configuration now causes the option icon to change colour to the accent colour, to indicate that the audio configuration has been changed from the default"
   ]
 }
 

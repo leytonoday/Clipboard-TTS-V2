@@ -5,6 +5,7 @@ import {
 } from 'renderer/utils';
 import {
   Box,
+  Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 import {
