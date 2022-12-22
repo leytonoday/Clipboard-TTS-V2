@@ -46,9 +46,11 @@ export interface IOptionsSlice {
 
   // Highlight
   highlightEnabled: boolean,
+  highlightAutoScroll: boolean,
   liveHighlightEnabled: boolean,
   autoHighlightTextColour: boolean,
   setHighlightEnabled: (highlightEnabled: boolean) => void,
+  setHighlightAutoScroll: (highlightAutoScroll: boolean) => void,
   setLiveHighlightEnabled: (liveHighlightEnabled: boolean) => void,
   setAutoHighlightTextColour: (autoHighlightTextColour: boolean) => void,
 
@@ -143,6 +145,7 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   // Highlight
   currentHighlight: electronStoreGet("currentHighlight") || "#f8ff71",
   highlightEnabled: (electronStoreGet("highlightEnabled") === undefined ? false : electronStoreGet("highlightEnabled")),
+  highlightAutoScroll: (electronStoreGet("highlightAutoScroll") === undefined ? true : electronStoreGet("highlightAutoScroll")),
   liveHighlightEnabled: (electronStoreGet("liveHighlightEnabled") === undefined ? false : electronStoreGet("liveHighlightEnabled")),
   autoHighlightTextColour: (electronStoreGet("autoHighlightTextColour") === undefined ? true : electronStoreGet("autoHighlightTextColour")) as boolean,
   setCurrentHighlight: (currentHighlight: string) => {
@@ -152,6 +155,10 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
   setHighlightEnabled: (highlightEnabled: boolean) => {
     electronStoreSet("highlightEnabled", highlightEnabled)
     set(state => ({ ...state, highlightEnabled }))
+  },
+  setHighlightAutoScroll: (highlightAutoScroll: boolean) => {
+    electronStoreSet("highlightAutoScroll", highlightAutoScroll)
+    set(state => ({ ...state, highlightAutoScroll }))
   },
   setLiveHighlightEnabled: (liveHighlightEnabled: boolean) => {
     electronStoreSet("liveHighlightEnabled", liveHighlightEnabled)

@@ -1,11 +1,10 @@
 import {
+  removeLastInstanceOf,
   brightnessToTextColour,
   optionsBarPositionToflexDirection,
-  removeLastInstanceOf,
 } from 'renderer/utils';
 import {
   Box,
-  Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 import {
@@ -88,7 +87,16 @@ const Home: React.FC = () => {
   const { outputText } = useTextToSpeech();
   useOnboarding();
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    // If highlight index changes (highlighting is currently occuring), scroll to the highlighted element to keep highlighted text in the middle of the screen and visible
+    useStore.subscribe((state, prevState) => {
+      if (state.highlightEnabled && state.highlightAutoScroll && state.highlightIndex !== -1 && state.highlightIndex !== prevState.highlightIndex) {
+        const highlightedElement = document.getElementsByClassName("highlighted")[0]
+        if (highlightedElement)
+          highlightedElement.scrollIntoView({ behavior: "smooth", block: "center" })
+      }
+    })
+  }, [])
 
   const defaultOutputBoxBackground = useColorModeValue('#FBFBFB', '#404040')
   const outputBoxBackground = store.currentlyActiveOptions.includes("Overlay") ? store.currentOverlay : defaultOutputBoxBackground

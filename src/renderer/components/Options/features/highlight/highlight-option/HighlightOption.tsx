@@ -27,6 +27,13 @@ const HighlightOption = () => {
       <VStack spacing="1.25em">
         <Highlight />
 
+        <SimpleSwitch 
+          label="Auto-scroll"
+          isChecked={store.highlightAutoScroll}
+          setChecked={store.setHighlightAutoScroll}
+          info="Automatically scroll to the highlighted text when it is read out."
+        />
+
         <AutoTextColour />
 
         <SimpleSwitch
