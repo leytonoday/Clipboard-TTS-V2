@@ -397,8 +397,9 @@ const VoiceSelection = () => {
                 store.resetVoice()
                 debuggingOutput(store.languageOptionDebuggingOutput, "languageOptionDebuggingOutput", "Voice reset")
                 toast({
-                  title: "Voice Reset",
+                  title: "Reset Success",
                   description: "Voice has been reset to the default",
+                  status: "success",
                   duration: 5000,
                   isClosable: true,
                 })

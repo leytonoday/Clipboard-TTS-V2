@@ -100,7 +100,8 @@ const FontSelection = () => {
         <Button onClick={() => {
           store.resetFont()
           toast({
-            title: "Font Reset",
+            title: "Reset Success",
+            status: "success",
             description: "The font has been reset to the default",
             duration: 5000,
             isClosable: true,

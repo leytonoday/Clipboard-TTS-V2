@@ -50,8 +50,9 @@ const ReorderOptions = () => {
     setOptions(sortByDisplayOrder(options, optionsDefaultOrder))
     store.setOptionsDisplayOrder(optionsDefaultOrder)
     toast({
-      title: "Options Reset",
+      title: "Reset Success",
       description: "The options display order has been reset to the default",
+      status: "success",
       duration: 5000,
       isClosable: true
     })

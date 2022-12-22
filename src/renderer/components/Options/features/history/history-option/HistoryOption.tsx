@@ -194,6 +194,7 @@ const HistoryOption = () => {
               setDisplayHistory([])
               toast({
                 title: "History Cleared",
+                status: "success",
                 duration: 5000,
                 isClosable: true,
               })

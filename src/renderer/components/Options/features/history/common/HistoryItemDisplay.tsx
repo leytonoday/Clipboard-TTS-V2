@@ -69,7 +69,7 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
     toast({
       title: `Copied to Clipboard`,
       description: `'${truncateString(capitalizeFirstLetter(text), 50)}' copied to clipboard`,
-      status: "info",
+      status: "success",
       duration: 5000,
       isClosable: true,
     })

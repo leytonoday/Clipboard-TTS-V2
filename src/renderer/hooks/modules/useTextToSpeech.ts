@@ -327,7 +327,7 @@ export const useTextToSpeech = () => {
             toast({
               title: "Translating Detected Language",
               description: detectedLanguage ? `Translating from ${detectedLanguage} to ${store.voice.languageDescriptions[0]}` : "Translating from an unknown language",
-              status: "info",
+              status: "success",
               duration: 5000,
               isClosable: true,
             })

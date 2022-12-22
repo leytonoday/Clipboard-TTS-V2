@@ -57,10 +57,23 @@ export const useFileDragAndDrop = () => {
       for(let i = 0; i < files.length; i++) {
         const file = electronLoadFile(files.item(i)!.path)
 
+        console.log(file)
+
         if (file.error) {
           toast({
             title: "Error",
             description: file.error,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          })
+          continue;
+        }
+
+        if (file.file && file.file.length === 0) {
+          toast({
+            title: "Error",
+            description: "File empty",
             status: "error",
             duration: 5000,
             isClosable: true,

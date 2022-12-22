@@ -130,8 +130,9 @@ const OrderOfMutations = () => {
               <Button size="sm" onClick={() => {
                 resetOrderOfMutations()
                 toast({
-                  title: "Order of Mutations Reset",
+                  title: "Reset Success",
                   description: "The order of mutations has been reset to the default",
+                  status: "success",
                   duration: 5000,
                   isClosable: true
                 })

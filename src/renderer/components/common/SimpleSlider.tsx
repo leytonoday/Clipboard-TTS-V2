@@ -79,8 +79,9 @@ const SimpleSlider = (props: SimpleSliderProps) => {
                     if (props.resetValue !== undefined)
                       setValue(props.resetValue)
                     toast({
-                      title: `${props.label} Reset to Default`,
-                      status: "info",
+                      title: "Reset Success",
+                      description: `${props.label} reset to default`,
+                      status: "success",
                       duration: 5000,
                       isClosable: true,
                     })

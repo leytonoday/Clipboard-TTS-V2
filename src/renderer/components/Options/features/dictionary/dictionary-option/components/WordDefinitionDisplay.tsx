@@ -70,7 +70,7 @@ const WordDefinitionDisplay = (props: WordDefinitionProps) => {
 
     toast({
       title: isSaved(wordDefinition) ? `${capitalizeFirstLetter(props.wordDefinition!.word)} Unsaved` : `${capitalizeFirstLetter(props.wordDefinition!.word)} Saved`,
-      status: "info",
+      status: "success",
       duration: 5000,
       isClosable: true,
     })
@@ -88,7 +88,7 @@ const WordDefinitionDisplay = (props: WordDefinitionProps) => {
     toast({
       title: `Copied to Clipboard`,
       description: `'${capitalizeFirstLetter(wordDefinition.word)}' copied to clipboard`,
-      status: "info",
+      status: "success",
       duration: 5000,
       isClosable: true,
     })

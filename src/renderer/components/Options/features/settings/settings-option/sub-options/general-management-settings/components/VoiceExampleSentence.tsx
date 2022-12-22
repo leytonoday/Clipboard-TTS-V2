@@ -40,7 +40,7 @@ const VoiceExampleSentence = () => {
     store.resetSetVoiceExampleSentence();
 
     toast({
-      title: "Voice example sentence reset",
+      title: "Reset Success",
       description: "Voice example sentence has been reset to default",
       status: "success",
       duration: 5000,

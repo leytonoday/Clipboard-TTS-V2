@@ -41,8 +41,9 @@ const AccentPicker = () => {
             !location.pathname.includes("preview") && <Button onClick={() => {
               resetAccent()
               toast({
-                title: "Accent Colour Reset",
+                title: "Reset Success",
                 description: "The accent colour has been reset to the default",
+                status: "success",
                 duration: 5000,
                 isClosable: true
               })
