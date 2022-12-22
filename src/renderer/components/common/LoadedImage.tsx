@@ -21,7 +21,6 @@ const LoadedImage = (props: LoadedImageProps) => {
   return (
     <Box width={props.width} height={props.height} display="flex" justifyContent="center" alignItems="center">
       <Image
-        onDragStart={(e) => e.preventDefault() }
         src={props.src}
         onLoad={() => setLoaded(true)}
         style={{ borderRadius: "0.25em", width: "100%", height: "100%", display: loaded ? "block" : "none" }}

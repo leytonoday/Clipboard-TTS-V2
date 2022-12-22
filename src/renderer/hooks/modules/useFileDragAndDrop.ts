@@ -19,6 +19,12 @@ export const useFileDragAndDrop = () => {
       event.stopPropagation();
     });
 
+    // This is here to prevent text from being dragged inside the window, which will drigger the drag and drop modal. Text can still be selected and copied
+    document.addEventListener('dragstart', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
     document.addEventListener('dragenter', (_) => {
       if (dragCounter.current === 0)
         store.setDragAndDropModalOpen(true)
@@ -56,8 +62,6 @@ export const useFileDragAndDrop = () => {
       // Load each file
       for(let i = 0; i < files.length; i++) {
         const file = electronLoadFile(files.item(i)!.path)
-
-        console.log(file)
 
         if (file.error) {
           toast({

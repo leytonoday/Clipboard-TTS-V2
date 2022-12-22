@@ -14,7 +14,7 @@ const Mascot = (props: MascotProps) => {
           props.label
         }
       </Center>
-      <Image onDragStart={(e) => e.preventDefault() } src={MascotPng} height="auto" width="15em" />
+      <Image src={MascotPng} height="auto" width="15em" />
     </VStack>
   )
 }

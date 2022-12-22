@@ -12,7 +12,6 @@ const SearchBar = (props: SearchBarProps) => {
   return (
     <InputGroup>
       <Input
-        onDragStart={(e) => e.preventDefault() }
         placeholder="Search"
         onChange={(event) => props.handleSearch(event.target.value)}
         variant="filled"

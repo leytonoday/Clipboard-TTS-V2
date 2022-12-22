@@ -63,7 +63,7 @@ const TextToSpeechQueue = () => {
                 {
                   item.mimeType.includes("image/") ?
                     <Box flex={1}>
-                      <Image onDragStart={(e) => e.preventDefault() } style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" />
+                      <Image style={{pointerEvents: "none"}} src={item.data} alt="Image from Text-to-Speech queue" />
                     </Box>
                   : null
                 }
