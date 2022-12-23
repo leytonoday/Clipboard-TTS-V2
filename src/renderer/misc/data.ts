@@ -420,13 +420,16 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   bugFixes: [
-    "Implemented error handling for unsupported translation voice",
-    "Fixed small bug caused by Neural2 voices not supporting SSML",
-    "Minimized jumping when highlighting enabled in Output Box",
-    "Fixed bug where Flags would not load (Flag API was down)"
+    "Standardized reset notifications",
+    "Fixed bug where No Results mascot would become repeatedly corrupt",
+    "Fixed drag and drop from being sensative. Now, text on the UI can be selected, but not dragged, which doesn't trigger the drag and drop modal"
   ],
   newFeatures: [
-    "Changing the Audio Configuration now causes the option icon to change colour to the accent colour, to indicate that the audio configuration has been changed from the default"
+    "Auto-scroll for highlighting implemented",
+    "Sorting for substitutions implemented"
+  ],
+  notes: [
+    "Sorting substitutions by anything other than display order is now removed"
   ]
 }
 
