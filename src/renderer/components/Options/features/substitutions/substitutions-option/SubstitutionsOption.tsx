@@ -32,7 +32,7 @@ import { Substitution } from 'renderer/types';
 import { debuggingOutput } from 'renderer/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useCallback, useEffect } from 'react';
-import SubstitutionItem from './common/SubstitutionItem';
+import SubstitutionItem from './components/SubstitutionItem';
 import {
   DragDropContext,
   Draggable,

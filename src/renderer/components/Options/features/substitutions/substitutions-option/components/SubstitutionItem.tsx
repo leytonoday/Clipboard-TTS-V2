@@ -49,7 +49,10 @@ const SubstitutionItem = (props: SubstitutionItemProps) => {
       {
         props.editMode ? null : (
           <Td padding="0" textAlign="center" >
-            <FontAwesomeIcon icon={props.substitution.matchCase ? faCheck : faTimes } style={{ color: props.substitution.matchCase ? 'green' : 'red' }} />
+            {
+              props.substitution.matchCase ? 'Yes' : 'No'
+            }
+            <FontAwesomeIcon icon={props.substitution.matchCase ? faCheck : faTimes } style={{ marginLeft: "0.5em", color: props.substitution.matchCase ? 'green' : 'red' }} />
           </Td>
         )
       }
