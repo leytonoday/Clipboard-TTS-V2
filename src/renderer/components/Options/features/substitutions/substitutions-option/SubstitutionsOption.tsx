@@ -333,14 +333,14 @@ const SubstitutionsOption = () => {
                         {displaySubstitutions.map((substitution, index) => (
                           <Draggable
                             key={substitution.before}
-                            draggableId={index.toString()}
+                            draggableId={substitution.before}
                             index={index}
                           >
                             {(provided) => (
                               <Tr
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
-                                background={useColorModeValue("#EEEEEE", '#171717')}
+                                background={useColorModeValue("white", '#171717')}
                               >
                                 <Td
                                   {...provided.dragHandleProps}
