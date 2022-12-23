@@ -150,6 +150,11 @@ export const defaultSubstitutions: Substitution[] = [
     before: "[[0-9]+]",
     after: "",
     matchCase: false
+  },
+  {
+    before: "e.g.",
+    after: "for example",
+    matchCase: false
   }
 ]
 

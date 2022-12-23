@@ -31,12 +31,15 @@ const modifyOutputText = (outputText: string): string => {
 
   if (store.currentlyActiveOptions.includes("Bionic Reading")) {
     const tokens = outputText.trim().split(" ").filter(i => i !== "")
-    console.log(tokens)
     outputText = tokens.map(i => {
-      if (i.length > 1)
-        return `<b>${i.substring(0, Math.floor(i.length / 2))}</b>${i.substring(Math.floor(i.length / 2))}`
-      else
-        return `<b>${i}</b>`
+      // We have to do this subtoken thing because we don't want to split the <br/> tags, which might be there if we have "preserve newlines" enabled
+      const subtokens = i.split("<br/>")
+      return subtokens.map(j => {
+        if (j.length > 1)
+          return `<b>${j.substring(0, Math.floor(j.length / 2))}</b>${j.substring(Math.floor(j.length / 2))}`
+        else
+          return `<b>${j}</b>`
+      }).join("<br/>")
     }).join(" ")
   }
 
