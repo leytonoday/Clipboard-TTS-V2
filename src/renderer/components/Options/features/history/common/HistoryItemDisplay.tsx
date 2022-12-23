@@ -75,7 +75,12 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
     })
   }
 
-  console.log(props.historyItem.text)
+  const replay = (text: string) => {
+
+    console.log(text)
+
+    textToSpeechEnqueue({ data: text, mimeType: "text/plain" })
+  }
 
   return (
     <Box width="100%">
@@ -113,7 +118,7 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
                   }
                 </Box>
                 <SimpleTooltip label="Replay">
-                  <Button size="sm" onClick={() => textToSpeechEnqueue({ data: props.historyItem.text, mimeType: "text/plain" })}>
+                  <Button size="sm" onClick={() => replay(props.historyItem.text)}>
                     <FontAwesomeIcon icon={faArrowRotateLeft} />
                   </Button>
                 </SimpleTooltip>

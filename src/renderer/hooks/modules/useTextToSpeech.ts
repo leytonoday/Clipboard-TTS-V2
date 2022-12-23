@@ -308,7 +308,7 @@ export const useTextToSpeech = () => {
 
       if (!result.isError && result.mutationsApplied)
         addToHistory({
-          text: newLinesToBreaks(result.text),
+          text: result.text,
           timestamp: dateFormat(new Date(), "H:MM , dd/mm/yy").trim(),
           mutationsApplied: result.mutationsApplied,
           voice: store.voice
