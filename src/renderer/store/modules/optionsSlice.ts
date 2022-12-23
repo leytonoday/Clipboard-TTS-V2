@@ -105,10 +105,8 @@ export interface IOptionsSlice {
 
   // Substituions
   substitutions: Substitution[],
-  substitutionsSortBy: string,
   substitutionsEnabled: boolean,
   setSubstitutions: (substitutions: Substitution[]) => void,
-  setSubstitutionsSortBy: (substitutionsSortBy: string) => void,
   setSubstitutionsEnabled: (substitutionsEnabled: boolean) => void,
 
 
@@ -303,15 +301,10 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
 
   // Substituions
   substitutions: (electronStoreGet("substitutions") || defaultSubstitutions) as Substitution[],
-  substitutionsSortBy: (electronStoreGet("substitutionsSortBy") || "Sort by Addition Date") as string,
   substitutionsEnabled: (electronStoreGet("substitutionsEnabled") === undefined ? false : electronStoreGet("substitutionsEnabled")) as boolean,
   setSubstitutions: (substitutions: Substitution[]) => {
     electronStoreSet("substitutions", substitutions)
     set(state => ({ ...state, substitutions }))
-  },
-  setSubstitutionsSortBy: (substitutionsSortBy: string) => {
-    electronStoreSet("substitutionsSortBy", substitutionsSortBy)
-    set(state => ({ ...state, substitutionsSortBy }))
   },
   setSubstitutionsEnabled: (substitutionsEnabled: boolean) => {
     electronStoreSet("substitutionsEnabled", substitutionsEnabled)

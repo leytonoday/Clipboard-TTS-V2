@@ -15,7 +15,6 @@ import {
   Spacer,
   useToast,
   ModalBody,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   ModalContent,
