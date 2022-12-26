@@ -19,6 +19,7 @@ import { useStore }     from 'renderer/store';
 import { useState }     from 'react';
 import SubOptionButton  from 'renderer/components/options/common/SubOptionButton';
 import { faEarListen }        from "@fortawesome/free-solid-svg-icons"
+import { defaultVoiceExampleSentence } from 'renderer/misc/data';
 
 const VoiceExampleSentence = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -38,6 +39,7 @@ const VoiceExampleSentence = () => {
 
   const reset = () => {
     store.resetSetVoiceExampleSentence();
+    setVoiceExampleSentence(defaultVoiceExampleSentence)
 
     toast({
       title: "Reset Success",

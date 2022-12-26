@@ -267,7 +267,7 @@ export const useTextToSpeech = () => {
       const itemToSay = textToSpeechDequeue()
       say(itemToSay)
 
-    }, 1000)
+    }, 500)
   }
 
   const pollForClipboardChanges = () => {
