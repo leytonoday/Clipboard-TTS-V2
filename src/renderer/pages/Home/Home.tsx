@@ -23,7 +23,7 @@ import React, { useEffect } from 'react';
 
 import { stoppingPunctuation } from 'renderer/misc/data';
 import LoadingCircle from 'renderer/components/LoadingCircle';
-import OutputBoxButtons from 'renderer/components/OutputBoxButtons';
+import OutputBoxButtons from 'renderer/pages/Home/components/OutputBoxButtons';
 
 const modifyOutputText = (outputText: string): string => {
   const store = useStore.getState()
@@ -140,11 +140,8 @@ const Home: React.FC = () => {
             height="100%"
             paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1em" : "0em"}` }
             >
-            {
-              (store.currentLingeringOutput || store.textToSpeechQueue.length) ? (
-                <OutputBoxButtons backgroundColour={outputBoxBackground}/>
-              ) : null
-            }
+
+            <OutputBoxButtons backgroundColour={outputBoxBackground}/>
 
             {
               store.ttsLoading ? (

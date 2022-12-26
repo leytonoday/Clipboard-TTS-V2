@@ -9,10 +9,12 @@ import {
 } from '@chakra-ui/react';
 import { useStore } from 'renderer/store';
 import React        from "react"
+import { usePlatform } from 'renderer/hooks';
 
 const CredentialsAlert = () => {
   const store = useStore();
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const {isWindows} = usePlatform();
 
   return (
     <>
@@ -22,8 +24,7 @@ const CredentialsAlert = () => {
           width="100%"
           bottom={store.optionsBarPosition === 'TOP' ? '0' : undefined}
           top={store.optionsBarPosition === 'BOTTOM' ? '0' : undefined}
-          marginTop="30px"
-        >
+          marginTop={isWindows ? "30px": "0"}>
           <Alert status="warning" variant="solid">
             <AlertIcon />
             <Box width="100%">

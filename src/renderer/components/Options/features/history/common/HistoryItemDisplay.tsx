@@ -76,9 +76,6 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
   }
 
   const replay = (text: string) => {
-
-    console.log(text)
-
     textToSpeechEnqueue({ data: text, mimeType: "text/plain" })
   }
 

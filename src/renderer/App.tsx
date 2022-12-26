@@ -1,5 +1,6 @@
 import {
   useShortcuts,
+  usePlatform,
   useNotifications,
   useFileDragAndDrop
 } from './hooks'
@@ -8,7 +9,6 @@ import RouteTree                      from "renderer/misc/RouteTree"
 import { getTheme }                   from "./misc/theme"
 import { useStore }                   from 'renderer/store'
 import { HashRouter as Router }       from 'react-router-dom'
-import { getPlatform }                from './utils'
 import { ChakraProvider, Flex, Box }  from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   useFileDragAndDrop()
   const store = useStore()
 
-  const [platform] = useState(getPlatform())
+  const {isWindows} = usePlatform();
   const [theme, setTheme] = useState(getTheme(store.accent))
 
   useEffect(() => {
@@ -42,9 +42,9 @@ const App: React.FC = () => {
     <ChakraProvider theme={theme}>
       <Flex height="100%">
         {
-          platform === "win32" ? <Titlebar /> : null
+          isWindows ? <Titlebar /> : null
         }
-        <Box flex={1} marginTop="30px">
+        <Box flex={1} marginTop={isWindows ? "30px": "0"}>
           <Router>
             <RouteTree />
           </Router>

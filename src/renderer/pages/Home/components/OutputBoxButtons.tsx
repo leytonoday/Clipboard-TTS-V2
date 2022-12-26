@@ -2,7 +2,7 @@ import { Button, HStack, useColorModeValue } from "@chakra-ui/react"
 import { faArrowRotateLeft, faDownload } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { brightnessToTextColour, debuggingOutput, downloadOggAudio } from "renderer/utils"
-import SimpleTooltip from "./common/SimpleTooltip"
+import SimpleTooltip from "../../../components/common/SimpleTooltip"
 import { useStore } from "renderer/store"
 
 interface OutputBoxButtonsProps {

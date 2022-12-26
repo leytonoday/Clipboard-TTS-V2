@@ -173,7 +173,7 @@ const SubstitutionsOption = () => {
     const { source, destination } = result;
     if (!destination) return;
 
-    const items = [...displaySubstitutions];
+    const items = [...store.substitutions];
 
     const [newOrder] = items.splice(source.index, 1);
     items.splice(destination.index, 0, newOrder);
@@ -247,6 +247,10 @@ const SubstitutionsOption = () => {
           </Button>
         </HStack>
       </Box>
+
+      {/* {
+        JSON.stringify(displaySubstitutions, null, 2)
+      } */}
 
       <Collapse in={addMode} animateOpacity>
         <HStack margin="1.5em 1em 1em 1em">

@@ -25,7 +25,7 @@ import HistoryOptionPreview from 'renderer/components/options/features/history/h
 
 import DictionaryOption from "renderer/components/options/features/dictionary/dictionary-option/DictionaryOption";
 import DictionaryOptionPreview from "renderer/components/options/features/dictionary/dictionary-option-preview/DictionaryOptionPreview";
-import SavedWords from "renderer/components/options/Features/dictionary/dictionary-option/sub-options/saved-words/SavedWords";
+import SavedWords from "renderer/components/options/features/dictionary/dictionary-option/sub-options/saved-words/SavedWords";
 
 import SettingsOption from "renderer/components/options/features/settings/settings-option/SettingsOption";
 import SettingsOptionPreview from 'renderer/components/options/features/settings/settings-option-preview/SettingsOptionPreview'
