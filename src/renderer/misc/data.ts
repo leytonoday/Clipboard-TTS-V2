@@ -1,5 +1,5 @@
 import {
-  TTSMutation,
+  TextToSpeechMutation,
   Substitution,
   IToggleOption,
   IComplexOption,
@@ -146,7 +146,7 @@ export const defaultSubstitutions: Substitution[] = [
   new Substitution("e.g.", "for example", false)
 ]
 
-export const defaultOrderOfMutations: TTSMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "DICTIONARY"]
+export const defaultOrderOfMutations: TextToSpeechMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "DICTIONARY"]
 
 export const defaultSampleRate = 24000
 export const defaultSpeakingRate = 1

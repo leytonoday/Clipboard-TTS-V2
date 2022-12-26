@@ -7,7 +7,7 @@ import {
 } from "renderer/misc/data"
 import {
   Theme,
-  TTSMutation,
+  TextToSpeechMutation,
   IToggleOption,
   IComplexOption,
   ICommandOption,
@@ -67,8 +67,8 @@ export interface ISettingsSlice {
 
 
   // Order of Mutations
-  orderOfMutations: TTSMutation[],
-  setOrderOfMutations: (orderOfMutations: TTSMutation[]) => void,
+  orderOfMutations: TextToSpeechMutation[],
+  setOrderOfMutations: (orderOfMutations: TextToSpeechMutation[]) => void,
   resetOrderOfMutations: () => void,
 
 
@@ -168,8 +168,8 @@ export const createSettingsSlice: StoreSlice<ISettingsSlice> = (set, get) => ({
 
 
   // Order of Mutations
-  orderOfMutations: (electronStoreGet("orderOfMutations") || defaultOrderOfMutations) as TTSMutation[],
-  setOrderOfMutations: (orderOfMutations: TTSMutation[]) => {
+  orderOfMutations: (electronStoreGet("orderOfMutations") || defaultOrderOfMutations) as TextToSpeechMutation[],
+  setOrderOfMutations: (orderOfMutations: TextToSpeechMutation[]) => {
     electronStoreSet("orderOfMutations", orderOfMutations)
     set(state => ({ ...state, orderOfMutations }))
   },

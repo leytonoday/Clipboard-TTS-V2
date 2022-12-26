@@ -32,7 +32,7 @@ import LoadedImage                  from "renderer/components/common/LoadedImage
 import { useStore }                 from "renderer/store";
 import SimpleTooltip                from "renderer/components/common/SimpleTooltip";
 import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
-import { HistoryItem, TTSMutation } from "renderer/types";
+import { HistoryItem, TextToSpeechMutation } from "renderer/types";
 
 interface HistoryItemDisplayProps {
   historyItem: HistoryItem,
@@ -43,14 +43,14 @@ const HistoryItemDisplay = (props: HistoryItemDisplayProps) => {
   const store = useStore();
   const toast = useToast();
 
-  const mutationToIcon: { [key in TTSMutation]: IconDefinition } = {
+  const mutationToIcon: { [key in TextToSpeechMutation]: IconDefinition } = {
     "TRANSLATION": faLanguage,
     "SUBSTITUTIONS": faArrowRightArrowLeft,
     "DICTIONARY": faBook,
     "IMAGE_TO_TEXT": faImage,
   }
 
-  const mutationToTooltip: { [key in TTSMutation]: string } = {
+  const mutationToTooltip: { [key in TextToSpeechMutation]: string } = {
     "TRANSLATION": "This text was translated",
     "SUBSTITUTIONS": "Substitutions were made to this text",
     "DICTIONARY": "This text was looked up in the dictionary",

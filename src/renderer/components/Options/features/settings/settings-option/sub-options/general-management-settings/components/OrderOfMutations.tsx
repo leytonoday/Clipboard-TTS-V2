@@ -32,7 +32,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 import { useStore }                 from 'renderer/store';
 import { useState }                 from 'react';
-import { TTSMutation }              from "renderer/types";
+import { TextToSpeechMutation }              from "renderer/types";
 import SubOptionButton              from 'renderer/components/options/common/SubOptionButton';
 import { FontAwesomeIcon }          from "@fortawesome/react-fontawesome";
 import { capitalizeFirstLetter }    from "renderer/utils"
@@ -57,7 +57,7 @@ const OrderOfMutations = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const [orderOfMutations, setOrderOfMutations] = useState(store.orderOfMutations);
 
-  const mutationToIcon: { [key in TTSMutation]: IconDefinition } = {
+  const mutationToIcon: { [key in TextToSpeechMutation]: IconDefinition } = {
     "TRANSLATION": faLanguage,
     "SUBSTITUTIONS": faArrowRightArrowLeft,
     "DICTIONARY": faBook,

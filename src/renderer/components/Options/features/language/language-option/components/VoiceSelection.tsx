@@ -48,11 +48,11 @@ import OptionSubHeader                                              from "render
 import { FontAwesomeIcon }                                          from "@fortawesome/react-fontawesome"
 import { faPlay, faCheck }                                          from "@fortawesome/free-solid-svg-icons"
 import React, { useState, useRef, useEffect, useMemo }              from "react"
-import { TextToSpeechVoices, TextToSpeechVoice, VoiceType }         from "renderer/types"
+import { TextToSpeechVoices, TextToSpeechVoice, TextToSpeechVoiceType } from "renderer/types"
 import IconPopover                                                  from "renderer/components/common/IconPopover"
 import LoadedImage from 'renderer/components/common/LoadedImage';
 
-const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType: VoiceType | null = null) => {
+const searchVoices = (voices: TextToSpeechVoices, searchQuery: string, voiceType: TextToSpeechVoiceType | null = null) => {
   const searchedVoices: TextToSpeechVoices = {};
 
   const sortedVoices = Object.keys(voices).sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
@@ -93,7 +93,7 @@ const playExampleSentence = async function (voiceName: string, voiceGender: stri
 
 
 
-const isLanguageSelected = (language: string, voiceType: VoiceType) => {
+const isLanguageSelected = (language: string, voiceType: TextToSpeechVoiceType) => {
   const store = useStore.getState()
   const currentVoice = store.voice;
   return currentVoice.languageDescriptions.includes(language) && currentVoice.name.includes(voiceType)
@@ -311,7 +311,7 @@ const VoiceSelection = () => {
       <TabPanels>
         {
           tabNames.map((tab) => {
-            const allVoices = searchVoices(store.availableVoices, searchQuery, tab as VoiceType)
+            const allVoices = searchVoices(store.availableVoices, searchQuery, tab as TextToSpeechVoiceType)
 
             return (
               <TabPanel key={tab}>
@@ -338,7 +338,7 @@ const VoiceSelection = () => {
                               <Td>
                                 { language }
                                 {
-                                  isLanguageSelected(language, tab as VoiceType) && (
+                                  isLanguageSelected(language, tab as TextToSpeechVoiceType) && (
                                     <FontAwesomeIcon icon={faCheck} style={{ marginLeft: "1em", color: "green", fontSize: "1.25em" }} />
                                   )
                                 }
@@ -367,7 +367,7 @@ const VoiceSelection = () => {
 
     const languageTabs = getLanguageTabNames(searchQuery)
     const languageTabIndex = getLanguageTabIndex()
-    const allVoices = searchVoices(store.availableVoices, "", languageTabs[languageTabIndex] as VoiceType)
+    const allVoices = searchVoices(store.availableVoices, "", languageTabs[languageTabIndex] as TextToSpeechVoiceType)
     const voiceTabIndex = getVoiceTabIndex()
 
     setLanguageTabIndex(languageTabIndex)

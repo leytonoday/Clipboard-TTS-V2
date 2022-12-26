@@ -39,8 +39,9 @@ const GeneralManagementSettings = () => {
           isChecked={store.preserveNewlines}
           setChecked={store.setPreserveNewlines}
           label="Preserve Newlines"
-          info="Preserves newlines when copying text. This is useful for copying text from a document and preserving the formatting. If disabled, all text
-          in the Output Box will be copied as a single line."
+          // info="Preserves newlines when copying text. This is useful for copying text from a document and preserving the formatting. If disabled, all text
+          // in the Output Box will be copied as a single line."
+          info="Converts newline characters into line breaks, thus preserving formatting. Applies to the Output Box, History items, and Queue items."
         />
       </VStack>
 
