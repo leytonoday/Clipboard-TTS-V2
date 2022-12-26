@@ -1,130 +1,94 @@
-import {
-  Th,
-  Tr,
-  Td,
-  Table,
-  Thead,
-  TableContainer,
-  Box,
-  Input,
-  Tbody,
-  HStack,
-  Button,
-  Divider,
-  useToast,
-  Collapse,
-  useColorModeValue,
-  Spacer,
-} from '@chakra-ui/react';
-import {
-  faGripVertical,
-  faCheck,
-  faArrowRight,
-} from '@fortawesome/free-solid-svg-icons';
-import Mascot from 'renderer/components/common/Mascot';
-import SearchBar from 'renderer/components/common/SearchBar';
-import { useStore } from 'renderer/store';
-import OptionHeader from '../../../common/OptionHeader';
-import SimpleTooltip from 'renderer/components/common/SimpleTooltip';
+import OptionHeader from 'renderer/components/options/common/OptionHeader';
 import Substitutions from '../common/Substitutions';
-import NoResultsMascot from 'renderer/components/common/NoResultsMascot';
-import { Substitution } from 'renderer/types';
-import { debuggingOutput } from 'renderer/utils';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState, useCallback, useEffect } from 'react';
-import SubstitutionItem from './components/SubstitutionItem';
 import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from 'react-beautiful-dnd';
+  Box,
+  Button,
+  Collapse,
+  Divider,
+  HStack,
+  Input,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  useColorModeValue,
+  useToast,
+} from '@chakra-ui/react';
+import SearchBar from 'renderer/components/common/SearchBar';
+import { useEffect, useState } from 'react';
+import { useStore } from 'renderer/store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faCheck, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import SimpleTooltip from 'renderer/components/common/SimpleTooltip';
+import { Substitution } from 'renderer/types';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+import SubstitutionItem from './components/SubstitutionItem';
+import NoResultsMascot from 'renderer/components/common/NoResultsMascot';
+import Mascot from 'renderer/components/common/Mascot';
+import { debuggingOutput } from 'renderer/utils';
 
 const SubstitutionsOption = () => {
+  // Hooks
   const store = useStore();
   const toast = useToast();
 
+  // State
   const [searchQuery, setSearchQuery] = useState('');
-  const [displaySubstitutions, setDisplaySubstitutions] = useState(store.substitutions);
+  const [substitutions, setSubstitutions] = useState(store.substitutions);
+  const [searchedSubstitutions, setSearchedSubstitutions] = useState(store.substitutions);
+
+  // Form state
   const [beforeSubstitution, setBeforeSubstitution] = useState('');
   const [afterSubstitution, setAfterSubstitution] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [addMode, setAddMode] = useState(false);
   const [matchCase, setMatchCase] = useState(false);
 
-  const filterBySearchQuery = (searchQuery: string) => {
-    const searchQueryLower = searchQuery.toLowerCase();
-    const filtered = store.substitutions.filter((substitution) => {
-      return (
-        substitution.before.toLowerCase().includes(searchQueryLower) ||
-        substitution.after.toLowerCase().includes(searchQueryLower)
+  // Functions
+  const searchSubstitutions = (searchQuery: string, substitutions: Substitution[] | null = null) => {
+    const filter = (searchQuery: string, substitutions: Substitution[]) => {
+      const searchQueryLower = searchQuery.toLowerCase();
+      const filteredSubstitutions = substitutions.filter(
+        (substitution) =>
+          substitution.before.toLowerCase().includes(searchQueryLower) ||
+          substitution.after.toLowerCase().includes(searchQueryLower)
       );
-    });
+      return filteredSubstitutions;
+    }
 
-    return filtered;
+    if (!substitutions) {
+      if (!searchQuery)
+        return store.substitutions;
+      return filter(searchQuery, store.substitutions);
+    }
+    else {
+      if (!searchQuery)
+        return substitutions;
+      return filter(searchQuery, substitutions);
+    }
   };
-
   const handleSearch = (searchQuery: string) => {
-    if (!searchQuery)
-      setDisplaySubstitutions(store.substitutions);
+    setSearchedSubstitutions(searchSubstitutions(searchQuery));
+  }
+  const addSubstitution = () => {
+    if (!beforeSubstitution)
+      return;
 
-    const searchQueryLower = searchQuery.toLowerCase();
-    const filteredSubstitutions = filterBySearchQuery(searchQueryLower);
-    setDisplaySubstitutions(filteredSubstitutions);
-  };
+    if (beforeSubstitution === afterSubstitution) {
+      toast({
+        title: 'Substitution error',
+        description: 'The before and after substitutions cannot be the same',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
 
-  const deleteSubstitution = useCallback(
-    (substitution: Substitution) => {
-      const substitutions = [...store.substitutions];
-
-      const index = substitutions.findIndex(
-        (i) => i.before === substitution.before
-      );
-      if (index === -1) return;
-
-      substitutions.splice(index, 1);
-      store.setSubstitutions(substitutions);
-
-      debuggingOutput(
-        store.substitutionOptionDebuggingOutput,
-        'substitutionOptionDebuggingOutput',
-        `Substitution removed: ${substitution.before} -> ${substitution.after}`
-      );
-
-      setDisplaySubstitutions(substitutions);
-
-      if (!substitutions.length) {
-        setEditMode(false);
-      }
-    },
-    [store.substitutions]
-  );
-
-  const updateMatchCase = useCallback(
-    (substitution: Substitution) => {
-      const substitutions = [...store.substitutions];
-
-      const index = substitutions.findIndex(
-        (i) => i.before === substitution.before
-      );
-      if (index === -1) return;
-
-      substitutions[index].matchCase = !substitutions[index].matchCase;
-      store.setSubstitutions(substitutions);
-
-      setDisplaySubstitutions(substitutions);
-    },
-    [store.substitutions]
-  );
-
-  const addSubstitution = useCallback(() => {
-    if (!beforeSubstitution) return;
-
-    if (
-      store.substitutions.some(
-        (substitution) => substitution.before === beforeSubstitution
-      )
-    ) {
+    if (store.substitutions.some((i) => i.before === beforeSubstitution)) {
       toast({
         title: 'Substitution already exists',
         description: 'This substitution already exists',
@@ -135,20 +99,16 @@ const SubstitutionsOption = () => {
       return;
     }
 
-    const newSubstitution: Substitution = {
-      before: beforeSubstitution,
-      after: afterSubstitution,
-      matchCase,
-    };
+    const newSubstitution = new Substitution(beforeSubstitution, afterSubstitution, matchCase);
 
     const substitutions = [...store.substitutions, newSubstitution];
+    setSubstitutions(substitutions);
     store.setSubstitutions(substitutions);
-    setDisplaySubstitutions(substitutions);
     setBeforeSubstitution('');
     setAfterSubstitution('');
     setMatchCase(false);
-    setSearchQuery("")
-
+    setSearchQuery("");
+    setSearchedSubstitutions(substitutions);
     debuggingOutput(
       store.substitutionOptionDebuggingOutput,
       'substitutionOptionDebuggingOutput',
@@ -162,24 +122,110 @@ const SubstitutionsOption = () => {
       duration: 5000,
       isClosable: true,
     });
-  }, [
-    beforeSubstitution,
-    afterSubstitution,
-    store.substitutions,
-    matchCase,
-  ]);
+  };
+  const deleteSubstitution = (substitution: Substitution) => {
+    const substitutions = [...store.substitutions]
+    const toDeleteSubstitution = substitutions.find((i) => i.id === substitution.id);
+    if (!toDeleteSubstitution)
+      return;
+
+    substitutions.splice(substitutions.indexOf(toDeleteSubstitution), 1);
+    setSubstitutions(substitutions);
+    store.setSubstitutions(substitutions);
+    setSearchedSubstitutions(searchSubstitutions(searchQuery, substitutions));
+    debuggingOutput(
+      store.substitutionOptionDebuggingOutput,
+      'substitutionOptionDebuggingOutput',
+      `Substitution removed: ${substitution.before} -> ${substitution.after}`
+    );
+
+    if (!substitutions.length)
+      setEditMode(false);
+
+  };
+  const updateMatchCase = (substitution: Substitution) => {
+    const substitutions = [...store.substitutions]
+    const updatedSubstitution = substitutions.find((i) => i.id === substitution.id);
+    if (!updatedSubstitution)
+      return;
+
+    updatedSubstitution.matchCase = !updatedSubstitution.matchCase;
+    setSubstitutions(substitutions);
+    store.setSubstitutions(substitutions);
+  };
+  const validateEdits = () => {
+    // Check for empty before values
+    if (searchedSubstitutions!.some((i) => !i.before.length)) {
+      toast({
+        title: 'Invalid substitution',
+        description:
+          "Remove invalid empty 'before' substitution value",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    // check for duplicates before values
+    const beforeValues = searchedSubstitutions!.map((i) => i.before);
+    const duplicates = beforeValues.filter((item, index) => beforeValues.indexOf(item) != index);
+    if (duplicates.length) {
+      toast({
+        title: 'Invalid substitution',
+        description:
+          "Remove duplicate 'before' substitution value: " +
+          duplicates[0],
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    setEditMode(!editMode);
+
+    // Searched substitutions could only be a sub-set of the substitutions, so we need to update the substitutions
+    const updatedSubstitutions = substitutions.map((substitution) => {
+      const updatedSubstitution = searchedSubstitutions!.find((i) => i.id === substitution.id);
+      if (updatedSubstitution)
+        return updatedSubstitution;
+      return substitution;
+    });
+
+    setSubstitutions(updatedSubstitutions);
+    setSearchedSubstitutions(searchSubstitutions(searchQuery, updatedSubstitutions));
+    store.setSubstitutions(updatedSubstitutions);
+  };
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
-    if (!destination) return;
+    if (!destination)
+      return;
+    if (searchedSubstitutions.length === 1 || source.index === destination.index) // Only one item, no need to reorder, or in same place
+      return;
 
-    const items = [...store.substitutions];
+    const substitutions = [...store.substitutions]
 
-    const [newOrder] = items.splice(source.index, 1);
-    items.splice(destination.index, 0, newOrder);
+    const toRemove = substitutions.indexOf(searchedSubstitutions[source.index]);
 
-    setDisplaySubstitutions(items);
-    store.setSubstitutions(items);
+    if (source.index < destination.index) { // It is being moved down the list, and thus will have something above it
+      const itemAbove = searchedSubstitutions[destination.index];
+      const itemAboveIndex = substitutions.indexOf(itemAbove);
+      substitutions.splice(toRemove, 1);
+      substitutions.splice(itemAboveIndex, 0, searchedSubstitutions[source.index]);
+
+    }
+    else { // It is being moved up the list, and thus will have something below it
+      const itemBelow = searchedSubstitutions[destination.index];
+      const itemBelowIndex = substitutions.indexOf(itemBelow);
+      substitutions.splice(toRemove, 1);
+      substitutions.splice(itemBelowIndex, 0, searchedSubstitutions[source.index]);
+    }
+
+    store.setSubstitutions(substitutions);
+    setSubstitutions(substitutions);
+    setSearchedSubstitutions(searchSubstitutions(searchQuery, substitutions));
   };
 
   return (
@@ -201,110 +247,79 @@ const SubstitutionsOption = () => {
             handleSearch(searchQuery);
           }}
         />
+
         <HStack justifyContent="end" marginTop="0.75em">
           <Button size="sm" onClick={() => setAddMode(!addMode)}>
             {addMode ? 'Hide Add' : 'Add'}
           </Button>
-          <Button
-            size="sm"
-            disabled={!displaySubstitutions.length}
+          <Button size="sm" disabled={!searchedSubstitutions.length}
             onClick={() => {
-              if (displaySubstitutions.some((i) => !i.before.length)) {
-                toast({
-                  title: 'Invalid substitution',
-                  description:
-                    "Remove invalid empty 'before' substitution value",
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                });
-                return;
+              if (!editMode)
+                setEditMode(true);
+              else {
+                validateEdits();
+                setEditMode(false);
               }
-
-              // check for duplicates before values
-              const beforeValues = displaySubstitutions.map((i) => i.before);
-              const duplicates = beforeValues.filter(
-                (item, index) => beforeValues.indexOf(item) != index
-              );
-              if (duplicates.length) {
-                toast({
-                  title: 'Invalid substitution',
-                  description:
-                    "Remove duplicate 'before' substitution value: " +
-                    duplicates[0],
-                  status: 'error',
-                  duration: 5000,
-                  isClosable: true,
-                });
-                return;
-              }
-
-              setEditMode(!editMode);
-              store.setSubstitutions(displaySubstitutions);
             }}
           >
             {editMode ? 'Done' : 'Edit'}
           </Button>
         </HStack>
+
+        <Collapse in={addMode} animateOpacity>
+          <HStack margin="1.5em 1em 1em 1em">
+            <form
+              style={{ width: '100%' }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                addSubstitution();
+              }}
+            >
+              <Input
+                variant="filled"
+                placeholder="Before"
+                value={beforeSubstitution}
+                onChange={(event) => setBeforeSubstitution(event.target.value)}
+              />
+            </form>
+            <FontAwesomeIcon icon={faArrowRight} />
+            <form
+              style={{ width: '100%' }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                addSubstitution();
+              }}
+            >
+              <Input
+                variant="filled"
+                placeholder="After"
+                value={afterSubstitution}
+                onChange={(event) => setAfterSubstitution(event.target.value)}
+              />
+            </form>
+
+            <SimpleTooltip label="Match case">
+              <Button
+                variant={matchCase ? 'solid' : 'ghost'}
+                onClick={() => setMatchCase(!matchCase)}
+              >
+                Aa
+              </Button>
+            </SimpleTooltip>
+
+            <SimpleTooltip label="Add Substitution">
+              <Button
+                onClick={() => addSubstitution()}
+                disabled={!beforeSubstitution}
+              >
+                <FontAwesomeIcon icon={faCheck} />
+              </Button>
+            </SimpleTooltip>
+          </HStack>
+        </Collapse>
       </Box>
 
-      {/* {
-        JSON.stringify(displaySubstitutions, null, 2)
-      } */}
-
-      <Collapse in={addMode} animateOpacity>
-        <HStack margin="1.5em 1em 1em 1em">
-          <form
-            style={{ width: '100%' }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              addSubstitution();
-            }}
-          >
-            <Input
-              variant="filled"
-              placeholder="Before"
-              value={beforeSubstitution}
-              onChange={(event) => setBeforeSubstitution(event.target.value)}
-            />
-          </form>
-          <FontAwesomeIcon icon={faArrowRight} />
-          <form
-            style={{ width: '100%' }}
-            onSubmit={(e) => {
-              e.preventDefault();
-              addSubstitution();
-            }}
-          >
-            <Input
-              variant="filled"
-              placeholder="After"
-              value={afterSubstitution}
-              onChange={(event) => setAfterSubstitution(event.target.value)}
-            />
-          </form>
-
-          <SimpleTooltip label="Match case">
-            <Button
-              variant={matchCase ? 'solid' : 'ghost'}
-              onClick={() => setMatchCase(!matchCase)}
-            >
-              Aa
-            </Button>
-          </SimpleTooltip>
-
-          <SimpleTooltip label="Add Substitution">
-            <Button
-              onClick={() => addSubstitution()}
-              disabled={!beforeSubstitution}
-            >
-              <FontAwesomeIcon icon={faCheck} />
-            </Button>
-          </SimpleTooltip>
-        </HStack>
-      </Collapse>
-
-      {displaySubstitutions.length === 0 ? null : (
+      {searchedSubstitutions.length === 0 ? null : (
         <TableContainer margin="0.5em 1em" overflowX="hidden">
           <Table>
             <Thead>
@@ -334,7 +349,7 @@ const SubstitutionsOption = () => {
                         {...droppableProvided.droppableProps}
                         position="relative"
                       >
-                        {displaySubstitutions.map((substitution, index) => (
+                        {searchedSubstitutions.map((substitution, index) => (
                           <Draggable
                             key={substitution.before}
                             draggableId={substitution.before}
@@ -373,7 +388,7 @@ const SubstitutionsOption = () => {
               ): (
                 <Tbody>
                   {
-                    displaySubstitutions.map((substitution, index) => (
+                    searchedSubstitutions.map((substitution, index) => (
                       <Tr key={index}>
                         <SubstitutionItem
                           substitution={substitution}
@@ -391,13 +406,13 @@ const SubstitutionsOption = () => {
         </TableContainer>
       )}
 
-      {displaySubstitutions.length === 0 && searchQuery.length ? (
+      {searchedSubstitutions.length === 0 && searchQuery.length ? (
         <Box marginTop="2em">
           <NoResultsMascot />
         </Box>
       ) : null}
 
-      {displaySubstitutions.length === 0 && !searchQuery.length ? (
+      {searchedSubstitutions.length === 0 && !searchQuery.length ? (
         <Box marginTop="2em">
           <Mascot label="Add substitutions to modify the output speech" />
         </Box>

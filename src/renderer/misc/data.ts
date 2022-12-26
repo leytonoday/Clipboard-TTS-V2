@@ -141,21 +141,9 @@ export const defaultVoice = {
 }
 
 export const defaultSubstitutions: Substitution[] = [
-  {
-    before: "(https?:\/\/(www\.)?)",
-    after: "",
-    matchCase: false
-  },
-  {
-    before: "[[0-9]+]",
-    after: "",
-    matchCase: false
-  },
-  {
-    before: "e.g.",
-    after: "for example",
-    matchCase: false
-  }
+  new Substitution("(https?:\/\/(www\.)?)", "", false),
+  new Substitution("[[0-9]+]", "", false),
+  new Substitution("e.g.", "for example", false)
 ]
 
 export const defaultOrderOfMutations: TTSMutation[] = ["IMAGE_TO_TEXT", "TRANSLATION", "SUBSTITUTIONS", "DICTIONARY"]

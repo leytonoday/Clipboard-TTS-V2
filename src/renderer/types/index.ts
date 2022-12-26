@@ -1,4 +1,5 @@
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Shortcut {
   keybinding: string;
@@ -10,12 +11,6 @@ export interface Shortcut {
 export type Language = {
   value: string; // language code
   name: string;
-}
-
-export type Substitution = {
-  before: string;
-  after: string;
-  matchCase: boolean;
 }
 
 export interface BaseOption {
@@ -155,4 +150,19 @@ export type WhatsNewData = {
 export type SpellCheckSuggestion = {
   word: string;
   suggestions: string[];
+}
+
+export class Substitution {
+  id: string;
+  before: string;
+  after: string;
+  matchCase: boolean;
+
+  constructor(before: string, after: string, matchCase: boolean) {
+    this.id = uuidv4();
+    this.before = before;
+    this.after = after;
+    this.matchCase = matchCase;
+  }
+
 }
