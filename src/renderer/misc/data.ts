@@ -408,16 +408,14 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   bugFixes: [
-    "Standardized reset notifications",
-    "Fixed bug where No Results mascot would become repeatedly corrupt",
-    "Fixed drag and drop from being sensative. Now, text on the UI can be selected, but not dragged, which doesn't trigger the drag and drop modal"
+    "Fixed background colour of substitutions in edit mode, with light mode enabled",
+    "Fixed bug where rapid re-ordering would cause re-ordering to fail",
+    "Fixed bug where voice example sentence couldn't be reset",
+    "Fixed bug on non-windows systems where the space for the windows-specific task bar was still there, despite the windows-specific taskbar not being present",
   ],
   newFeatures: [
-    "Auto-scroll for highlighting implemented",
-    "Sorting for substitutions implemented"
-  ],
-  notes: [
-    "Sorting substitutions by anything other than display order is now removed"
+    "Added yes or no labels to match case in substitution itmes to make it more obvious that it's referencing the match case property, and that it's not a delete button",
+    "Split feature for translation. You can now see the before and after of translations"
   ]
 }
 
