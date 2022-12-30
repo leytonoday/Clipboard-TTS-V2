@@ -5,6 +5,10 @@ import { HighlightTimeout } from 'renderer/utils';
 // This store slice is used solely as a means for cross-component communication.
 export interface IGlobalStateSlice {
 
+  // Split Screen
+  splitScreenActive: boolean, // is the split screen mode active? it can be enabled, but not actually active
+  setSplitScreenActive: (splitScreenActive: boolean) => void,
+
   // TextToSpeech Loading
   ttsLoading: boolean;
   setTtsLoading: (ttsLoading: boolean) => void;
@@ -50,6 +54,12 @@ export interface IGlobalStateSlice {
 }
 
 export const createGlobalStateSlice: StoreSlice<IGlobalStateSlice> = (set, get) => ({
+
+  // Split Screen
+  splitScreenActive: false,
+  setSplitScreenActive: (splitScreenActive: boolean) => {
+    set(state => ({...state, splitScreenActive}))
+  },
 
   // TextToSpeech Loading
   ttsLoading: false,

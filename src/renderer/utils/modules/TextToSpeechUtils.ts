@@ -11,6 +11,8 @@ import {
   debuggingOutput,
   getWordDefinition,
   capitalizeFirstLetter,
+  newLinesToBreaks,
+  escapeHtml,
 } from "renderer/utils"
 import {
   ClipboardData,
@@ -154,6 +156,7 @@ export function getVoiceLanguageCode(name: string) {
 }
 
 export function getLanguageByCode(code: string): string {
+  code = sanitizeLanguageCode(code)
   const availableVoices = useStore.getState().availableVoices;
   let targetLanguage = ""
 
@@ -163,6 +166,22 @@ export function getLanguageByCode(code: string): string {
   })
 
   return targetLanguage
+}
+
+// Some languages are returned with a code by Google Cloud Translate API that doesn't match up with the language codes supported by Google Cloud Text to Speech API
+// There isn't any good solution to get around this issue, so I'm just hardcoding the exceptions here
+export function sanitizeLanguageCode(code: string): string {
+  const exceptions = [
+    {
+      before: "zh-CN",
+      after: "cmn-CN"
+    },
+  ]
+
+  if (exceptions.some(exception => exception.before === code))
+    code = exceptions.find(exception => exception.before === code)!.after
+
+  return code
 }
 
 export function textToSpeechEnqueue(data: ClipboardData): boolean {
@@ -204,10 +223,11 @@ export async function translationMutation(input: ProcessTextReturn): Promise<Pro
   if (!store.translationEnabled)
     return input
 
+  input.preTranslatedText = newLinesToBreaks(escapeHtml(input.text).replaceAll("\r", ""));
   const translatedText = await translate(input.text, getVoiceLanguageCode(store.voice.name))
 
   input.text = translatedText.text
-  input.detectedLanguage = translatedText.detectedLanguage
+  input.detectedLanguage = sanitizeLanguageCode(translatedText.detectedLanguage)
 
   if (!getVoiceLanguageCode(store.voice.name).includes(translatedText.detectedLanguage)) {
     input.mutationsApplied!.push("TRANSLATION")
@@ -215,7 +235,6 @@ export async function translationMutation(input: ProcessTextReturn): Promise<Pro
   }
 
   return input
-
 }
 
 export async function substitutionMutation(input: ProcessTextReturn): Promise<ProcessTextReturn> {
@@ -248,7 +267,7 @@ export async function dictioaryMutation(input: ProcessTextReturn): Promise<Proce
   const definition = await getWordDefinition(punctuationStrippedText)
 
   if (!definition)
-    return { text: "Error: No definition found", isError: true  }
+    return { text: "Error: No definition found", isError: true }
 
   input.text = `${capitalizeFirstLetter(definition.word)}. ${definition.meanings.map((meaning, index) => `${index + 1}. ${capitalizeFirstLetter(meaning.partOfSpeech)}: ${meaning.definitions[0].definition}`).join(" ")}`
   input.mutationsApplied!.push("DICTIONARY")

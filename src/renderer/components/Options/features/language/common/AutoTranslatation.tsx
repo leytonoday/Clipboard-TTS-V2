@@ -11,7 +11,11 @@ const AutoTranslatation = () => {
       isChecked={store.translationEnabled}
       label="Auto Translation"
       setChecked={store.setTranslationEnabled}
-      onClick={() => store.toggleCurrentlyActiveEnabledState("Language & Translation")}
+      onClick={() => {
+        store.toggleCurrentlyActiveEnabledState("Language & Translation")
+        store.setSplitScreenEnabled(false)
+        store.setSplitScreenActive(false)
+      }}
     />
   )
 }

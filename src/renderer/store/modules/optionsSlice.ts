@@ -85,11 +85,13 @@ export interface IOptionsSlice {
   // Language and Translation
   voice: TextToSpeechVoice,
   translationEnabled: boolean,
-  lastDetectedLanguage: string,
+  splitScreenEnabled: boolean,
+  lastDetectedLanguage: string | null,
   setVoice: (voice: TextToSpeechVoice) => void,
   resetVoice: () => void,
+  setSplitScreenEnabled: (splitScreenEnabled: boolean) => void,
   setTranslationEnabled: (translationEnabled: boolean) => void,
-  setLastDetectedLanguage: (lastDetectedLanguage: string) => void,
+  setLastDetectedLanguage: (lastDetectedLanguage: string | null) => void,
 
 
   // Dictionary
@@ -249,8 +251,9 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
 
   // Language and Translation
   voice: (electronStoreGet("voice") || defaultVoice) as TextToSpeechVoice,
+  splitScreenEnabled: (electronStoreGet("splitScreenEnabled") === undefined ? false : electronStoreGet("splitScreenEnabled")) as boolean,
   translationEnabled: (electronStoreGet("translationEnabled") === undefined ? false : electronStoreGet("translationEnabled")) as boolean,
-  lastDetectedLanguage: (electronStoreGet("lastDetectedLanguage") || (electronStoreGet("voice") ? electronStoreGet("voice").languageCodes[0].split("-")[0] : "en" )) as string,
+  lastDetectedLanguage: null,
   setVoice: (voice: TextToSpeechVoice) => {
     // TODO - Come back in a few months and check if this issue has been fixed
     // Bug with Google Cloud TTS Beta, where Neural2 voices do not support timepoints
@@ -259,10 +262,17 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
       set(state => ({ ...state, highlightEnabled: false }))
     }
 
+    set(state => ({ ...state, splitScreenActive: false}))
+
     electronStoreSet("voice", voice)
     set(state => ({ ...state, voice }))
   },
+  setSplitScreenEnabled: (splitScreenEnabled: boolean) => {
+    electronStoreSet("splitScreenEnabled", splitScreenEnabled)
+    set(state => ({ ...state, splitScreenEnabled }))
+  },
   resetVoice: () => {
+    set(state => ({ ...state, splitScreenActive: false}))
     electronStoreSet("voice", defaultVoice)
     set(state => ({ ...state, voice: defaultVoice }))
   },
@@ -270,11 +280,10 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
     electronStoreSet("translationEnabled", translationEnabled)
     set(state => ({ ...state, translationEnabled }))
   },
-  setLastDetectedLanguage: (lastDetectedLanguage: string) => {
+  setLastDetectedLanguage: (lastDetectedLanguage: string | null) => {
     electronStoreSet("lastDetectedLanguage", lastDetectedLanguage)
     set(state => ({ ...state, lastDetectedLanguage }))
   },
-
 
   // Dictionary
   savedWords: (electronStoreGet("savedWords") || []) as WordDefinition[],

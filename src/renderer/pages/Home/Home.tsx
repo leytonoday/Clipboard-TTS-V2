@@ -1,111 +1,19 @@
-import {
-  removeLastInstanceOf,
-  brightnessToTextColour,
-  optionsBarPositionToflexDirection,
-} from 'renderer/utils';
-import {
-  Box,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import {
-  useOnboarding,
-  useTextToSpeech,
-} from 'renderer/hooks';
-import parseHtml            from 'html-react-parser';
-import { css }              from '@emotion/css';
-import OptionsBar           from '../../components/options/OptionsBar';
-import { useStore }         from 'renderer/store';
-import WhatsNewModal        from 'renderer/components/WhatsNewModal';
-import DragAndDropModal     from 'renderer/components/DragAndDropModal';
-import CredentialsAlert     from 'renderer/components/CredentialsAlert';
-import ComplexOptionModal   from '../../components/options/ComplexOptionModal';
-import React, { useEffect } from 'react';
-
-import { stoppingPunctuation } from 'renderer/misc/data';
-import LoadingCircle from 'renderer/components/LoadingCircle';
-import OutputBoxButtons from 'renderer/pages/Home/components/OutputBoxButtons';
-
-const modifyOutputText = (outputText: string): string => {
-  const store = useStore.getState()
-  const highlightIndex = store.highlightIndex;
-
-  if (store.currentlyActiveOptions.includes("Bionic Reading")) {
-    const tokens = outputText.trim().split(" ").filter(i => i !== "")
-    outputText = tokens.map(i => {
-      // We have to do this subtoken thing because we don't want to split the <br/> tags, which might be there if we have "preserve newlines" enabled
-      const subtokens = i.split("<br/>")
-      return subtokens.map(j => {
-        if (j.length > 1)
-          return `<b>${j.substring(0, Math.floor(j.length / 2))}</b>${j.substring(Math.floor(j.length / 2))}`
-        else
-          return `<b>${j}</b>`
-      }).join("<br/>")
-    }).join(" ")
-  }
-
-  if (store.currentlyActiveOptions.includes("Highlight") && highlightIndex > -1) {
-    const stoppingPunctuationInstances = outputText.split("").map((i) => stoppingPunctuation.includes(i) ? i : "").filter(i => i !== "")
-    let tokens = outputText.trim().split(new RegExp(`[${stoppingPunctuation.join("")}]`, "g")).filter(i => i.length > 0).map(i => i.trim())
-
-    // This is to fix the issue of punctuation with spaces either side of it, which cause it to be wrapped in b tags. But here we split by punctuation,
-    // so the b tags are getting split also. So this just removes the open one, and somehow this fixes the issue lol.
-    if (store.currentlyActiveOptions.includes("Bionic Reading")) {
-      for (let i = 0; i < tokens.length; i++) {
-        const openTag = tokens[i].lastIndexOf("<b>")
-        const closeTag = tokens[i].lastIndexOf("</b>")
-
-        // If there is an open tag, but no close tag, then we need to remove the open tag
-        if (openTag > closeTag) {
-          tokens[i] = removeLastInstanceOf(tokens[i], "<b>")
-        }
-      }
-    }
-
-    const highlightMap = tokens.map(token => ({ text: token, highlight: false }))
-
-    highlightMap[highlightIndex].highlight = true
-    const highlightColour = store.currentHighlight
-
-    const output: string[] = []
-
-    for (let i = 0; i < tokens.length; i++) {
-      let toPush = tokens[i].trimEnd()
-      if (stoppingPunctuationInstances[i])
-        toPush += stoppingPunctuationInstances[i]
-
-      if (i === highlightIndex)
-        toPush = `<span class="highlighted" style="background-color: ${highlightColour};">${toPush}</span>`
-
-      output.push(toPush)
-    }
-
-    outputText = output.join(" ")
-  }
-
-  return outputText
-}
+import React                                  from 'react';
+import { Box }                                from '@chakra-ui/react';
+import OptionsBar                             from '../../components/options/OptionsBar';
+import { useStore }                           from 'renderer/store';
+import WhatsNewModal                          from 'renderer/components/WhatsNewModal';
+import DragAndDropModal                       from 'renderer/components/DragAndDropModal';
+import OutputBoxWrapper                       from './components/OutputBoxWrapper';
+import CredentialsAlert                       from 'renderer/components/CredentialsAlert';
+import ComplexOptionModal                     from '../../components/options/ComplexOptionModal';
+import { useOnboarding, useTextToSpeech }     from 'renderer/hooks';
+import { optionsBarPositionToflexDirection }  from 'renderer/utils';
 
 const Home: React.FC = () => {
   const store = useStore();
-  const { outputText } = useTextToSpeech();
+  let { outputText, preTranslatedText, detectedLanguage } = useTextToSpeech();
   useOnboarding();
-
-  useEffect(() => {
-    // If highlight index changes (highlighting is currently occuring), scroll to the highlighted element to keep highlighted text in the middle of the screen and visible
-    useStore.subscribe((state, prevState) => {
-      if (state.highlightEnabled && state.highlightAutoScroll && state.highlightIndex !== -1 && state.highlightIndex !== prevState.highlightIndex) {
-        const highlightedElement = document.getElementsByClassName("highlighted")[0]
-        if (highlightedElement)
-          highlightedElement.scrollIntoView({ behavior: "smooth", block: "center" })
-      }
-    })
-  }, [])
-
-  const defaultOutputBoxBackground = useColorModeValue('#FBFBFB', '#404040')
-  const outputBoxBackground = store.currentlyActiveOptions.includes("Overlay") ? store.currentOverlay : defaultOutputBoxBackground
-
-  const highlightTextColour = store.highlightEnabled && store.autoHighlightTextColour ? brightnessToTextColour(store.currentHighlight) : "undefined"
-  const overlayTextColour = store.overlayEnabled && store.autoOverlayTextColour ? brightnessToTextColour(store.currentOverlay) : "undefined"
 
   return (
     <>
@@ -115,47 +23,10 @@ const Home: React.FC = () => {
 
       {!store.apiKey && (<CredentialsAlert />)}
 
-      <Box className="container" flexDirection={optionsBarPositionToflexDirection()} fontSize={['xs', 'sm', 'md']}>
+      <Box display="flex" flexDirection={optionsBarPositionToflexDirection()} height="100%" maxHeight="100%" overflowY="auto">
         <OptionsBar />
 
-        <Box
-          data-step={1}
-          data-intro={`
-            This is the <b>Output Box</b>. All text output will be displayed here. For example, if you copy some text and have highlighting enabled, the text will be
-            highlighted here. You can drag and drop files onto this box to convert them to text.
-          `}
-          className="outputBox"
-          bg={outputBoxBackground}
-          color={overlayTextColour}
-          margin="1em"
-        >
-          {/* The css is here because if not, the textColour doesn't change when "autoHighlightTextColour is changed. Must wait until tts is done. This enabled Live Highlighting" */}
-          <Box
-            className={css`.highlighted { color: ${highlightTextColour}; }`}
-            letterSpacing={store.fontSpacing}
-            fontSize={`${store.fontSize}em`}
-            fontFamily={store.font}
-            position="relative"
-            width="100%"
-            height="100%"
-            paddingTop={`${store.currentLingeringOutput || store.textToSpeechQueue.length ? "1em" : "0em"}` }
-            >
-
-            <OutputBoxButtons backgroundColour={outputBoxBackground}/>
-
-            {
-              store.ttsLoading ? (
-                <LoadingCircle />
-              ) : null
-            }
-
-            <Box overflowY="auto" maxHeight="100%">
-              { outputText && parseHtml(modifyOutputText(outputText)) }
-            </Box>
-
-          </Box>
-        </Box>
-
+        <OutputBoxWrapper outputText={outputText} preTranslatedText={preTranslatedText} detectedLanguage={detectedLanguage}/>
       </Box>
     </>
   );

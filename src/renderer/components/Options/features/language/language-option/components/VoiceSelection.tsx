@@ -91,8 +91,6 @@ const playExampleSentence = async function (voiceName: string, voiceGender: stri
   }
 }
 
-
-
 const isLanguageSelected = (language: string, voiceType: TextToSpeechVoiceType) => {
   const store = useStore.getState()
   const currentVoice = store.voice;
@@ -103,7 +101,6 @@ const isVoiceSelected = (voice: TextToSpeechVoice) => {
   const currentVoice = store.voice;
   return currentVoice.name === voice.name
 }
-
 
 
 // Language Tabs Functions
@@ -154,7 +151,7 @@ const getVoiceTabList = (selectedLanguageVoices: TextToSpeechVoice[], tabTextCol
     <TabList>
       {
         tabs.map((tab) => (
-          <Tab key={tab} color={tabTextColour} _selected={{ background: "primary.200", color: "white"  }}>
+          <Tab key={tab} color={tabTextColour} _selected={{ background: "primary.200", color: "white" }}>
             {tab}
           </Tab>
         ))

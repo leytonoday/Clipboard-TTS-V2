@@ -15,7 +15,8 @@ import {
   translationMutation,
   substitutionMutation,
   getVoiceLanguageCode,
-  errorRequestToNotification
+  errorRequestToNotification,
+  sanitizeLanguageCode
 } from "renderer/utils"
 import {
   ClipboardData,
@@ -159,6 +160,10 @@ export const useTextToSpeech = () => {
   const toast = useToast()
 
   const [outputText, setOutputText] = useState("")
+  // If Auto-translation is enabled, this is the original text before the translation, and the text propety is the translated text
+  const [preTranslatedText, setPreTranslatedText] = useState<string | null>(null)
+  const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null)
+
   const enabled = useRef(store.currentlyActiveOptions.includes("Enable / Disable"))
   const audio = useRef<HTMLAudioElement | null>(null)
 
@@ -195,16 +200,22 @@ export const useTextToSpeech = () => {
         store.setCurrentLingeringOutput(null)
 
         // If we aren't speaking, remove the lingered outputText
-        if (!state.outputLingerEnabled && !state.currentlySpeaking)
+        if (!state.outputLingerEnabled && !state.currentlySpeaking) {
           setOutputText("")
+          setPreTranslatedText(null)
+          store.setSplitScreenActive(false)
+        }
       }
 
       // If "Stop Speech" option is clicked, stop it. StopSpeech is a number that is incremented to act as an event emitter
       if (prevState.stopSpeech !== state.stopSpeech && state.currentlySpeaking) {
         store.setCurrentlyPaused(false)
         stopSpeech()
-        if (!state.outputLingerEnabled)
+        if (!state.outputLingerEnabled) {
           setOutputText("")
+          setPreTranslatedText(null)
+          store.setSplitScreenActive(false)
+        }
       }
 
       if (state.replaySpeech !== prevState.replaySpeech) { // Replay the current lingering output
@@ -224,6 +235,7 @@ export const useTextToSpeech = () => {
         playBase64Audio(state.currentLingeringOutput!.audioContent, audio, () => {
           if (!useStore.getState().outputLingerEnabled) {
             setOutputText("")
+            setPreTranslatedText(null)
           }
 
           store.setCurrentlySpeaking(false)
@@ -298,13 +310,14 @@ export const useTextToSpeech = () => {
       return
 
     const store = useStore.getState()
-
     store.setTtsLoading(true)
 
     let outputText = ""
     try {
       const result = await processText(input)
       outputText = result.text;
+      setPreTranslatedText(result.preTranslatedText || null) // Set it to null to clear it from the previous call
+      setDetectedLanguage(result.detectedLanguage || null) // Set it to null to clear it from the previous call
 
       if (!result.isError && result.mutationsApplied)
         addToHistory({
@@ -314,28 +327,41 @@ export const useTextToSpeech = () => {
           voice: store.voice
         })
 
-      if (store.translationEnabled) {
+      if (store.translationEnabled && result.detectedLanguage) {
         const currentVoiceLanguageCode = getVoiceLanguageCode(store.voice.name).split("-")[0]
         const lastDetectedLanguage = store.lastDetectedLanguage
+        const detectedLanguageCode = result.detectedLanguage?.split("-")[0]
 
         if (result.detectedLanguage && lastDetectedLanguage != result.detectedLanguage) {
-          store.setLastDetectedLanguage(result.detectedLanguage)
+          store.setLastDetectedLanguage(detectedLanguageCode)
 
-          const detectedLanguage = getLanguageByCode(result.detectedLanguage)
+          if (detectedLanguageCode !== currentVoiceLanguageCode) {
+            store.setSplitScreenActive(true)
+          }
 
-          if (currentVoiceLanguageCode !== result.detectedLanguage) {
+          const detectedLanguageName = getLanguageByCode(result.detectedLanguage)
+
+          setDetectedLanguage(detectedLanguageCode) // If it hasn't been set, just set it to null to clear it from the previous call
+
+          if (lastDetectedLanguage !== detectedLanguageCode && currentVoiceLanguageCode !== detectedLanguageCode) {
             toast({
               title: "Translating Detected Language",
-              description: detectedLanguage ? `Translating from ${detectedLanguage} to ${store.voice.languageDescriptions[0]}` : "Translating from an unknown language",
+              description: detectedLanguageName ?
+                `Translating from ${detectedLanguageName} to ${store.voice.languageDescriptions[0]}` :
+                `Translating from an unrecognized language (language code: ${result.detectedLanguage})`,
               status: "success",
               duration: 5000,
               isClosable: true,
             })
           }
         }
+        if (detectedLanguageCode === currentVoiceLanguageCode) {
+          store.setSplitScreenActive(false);
+        }
       }
 
     } catch (e: any) {
+      console.log(e)
       errorRequestToNotification((e.response.data && e.response.data.error) || e, toast)
       store.setTtsLoading(false)
       return
@@ -409,6 +435,8 @@ export const useTextToSpeech = () => {
     playBase64Audio(outputAudio, audio, () => {
       if (!useStore.getState().outputLingerEnabled) {
         setOutputText("")
+        setPreTranslatedText(null)
+        store.setSplitScreenActive(false)
       }
 
       store.setCurrentlySpeaking(false)
@@ -422,7 +450,9 @@ export const useTextToSpeech = () => {
 
   return {
     say,
+    outputText,
+    detectedLanguage,
+    preTranslatedText,
     currentlySpeaking: store.currentlySpeaking,
-    outputText
   }
 }

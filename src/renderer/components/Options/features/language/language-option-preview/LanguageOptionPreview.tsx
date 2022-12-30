@@ -10,6 +10,7 @@ import SimpleTooltip              from "renderer/components/common/SimpleTooltip
 import AutoTranslatation          from "../common/AutoTranslatation"
 import { Divider, VStack, Box, Image }   from "@chakra-ui/react"
 import LoadedImage from "renderer/components/common/LoadedImage"
+import SplitScreen from "../common/SplitScreen"
 
 const LanguageOptionPreview = () => {
   const store = useStore()
@@ -46,7 +47,10 @@ const LanguageOptionPreview = () => {
         ) : null
       }
 
-      <AutoTranslatation />
+      <VStack spacing="1.25em">
+        <AutoTranslatation />
+        <SplitScreen />
+      </VStack>
     </>
   )
 }

@@ -6,8 +6,10 @@ export const translate = async (text: string, target: string, source?: string): 
   const response = await axios.post(`${TRANSLATE_URL}${useStore.getState().apiKey}`, {
     q: text,
     target: target,
-    source: source ? source : undefined
+    source: source ? source : undefined,
+    format: "text"
   })
+
   const translatedText = response.data.data.translations[0].translatedText;
   const detectedLanguage = response.data.data.translations[0].detectedSourceLanguage;
 

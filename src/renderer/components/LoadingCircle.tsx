@@ -11,12 +11,12 @@ const LoadingCircle = () => {
       <ScaleFade in={true} initialScale={0.6}>
         <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
           backdropFilter='blur(10px)' bg={`${loadingBackground}`}
-          boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)"
-          >
+          boxShadow="0px 0px 20px 0px rgba(0,0,0,0.3)"
+        >
           <ScaleLoader color={store.accent} loading={true} width="10px" height="100px" />
         </Box>
         <Center>
-          <Box boxShadow="0px 0px 20px 0px rgba(0,0,0,0.25)" textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
+          <Box boxShadow="0px 0px 20px 0px rgba(0,0,0,0.3)" textAlign="center" bg={`${loadingBackground}`} color={useColorModeValue("#313131", '#EEEEEE')} borderRadius="0.25em" width="fit-content" padding="0.25em 0.5em" marginTop="0.5em">
             Loading...
           </Box>
         </Center>

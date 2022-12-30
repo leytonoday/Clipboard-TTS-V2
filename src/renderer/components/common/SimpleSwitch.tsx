@@ -10,6 +10,7 @@ interface SimpleSwitchProps {
   info?: string,
   warning?: string
   danger?: string
+  disabled?: boolean
 }
 
 const SimpleSwitch = (props: SimpleSwitchProps) => {
@@ -32,6 +33,7 @@ const SimpleSwitch = (props: SimpleSwitchProps) => {
     </HStack>
 
     <Switch
+      isDisabled={props.disabled}
       size="lg"
       isChecked={props.isChecked}
       onChange={(e) => {
