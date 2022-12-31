@@ -260,6 +260,8 @@ export const createOptionsSlice: StoreSlice<IOptionsSlice> = (set, get) => ({
     if (voice.name.includes("Neural2")) {
       electronStoreSet("highlightEnabled", false)
       set(state => ({ ...state, highlightEnabled: false }))
+      electronStoreSet("liveHighlightEnabled", false)
+      set(state => ({ ...state, liveHighlightEnabled: false }))
     }
 
     set(state => ({ ...state, splitScreenActive: false}))

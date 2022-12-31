@@ -361,7 +361,6 @@ export const useTextToSpeech = () => {
       }
 
     } catch (e: any) {
-      console.log(e)
       errorRequestToNotification((e.response.data && e.response.data.error) || e, toast)
       store.setTtsLoading(false)
       return
