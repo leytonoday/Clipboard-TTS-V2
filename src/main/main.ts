@@ -54,6 +54,10 @@ ipcMain.on('ipc', async (event, arg) => {
   const method = arg[0];
 
   switch (method) {
+    case 'is-window-focused': {
+      event.returnValue = mainWindow!.isFocused();
+      break;
+    }
     case 'toast-notification': {
       notifier.notify({
         title: arg[1],

@@ -19,12 +19,13 @@ import {
   useColorModeValue,
   TableContainer,
 } from '@chakra-ui/react';
-import shortcuts        from 'renderer/misc/shortcuts';
+import globalShortcuts  from 'renderer/misc/globalShortcuts';
+import localShortcuts   from 'renderer/misc/localShortcuts';
 import { useStore }     from 'renderer/store';
-import SimpleSwitch     from 'renderer/components/common/SimpleSwitch';
 import SimpleTooltip    from "renderer/components/common/SimpleTooltip"
 import { faKeyboard }   from "@fortawesome/free-solid-svg-icons"
 import SubOptionButton  from "renderer/components/options/common/SubOptionButton";
+import { useMemo }      from 'react';
 
 const ShortcutsTable = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -39,6 +40,12 @@ const ShortcutsTable = () => {
     store.setIsModalOpen(false);
     onClose()
   }
+
+  // Commbine and sort all shortcuts, both local and global
+  const allShortcuts = useMemo(() => {
+    const shortcuts = [...globalShortcuts, ...localShortcuts].sort((a, b) => a.commandName > b.commandName ? 1 : -1)
+    return shortcuts
+  },[])
 
   return (
     <Box>
@@ -55,7 +62,7 @@ const ShortcutsTable = () => {
         isOpen={isOpen}
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
-        size="lg"
+        size="2xl"
       >
         <ModalOverlay />
         <ModalContent bg={useColorModeValue('#FFFFFF', '#171717')}>
@@ -72,7 +79,7 @@ const ShortcutsTable = () => {
                 </Thead>
 
                 <Tbody>
-                  {shortcuts.map(shortcut => (
+                  {allShortcuts.map(shortcut => (
                     <Tr key={shortcut.commandName}>
                       <Td>
                         <Box width="fit-content">

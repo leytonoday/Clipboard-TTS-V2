@@ -1,5 +1,6 @@
 import {
-  useShortcuts,
+  useGlobalShortcuts,
+  useLocalShortcuts,
   usePlatform,
   useNotifications,
   useFileDragAndDrop
@@ -13,7 +14,8 @@ import { ChakraProvider, Flex, Box }  from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 
 const App: React.FC = () => {
-  useShortcuts()
+  useGlobalShortcuts()
+  useLocalShortcuts()
   useNotifications()
   useFileDragAndDrop()
   const store = useStore()

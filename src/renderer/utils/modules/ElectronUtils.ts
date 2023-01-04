@@ -35,3 +35,7 @@ export function getPlatform(): string {
 export function toastNotification(title: string, message: string) {
   window.electron.ipcRenderer.sendMessage("ipc", ["toast-notification", title, message])
 }
+
+export function isWindowFocused(): boolean {
+  return window.electron.ipcRenderer.sendMessageSync("ipc", ["is-window-focused"]) as boolean
+}

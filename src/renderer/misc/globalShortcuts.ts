@@ -20,7 +20,7 @@ const translateAnnouncement = async (text: string) => {
   return translatedText.text
 }
 
-const shortcuts: Shortcut[] = [
+const globalShortcuts: Shortcut[] = [
   {
     keybinding: "Control+[",
     command: async () => {
@@ -59,8 +59,6 @@ const shortcuts: Shortcut[] = [
     command: async () => {
       if (!useStore.getState().shortcutsEnabled) return
 
-      toggleOptionEnabled("Pause / Resume")
-
       // pause speaking
       const store = useStore.getState()
       if (store.currentlySpeaking) {
@@ -69,7 +67,7 @@ const shortcuts: Shortcut[] = [
       }
     },
     commandName: "Pause / Resume",
-    tooltip: "Pause or resume the current speech"
+    tooltip: "Pause or resume the current speech regardless of if the window is focused or not"
   },
   {
     keybinding: "Control+,",
@@ -130,4 +128,4 @@ const shortcuts: Shortcut[] = [
   }
 ]
 
-export default shortcuts;
+export default globalShortcuts;
