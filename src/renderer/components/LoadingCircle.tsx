@@ -7,7 +7,7 @@ const LoadingCircle = () => {
   const loadingBackground = useColorModeValue("#EEEEEE", '#171717')
 
   return (
-    <VStack width="100%" height="100%" position="absolute" justifyContent="center" alignItems="center">
+    <VStack width="100%" height="100%" position="absolute" justifyContent="center" alignItems="center" zIndex="1">
       <ScaleFade in={true} initialScale={0.6}>
         <Box display="flex" justifyContent="center" alignItems="center" width="150px" height="150px" borderRadius="full"
           backdropFilter='blur(10px)' bg={`${loadingBackground}`}
