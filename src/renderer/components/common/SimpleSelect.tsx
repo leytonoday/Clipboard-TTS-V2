@@ -1,4 +1,4 @@
-import { useColorModeValue } from "@chakra-ui/react"
+import { Box, useColorModeValue } from "@chakra-ui/react"
 import { Select } from "chakra-react-select"
 import { useStore } from "renderer/store"
 import React from "react"
@@ -49,7 +49,9 @@ const SimpleSelect = (props: SimpleSelectProps) => {
   }
 
   return (
-    <Select focusBorderColor={store.accent} selectedOptionStyle="check" chakraStyles={chakraStyles} menuPortalTarget={document.body} styles={styles} size={props.size || "md"} options={props.options} value={value} isDisabled={props.disabled} onChange={props.onChange} isSearchable={false} isClearable={false} />
+    <Box cursor={"pointer"}>
+      <Select focusBorderColor={store.accent} selectedOptionStyle="check" chakraStyles={chakraStyles} menuPortalTarget={document.body} styles={styles} size={props.size || "md"} options={props.options} value={value} isDisabled={props.disabled} onChange={props.onChange} isSearchable={false} isClearable={false} />
+    </Box>
   )
 }
 
