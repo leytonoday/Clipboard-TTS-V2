@@ -408,7 +408,11 @@ export const stoppingPunctuation = [".", "!", "?", "。", "෴", "।", "॥", "
 export const whatsNewData: WhatsNewData = {
   version: CURRENT_VERSION,
   bugFixes: [
-    "Fixed bug with Neural2 voices not working with live highlighting. This was caused by Neural2 voices not supporting SSML yet",
+    "Fixed bug where Select components didn't turn the mouse into a pointer. The change makes it more obvious that the simple select is clickable",
+    "Fixed bug where text in the output box overlaps the Loading Circle"
+  ],
+  newFeatures: [
+    "Added 'Space' as a shortcut to pause the speech. This only works when the window is in focus however. The usual Control+Alt+] for global pause still works fine, even when the app isn't in focus"
   ]
 }
 
