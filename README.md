@@ -29,7 +29,7 @@ Features include:
 - Automatic detection of clipboard changes. Changes are read aloud to the user
 - Supporting well over 100 languages
 - Automatic clipboard Image-to-Text  
-- Automatic translation from any language
+- Automatic translation from any language. Split screen to see the before and after of a translation.
 - Substitutions (regex or string)
 - Dictionary and Auto Dictionary (read aloud the definition of any word copied)
 - Extensive audio configuration
@@ -56,7 +56,7 @@ Below is a list of images to showcase some of the features of Clipboard TTS
 ![10](https://user-images.githubusercontent.com/36010516/194392159-c5a498cd-b318-4df4-9173-b980b02bc49a.png)
 ![8](https://user-images.githubusercontent.com/36010516/194392136-4b8215e5-5095-4a97-9851-df077e0d498b.PNG)
 ![9](https://user-images.githubusercontent.com/36010516/194392144-d8956003-b43e-4509-8994-58e5c87850a0.png)
-
+![11](https://user-images.githubusercontent.com/36010516/210152434-1de7e556-8997-415e-866c-a6549aa568cd.png)
 
 ## Project setup
 ```
@@ -66,7 +66,8 @@ npm install
 ## Compiles and hot-reloads for development
 ```
 npm run start
-```
+
+
 
 ## Compiles and packages for production
 ```
